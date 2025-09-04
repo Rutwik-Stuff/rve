@@ -2,7 +2,7 @@
 **Release Date:** unconfirmed
 **Current Version:** none
 
-Rutwik Video Editor is a lightweight video editor that's designed for Windows, MacOS, Linux, and ChromeOS and is completly online! No downloads needed.
+Rutwik Video Editor is a lightweight video editor that's designed for Windows, MacOS, Linux, and ChromeOS and is completely online! No downloads needed.
 
 ---
 
@@ -13,10 +13,18 @@ Rutwik Video Editor is a lightweight video editor that's designed for Windows, M
 - 🖱️ Export in 1440p, 1080p, 720p, and 480p, and audio-only formats.
 - 🔁 An easy to use UI so you can learn it fast
 - ⌨️ keyboard shortcuts that will make it easier when editing
-- 🖋 No watermarks, no time limits, open-souce
-- 🛫Abality to work on your projects on multiple computers
+- 🖋 No watermarks, no time limits, open-source
+- 🛫Ability to work on your projects on multiple computers
 - 📩Share your projects so multiple people can edit (they will have to get the media another way)
-- 👥User support, make an account so you can login from other computers and edit
+- 👥User support, create an account so you can login from other computers and edit
+
+---
+
+## 📄 License
+
+Rutwik Video Editor is licensed under the [MIT License](LICENSE).  
+You are free to use, modify, and distribute this software with proper attribution.  
+No restrictions. No gatekeeping. Just sovereign editing.
 
 ---
 
