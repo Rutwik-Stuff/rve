@@ -19,7 +19,7 @@ Welcome, Contributor! Whether you're here to squash bugs, suggest features, or t
    - Prefer MIT-compatible libraries only (we don't want to go around messing with LICENSE)
    - UI should be clean and modular
 
-  ###📃 By contributing, you agree that your work will be released under the MIT License, in harmony with RVE’s open-source spirit.
+  ### 📃 By contributing, you agree that your work will be released under the MIT License, in harmony with RVE’s open-source spirit.
 
   ### What you can help us with
   - Bug reports (Tell us the issue, how to reproduce it, and expected behavior and we will try our best)
