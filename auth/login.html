@@ -17,7 +17,7 @@
       <p class="mv-caption">One Account for all of Rutwik</p>
 
       <!-- Login Form -->
-      <form class="login-form" action="/auth/login" method="POST">
+      <form class="login-form" onsubmit="return false;">
         <label for="username">Username</label>
         <input type="text" id="username" name="username" required />
 
@@ -37,10 +37,9 @@
   </main>
   <script src="/rve/required.js"></script>
 
-  <script type="module">
+ <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
-  import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
@@ -53,7 +52,20 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db = getFirestore(app);
+
+  document.querySelector(".login-button").addEventListener("click", async () => {
+    const email = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      alert("Welcome back, Contributor!");
+      window.location.href = "/rve/dashboard.html"; // or wherever your saga continues
+    } catch (error) {
+      alert("Login failed: " + error.message);
+    }
+  });
 </script>
 </body>
 </html>
