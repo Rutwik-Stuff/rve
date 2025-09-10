@@ -1,32 +1,61 @@
-<main class="dashboard-grid">
-  <!-- Contributor Profile Panel -->
-  <section class="glass profile-card">
-    <h2>Welcome, Contributor</h2>
-    <p>Username: <strong>7Zeb</strong></p>
-    <p>Joined: <strong>2025-09-10</strong></p>
-  </section>
-
-  <!-- Main Dashboard Content -->
-  <section class="glass dashboard-content">
-    <!-- Codex Table -->
-    <div class="codex-table">
-      <h3>Your Codex Entries</h3>
-      <table>
-        <thead>
-          <tr><th>Title</th><th>Date</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Login Ritual Bound</td><td>2025-09-10</td><td>Complete</td></tr>
-          <tr><td>Signup Shrine Activated</td><td>2025-09-10</td><td>Complete</td></tr>
-        </tbody>
-      </table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Rutwik Video Editor</title>
+  <link rel="stylesheet" href="/rve/style.css" />
+</head>
+<body>
+  <!-- 🔰 Top Navbar -->
+  <nav class="navbar glass">
+    <div class="nav-left">
+      <img src="/rve/assets/rve-logo.png" alt="RVE Logo" style="height: 40px;" />
+      <span style="font-weight: 600; font-size: 1.2rem;">Rutwik Video Editor</span>
     </div>
-
-    <!-- Decree Drafting Zone -->
-    <div class="decree-editor">
-      <h3>Draft New Decree</h3>
-      <textarea placeholder="Begin your annotation..."></textarea>
-      <button class="button">Save to Codex</button>
+    <div class="nav-right">
+      <span>Welcome, <strong>7Zeb</strong></span>
+      <button class="mode-toggle">Toggle Mode</button>
     </div>
-  </section>
-</main>
+  </nav>
+
+  <!-- 🧱 Dashboard Grid -->
+  <main class="dashboard-grid">
+    <!-- 📁 Recent Projects -->
+    <section class="glass dashboard-content">
+      <h2>Your Recent Projects</h2>
+      <div class="cards">
+        <div class="card">
+          <h3>Windows ME Retrospective</h3>
+          <p>Last edited: Sept 10, 2025</p>
+        </div>
+        <div class="card">
+          <h3>Joost Remix Ritual</h3>
+          <p>Last edited: Sept 8, 2025</p>
+        </div>
+        <!-- More cards can be added dynamically -->
+      </div>
+
+      <!-- ➕ New Project Button -->
+      <div style="margin-top: 2rem;">
+        <button class="button">Start New Project</button>
+      </div>
+    </section>
+
+    <!-- 🪪 Contributor Info Panel -->
+    <section class="glass profile-card">
+      <h2>Contributor Info</h2>
+      <p>Username: <strong>7Zeb</strong></p>
+      <p>Joined: <strong>2025-09-10</strong></p>
+      <button class="button">Logout</button>
+    </section>
+  </main>
+
+  <!-- Footer Ritual -->
+  <footer class="footer glass">
+    <span>Rutwik Video Editor © 2025</span>
+  </footer>
+
+  <script src="/rve/required.js"></script>
+</body>
+</html>
