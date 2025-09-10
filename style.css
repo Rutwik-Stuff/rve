@@ -295,6 +295,79 @@ a:hover {
   white-space: nowrap;
 }
 
+/* Tables */
+/* Glassy Table Styles */
+table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--glass-bg);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(33, 150, 243, 0.05);
+  font-size: 1em;
+  color: var(--text-light);
+}
+
+th, td {
+  padding: 1em 1.3em;
+  border-bottom: 1px solid var(--glass-border);
+  text-align: left;
+}
+
+th {
+  background: rgba(47, 214, 232, 0.23);
+  color: var(--text-dark);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--glass-border);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background: var(--card-hover-bg);
+}
+
+table caption {
+  caption-side: top;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0.5em 0 1em 0;
+  color: var(--link-color);
+}
+
+body.dark-mode table {
+  color: var(--text-light);
+}
+
+body.dark-mode th {
+  background: rgba(55, 230, 196, 0.16);
+  color: var(--text-light);
+}
+
+@media (max-width: 700px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  th, td {
+    padding: 0.8em 0.7em;
+  }
+  tr {
+    margin-bottom: 1em;
+  }
+  th {
+    border-bottom: none;
+  }
+  td {
+    border-bottom: 1px solid var(--glass-border);
+  }
+}
+
+
 /* NewUI Login Extension Package starts here */
 /* Loginbox styling */
 .loginbox {
