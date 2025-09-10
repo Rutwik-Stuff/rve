@@ -57,6 +57,30 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
+
+ window.addEventListener("DOMContentLoaded", () => {
+  document.querySelector(".login-button").addEventListener("click", async () => {
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "contributors", user.uid), {
+        username: username,
+        email: email,
+        joined: new Date().toISOString()
+      });
+
+      alert("Account created! Welcome, " + username);
+      window.location.href = "/rve/auth/login";
+    } catch (error) {
+      alert("Signup failed: " + error.message);
+    }
+  });
+});   
 </script>
 </body>
 </html>
