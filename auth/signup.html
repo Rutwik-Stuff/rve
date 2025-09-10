@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign Up - RVE</title>
+  <link rel="stylesheet" href="/rve/style.css" />
+</head>
+<body>
+  <main class="login-wrapper">
+    <section class="glass infobox loginbox">
+      <!-- Contributor Avatar -->
+      <img src="https://raw.githubusercontent.com/7zeb/newui-extensions/refs/heads/main/login/defualt.png" alt="Profile Picture" class="profile-picture" />
+
+      <!-- MV Caption -->
+      <h2>Welcome, Contributor</h2>
+      <p class="mv-caption">One account for all of Rutwik</p>
+
+      <!-- Login Form -->
+      <form class="login-form" action="/auth/login" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" required/>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit" class="login-button">Sign Up</button>
+      </form>
+
+      <!-- Footer Ritual -->
+      <footer class="login-footer">
+        <a href="/auth/forgot-passwd">Forgot password?</a>
+        <a href="/auth/forgot-username">Forgot username?</a>
+        <span>Have an account? <a href="/rve/login.html">Login here</a></span>
+      </footer>
+    </section>
+  </main>
+  <script src="/rve/required.js"></script>
+</body>
+</html>
