@@ -7,54 +7,90 @@
   <link rel="stylesheet" href="/rve/style.css" />
 </head>
 <body>
-  <!-- 🔰 Top Navbar -->
-  <nav class="navbar glass">
-    <div class="nav-left">
-      <img src="/rve/assets/rve-logo.png" alt="RVE Logo" style="height: 40px;" />
-      <span style="font-weight: 600; font-size: 1.2rem;">Rutwik Video Editor</span>
-    </div>
-    <div class="nav-right">
-      <span>Welcome, <strong>7Zeb</strong></span>
-      <button class="mode-toggle">Toggle Mode</button>
-    </div>
-  </nav>
+  <div id="app"></div>
 
-  <!-- 🧱 Dashboard Grid -->
-  <main class="dashboard-grid">
-    <!-- 📁 Recent Projects -->
-    <section class="glass dashboard-content">
-      <h2>Your Recent Projects</h2>
-      <div class="cards">
-        <div class="card">
-          <h3>Windows ME Retrospective</h3>
-          <p>Last edited: Sept 10, 2025</p>
-        </div>
-        <div class="card">
-          <h3>Joost Remix Ritual</h3>
-          <p>Last edited: Sept 8, 2025</p>
-        </div>
-        <!-- More cards can be added dynamically -->
-      </div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
 
-      <!-- ➕ New Project Button -->
-      <div style="margin-top: 2rem;">
-        <button class="button">Start New Project</button>
-      </div>
-    </section>
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_8yrLHS1UNYIn4_R19Fm8ZYcjBkO6qMw",
+      authDomain: "rutwik-video-editor.firebaseapp.com",
+      projectId: "rutwik-video-editor",
+      storageBucket: "rutwik-video-editor.appspot.com",
+      messagingSenderId: "765885353429",
+      appId: "1:765885353429:web:0cdf8b8a571d99a6f7c15c"
+    };
 
-    <!-- 🪪 Contributor Info Panel -->
-    <section class="glass profile-card">
-      <h2>Contributor Info</h2>
-      <p>Username: <strong>7Zeb</strong></p>
-      <p>Joined: <strong>2025-09-10</strong></p>
-      <button class="button">Logout</button>
-    </section>
-  </main>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  <!-- Footer Ritual -->
-  <footer class="footer glass">
-    <span>Rutwik Video Editor © 2025</span>
-  </footer>
+    onAuthStateChanged(auth, (user) => {
+      const appDiv = document.getElementById("app");
+
+      if (user) {
+        // ✅ Logged in: render dashboard
+        appDiv.innerHTML = `
+          <nav class="navbar glass">
+            <div class="nav-left">
+              <img src="/rve/assets/rve-logo.png" alt="RVE Logo" style="height: 40px;" />
+              <span style="font-weight: 600; font-size: 1.2rem;">Rutwik Video Editor</span>
+            </div>
+            <div class="nav-right">
+              <span>Welcome, <strong>${user.displayName || user.email}</strong></span>
+              <button class="mode-toggle">Toggle Mode</button>
+            </div>
+          </nav>
+
+          <main class="dashboard-grid">
+            <section class="glass dashboard-content">
+              <h2>Your Recent Projects</h2>
+              <div class="cards">
+                <div class="card">
+                  <h3>Windows ME Retrospective</h3>
+                  <p>Last edited: Sept 10, 2025</p>
+                </div>
+                <div class="card">
+                  <h3>Joost Remix Ritual</h3>
+                  <p>Last edited: Sept 8, 2025</p>
+                </div>
+              </div>
+              <div style="margin-top: 2rem;">
+                <button class="button">Start New Project</button>
+              </div>
+            </section>
+
+            <section class="glass profile-card">
+              <h2>Contributor Info</h2>
+              <p>Email: <strong>${user.email}</strong></p>
+              <p>UID: <strong>${user.uid}</strong></p>
+              <button class="button" id="logout-btn">Logout</button>
+            </section>
+          </main>
+
+          <footer class="footer glass">
+            <span>Rutwik Video Editor © 2025</span>
+          </footer>
+        `;
+
+        document.getElementById("logout-btn").addEventListener("click", () => {
+          signOut(auth).then(() => {
+            window.location.href = "/rve/login.html";
+          });
+        });
+
+      } else {
+        // ❌ Not logged in: show fallback
+        appDiv.innerHTML = `
+          <main class="glass loginbox">
+            <h2>Access Denied</h2>
+            <p>You must be logged in to view the dashboard.</p>
+            <a href="/rve/login.html" class="button">Go to Login</a>
+          </main>
+        `;
+      }
+    });
+  </script>
 
   <script src="/rve/required.js"></script>
 </body>
