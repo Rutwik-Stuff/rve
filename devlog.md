@@ -7,3 +7,4 @@ This is the official devlog for RVE (Rutwik Video Editor)
 - added sign up support
 - started working on dashboard
 - started working on RVE's actual code in general.
+- dashboard can check if your logged in or not
