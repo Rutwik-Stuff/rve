@@ -3,6 +3,7 @@ This is the official devlog for RVE (Rutwik Video Editor)
 
 ### September 16, 2025
 - added the RVE logo so it will actually feel a bit more complete
+- Added favicon to all pages
 
 ### September 15, 2025
 - Fixed issue #1
