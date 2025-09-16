@@ -28,10 +28,12 @@
 
     onAuthStateChanged(auth, (user) => {
       const appDiv = document.getElementById("app");
+      const localProjects = [];
 
       if (user) {
         // ✅ Logged in: render dashboard
         appDiv.innerHTML = `
+        
           <nav class="navbar glass">
             <div class="nav-left">
               <img src="/rve/assets/rve-logo.png" alt="RVE Logo" style="height: 40px;" />
@@ -79,6 +81,25 @@
             window.location.href = "/rve/auth/login.html";
           });
         });
+
+        document.querySelector(".button").addEventListener("click", () => {
+      const projectId = crypto.randomUUID();
+
+       const newProject = {
+       id: projectId,
+       title: "Untitled Project",
+       createdAt: new Date().toISOString(),
+       lastEdited: new Date().toISOString(),
+       ownerUid: user.uid
+  };
+
+  // Simulate Firestore save
+  localProjects.push(newProject);
+  console.log("Local project created:", newProject);
+
+  // Redirect to editor with project ID
+  window.location.href = `/rve/editor.html?id=${projectId}`;
+});
 
       } else {
         // ❌ Not logged in: show fallback
