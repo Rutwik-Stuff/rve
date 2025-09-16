@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editor - Rutwik Video Editor</title>
+  <link rel="stylesheet" href="/rve/style.css"/>
+</head>
+<body>
+  <nav class="navbar glass">
+    <div class="nav-left">
+      <img src="/rve/assets/rve-logo.png" alt="RVE Logo" style="height: 40px;"/>
+      <span style="font-weight: 600; font-size: 1.2rem;">Rutwik Video Editor</span>
+    </div>
+    <div class="nav-right">
+      <span id="project-id-display">Loading...</span>
+    </div>
+  </nav>
+
+  <main class="glass editor-content">
+    <h2 id="project-title">Loading Project...</h2>
+    <input type="text" id="title-input" placeholder="Project Title"/>
+    <button class="button" id="save-btn">Save Project</button>
+  </main>
+
+  <script type="module">
+    //🔍 Step 3: Read project ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const projectId = urlParams.get("id");
+
+    if (!projectId) {
+      document.getElementById("project-title").textContent = "No project ID found.";
+      throw new Error("Missing project ID in URL");
+    }
+
+    //🧠 Step 4: Simulate loading project data (local for now)
+    const project = {
+      id: projectId,
+      title: "Untitled Project",
+      createdAt: new Date().toISOString(),
+      lastEdited: new Date().toISOString()
+    };
+
+    //🖼️ Step 5: Display project info
+    document.getElementById("project-id-display").textContent = `ID: ${projectId}`;
+    document.getElementById("project-title").textContent = `Editing: ${project.title}`;
+    document.getElementById("title-input").value = project.title;
+
+    //💾 Step 6: Simulate save button
+    document.getElementById("save-btn").addEventListener("click", () => {
+      const newTitle = document.getElementById("title-input").value;
+      project.title = newTitle;
+      project.lastEdited = new Date().toISOString();
+
+      console.log("Project saved locally:", project);
+      alert("Project saved (local only for now)");
+    });
+  </script>
+</body>
+</html>
