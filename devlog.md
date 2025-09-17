@@ -5,6 +5,7 @@ This is the official devlog for RVE (Rutwik Video Editor)
 - added the RVE logo so it will actually feel a bit more complete
 - Added favicon to all pages
 - fixed some issues with login
+- started working on the editor itself (very early development and won't work)
 
 ### September 15, 2025
 - Fixed issue #1
