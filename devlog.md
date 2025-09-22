@@ -1,6 +1,11 @@
 # RVE Devlog
 This is the official devlog for RVE (Rutwik Video Editor)
 
+### September 22, 2025
+- continue working on the editor (video preview anyone)
+- got a better navbar for the editor
+- removed username for login (only email can be used now)
+
 ### September 16, 2025
 - added the RVE logo so it will actually feel a bit more complete
 - Added favicon to all pages
