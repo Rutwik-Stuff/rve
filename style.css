@@ -452,3 +452,42 @@ place it in the .infobox above the heading for the infobox
 </section>
 
 */
+
+/* Editor Extension */
+.editor-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.rve-logo {
+  height: 40px;
+  width: auto;
+}
+
+.rve-title {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.nav-center input {
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 250px;
+  border-radius: 6px;
+  border: none;
+}
+
+.nav-right .button {
+  margin-left: 0.5rem;
+}
