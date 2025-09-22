@@ -495,9 +495,15 @@ place it in the .infobox above the heading for the infobox
 /* Video Preview */
 .media-preview {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
+  gap: 1rem;
   padding: 2rem;
+}
+
+#video-upload {
+  font-size: 1rem;
+  padding: 0.5rem;
 }
 
 #video-preview {
