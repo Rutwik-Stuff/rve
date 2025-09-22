@@ -66,6 +66,23 @@
         alert("Project saved locally!");
       });
     });
+
+    window.addEventListener("DOMContentLoaded", () => {
+  const videoUpload = document.getElementById("video-upload");
+  const videoPreview = document.getElementById("video-preview");
+
+  videoUpload.addEventListener("change", () => {
+    const file = videoUpload.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      videoPreview.src = url;
+      videoPreview.load();
+      videoPreview.play();
+    }
+  });
+
+  // other logic like project ID parsing or save button can go here too
+});
   </script>
 </body>
 </html>
