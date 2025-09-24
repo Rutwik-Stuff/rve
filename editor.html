@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Editor - Rutwik Video Editor</title>
-  <link rel="stylesheet" href="/rve/style.css" />
+  <link rel="stylesheet" href="/rve/style.css"/>
 </head>
 <body>
-<nav class="editor-nav glass">
-  <div class="nav-left">
-    <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
-    <span class="rve-title">RVE</span>
-  </div>
-  <div class="nav-center">
-    <input type="text" id="project-title-input" placeholder="Project File Name" />
-  </div>
-  <div class="nav-right">
-    <button class="button">Download</button>
-    <button class="button">Share</button>
-    <button class="button">Next</button>
-  </div>
-</nav>
 
-<section class="media-preview glass">
-  <input type="file" id="video-upload" accept="video/*" />
-  Upload a video here, use a supported video format too.
-  <video id="video-preview" controls></video>
-</section>
-  
+  <!-- Top Navigation Bar -->
+  <nav class="editor-nav glass">
+    <div class="nav-left">
+      <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
+      <span class="rve-title">RVE</span>
+    </div>
+    <div class="nav-center">
+      <input type="text" id="project-title-input" placeholder="Project File Name" />
+    </div>
+    <div class="nav-right">
+      <button class="button">Download</button>
+      <button class="button">Share</button>
+      <button class="button">Next</button>
+    </div>
+  </nav>
 
+  <!-- Media Preview Zone -->
+  <section class="media-preview glass">
+    <input type="file" id="video-upload" accept="video/*" style="display: none;" />
+    <button class="button" id="upload-btn">Upload Video</button>
+    <video id="video-preview" controls></video>
+  </section>
+
+  <!-- Project Info & Save -->
   <main class="glass editor-content">
     <h2 id="project-title">Loading Project...</h2>
     <input type="text" id="title-input" placeholder="Project Title" />
     <button class="button" id="save-btn">Save Project</button>
   </main>
 
+  <!-- Editor Logic -->
   <script type="module">
     window.addEventListener("DOMContentLoaded", () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -45,7 +49,6 @@
         return;
       }
 
-      // Simulate loading project data
       const project = {
         id: projectId,
         title: "Untitled Project",
@@ -53,36 +56,38 @@
         lastEdited: new Date().toISOString()
       };
 
-      // Display project info
-      document.getElementById("project-id-display").textContent = `ID: ${projectId}`;
       document.getElementById("project-title").textContent = `Editing: ${project.title}`;
       document.getElementById("title-input").value = project.title;
 
-      // Save button logic
       document.getElementById("save-btn").addEventListener("click", () => {
         project.title = document.getElementById("title-input").value;
         project.lastEdited = new Date().toISOString();
         console.log("Project saved locally:", project);
         alert("Project saved locally!");
       });
+
+      const videoUpload = document.getElementById("video-upload");
+      const videoPreview = document.getElementById("video-preview");
+      const uploadBtn = document.getElementById("upload-btn");
+
+      uploadBtn.addEventListener("click", () => {
+        videoUpload.click();
+      });
+
+      //stuff I have to do so ChromeOS doesn't crash out.
+      videoUpload.addEventListener("change", () => {
+        const file = videoUpload.files[0];
+        if (file) {
+          const url = URL.createObjectURL(file);
+          console.log("Preview URL:", url);
+          videoPreview.src = url;
+          videoPreview.load();
+          //Manual playback only—Chromebook safe
+        } else {
+          console.warn("No file selected, please select a file with a supported format (.mp4,.webm,.mov,.mkv, etc)");
+        }
+      });
     });
-
-    window.addEventListener("DOMContentLoaded", () => {
-  const videoUpload = document.getElementById("video-upload");
-  const videoPreview = document.getElementById("video-preview");
-
-  videoUpload.addEventListener("change", () => {
-    const file = videoUpload.files[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      videoPreview.src = url;
-      videoPreview.load();
-      videoPreview.play();
-    }
-  });
-
-  // other logic like project ID parsing or save button can go here too
-});
   </script>
 </body>
 </html>
