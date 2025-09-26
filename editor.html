@@ -27,11 +27,11 @@
   </nav>
 
   <!-- Media Preview Zone -->
-  <section class="media-preview glass">
-    <input type="file" id="video-upload" accept="video/*" style="display: none;" />
-    <button class="button" id="upload-btn">Upload Video</button>
-    <video id="video-preview" controls></video>
-  </section>
+ <section class="media-preview glass">
+  <input type="file" id="video-upload" accept="video/*" multiple style="display: none;" />
+  <button class="button" id="upload-btn">Upload Video</button>
+  <video id="video-preview" controls></video>
+</section>
 
   <!-- Project Info & Save -->
   <main class="glass editor-content">
@@ -61,12 +61,26 @@
       document.getElementById("project-title").textContent = `Editing: ${project.title}`;
       document.getElementById("title-input").value = project.title;
 
-      document.getElementById("save-btn").addEventListener("click", () => {
-        project.title = document.getElementById("title-input").value;
-        project.lastEdited = new Date().toISOString();
-        console.log("Project saved locally:", project);
-        alert("Project saved locally!");
-      });
+     document.getElementById("save-btn").addEventListener("click", () => {
+        const newTitle = document.getElementById("title-input").value; // Get the new name
+
+        // 1. Update the internal project object
+        project.title = newTitle;
+        project.lastEdited = new Date().toISOString();
+
+        // 2. --- FIX: UPDATE THE UI ELEMENTS ---
+        // Update the main display title
+        document.getElementById("project-title").textContent = `Editing: ${project.title}`;
+        
+        // Update the navigation bar title input
+        document.getElementById("project-title-input").value = project.title;
+        
+        // 3. --- FIX: UPDATE THE HTML <title> TAG ---
+        document.title = `${project.title} - Rutwik Video Editor`;
+
+        console.log("Project saved locally:", project);
+        alert("Project saved locally!");
+      });
 
       const videoUpload = document.getElementById("video-upload");
       const videoPreview = document.getElementById("video-preview");
@@ -78,18 +92,26 @@
 
       //stuff I have to do so ChromeOS doesn't crash out.
       videoUpload.addEventListener("change", () => {
-        const file = videoUpload.files[0];
-        if (file) {
-          const url = URL.createObjectURL(file);
-          console.log("Preview URL:", url);
-          videoPreview.src = url;
-          videoPreview.load();
-          //Manual playback only—Chromebook safe
-        } else {
-          console.warn("No file selected, please select a file with a supported format (.mp4,.webm,.mov,.mkv, etc)");
-        }
-      });
-    });
+        // FIX: Iterate over all selected files
+        const files = videoUpload.files;
+        
+        if (files.length > 0) {
+          console.log(`${files.length} files selected.`);
+          
+          //--- For now, we will still only preview the FIRST file ---
+          //But now we know all files are in the 'files' array for later use!
+          const firstFile = files[0];
+          const url = URL.createObjectURL(firstFile);
+          console.log("Preview URL:", url);
+          videoPreview.src = url;
+          videoPreview.load();
+        
+          //FUTURE STEP: You need to add these files to a 'project.media' array here.
+
+        } else {
+          console.warn("No file selected, please select a file with a supported format (.mp4, etc)");
+        }
+      });
   </script>
 </body>
 </html>
