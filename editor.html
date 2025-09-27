@@ -69,7 +69,7 @@
   // Update header
   document.getElementById("project-title").textContent = `Editing: ${newTitle}`;
 
-  // Update <title> tag
+  //Update <title> tag
   document.title = `${newTitle} - Rutwik Video Editor`;
 
   console.log("Project saved locally:", project);
@@ -77,33 +77,34 @@
 });
 
       const videoUpload = document.getElementById("video-upload");
-      const videoPreview = document.getElementById("video-preview");
-      const uploadBtn = document.getElementById("upload-btn");
+const videoPreview = document.getElementById("video-preview");
+const uploadBtn = document.getElementById("upload-btn");
 
-      uploadBtn.addEventListener("click", () => {
-        videoUpload.click();
-      });
+// Trigger hidden input when button is clicked
+uploadBtn.addEventListener("click", () => {
+  videoUpload.click();
+});
 
-      //stuff I have to do so ChromeOS doesn't crash out.
-      videoUpload.addEventListener("change", () => {
+// Handle multiple file uploads
+videoUpload.addEventListener("change", () => {
   const files = Array.from(videoUpload.files);
   if (files.length === 0) {
     console.warn("No files selected");
     return;
   }
 
+  // Preview the first clip
+  const firstFile = files[0];
+  const firstURL = URL.createObjectURL(firstFile);
+  videoPreview.src = firstURL;
+  videoPreview.load();
+
+  // Log all clips for future timeline use
   files.forEach((file, index) => {
     const url = URL.createObjectURL(file);
-    console.log(`Preview URL for clip ${index + 1}:`, url);
-
-    // For now, just preview the first one
-    if (index === 0) {
-      videoPreview.src = url;
-      videoPreview.load();
-    }
-
-    // Later: push each clip into a timeline array
-    // clips.push({ name: file.name, url, duration: null });
+    console.log(`Clip ${index + 1}: ${file.name}`, url);
+    // Future: push to timeline array
+    // clips.push({ name: file.name, url });
   });
 });
   </script>
