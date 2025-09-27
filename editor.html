@@ -28,7 +28,7 @@
 
   <!-- Media Preview Zone -->
   <section class="media-preview glass">
-    <input type="file" id="video-upload" accept="video/*" style="display: none;" />
+    <input type="file" id="video-upload" accept="video/*" multiple style="display: none;" />    
     <button class="button" id="upload-btn">Upload Video</button>
     <video id="video-preview" controls></video>
   </section>
@@ -86,18 +86,26 @@
 
       //stuff I have to do so ChromeOS doesn't crash out.
       videoUpload.addEventListener("change", () => {
-        const file = videoUpload.files[0];
-        if (file) {
-          const url = URL.createObjectURL(file);
-          console.log("Preview URL:", url);
-          videoPreview.src = url;
-          videoPreview.load();
-          //Manual playback only—Chromebook safe
-        } else {
-          console.warn("No file selected, please select a file with a supported format (.mp4,.webm,.mov,.mkv, etc)");
-        }
-      });
-    });
+  const files = Array.from(videoUpload.files);
+  if (files.length === 0) {
+    console.warn("No files selected");
+    return;
+  }
+
+  files.forEach((file, index) => {
+    const url = URL.createObjectURL(file);
+    console.log(`Preview URL for clip ${index + 1}:`, url);
+
+    // For now, just preview the first one
+    if (index === 0) {
+      videoPreview.src = url;
+      videoPreview.load();
+    }
+
+    // Later: push each clip into a timeline array
+    // clips.push({ name: file.name, url, duration: null });
+  });
+});
   </script>
 </body>
 </html>
