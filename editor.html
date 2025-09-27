@@ -62,11 +62,19 @@
       document.getElementById("title-input").value = project.title;
 
       document.getElementById("save-btn").addEventListener("click", () => {
-        project.title = document.getElementById("title-input").value;
-        project.lastEdited = new Date().toISOString();
-        console.log("Project saved locally:", project);
-        alert("Project saved locally!");
-      });
+  const newTitle = document.getElementById("title-input").value;
+  project.title = newTitle;
+  project.lastEdited = new Date().toISOString();
+
+  // Update header
+  document.getElementById("project-title").textContent = `Editing: ${newTitle}`;
+
+  // Update <title> tag
+  document.title = `${newTitle} - Rutwik Video Editor`;
+
+  console.log("Project saved locally:", project);
+  alert("Project saved locally!");
+});
 
       const videoUpload = document.getElementById("video-upload");
       const videoPreview = document.getElementById("video-preview");
