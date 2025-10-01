@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reset Password - Rutwik Video Editor</title>
+  <link rel="stylesheet" href="/rve/style.css" />
+</head>
+<body>
+  <main class="glass loginbox">
+    <h2>Reset Your Password</h2>
+    <p>Enter your email to receive a reset link.</p>
+    <input type="email" id="reset-email" placeholder="Email address" />
+    <button class="button" id="reset-btn">Send Reset Link</button>
+    <p id="reset-status" style="margin-top: 1rem;"></p>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB_8yrLHS1UNYIn4_R19Fm8ZYcjBkO6qMw",
+      authDomain: "rutwik-video-editor.firebaseapp.com",
+      projectId: "rutwik-video-editor",
+      storageBucket: "rutwik-video-editor.appspot.com",
+      messagingSenderId: "765885353429",
+      appId: "1:765885353429:web:0cdf8b8a571d99a6f7c15c"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      const email = document.getElementById("reset-email").value;
+      const status = document.getElementById("reset-status");
+
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          status.textContent = "Reset link sent! Check your inbox.";
+          status.style.color = "lime";
+        })
+        .catch((error) => {
+          status.textContent = "Error: " + error.message;
+          status.style.color = "red";
+        });
+    });
+  </script>
+</body>
+</html>
