@@ -63,6 +63,11 @@
               </div>
             </section>
 
+            <div id="cookie-consent" class="glass cookie-banner" style="position: fixed; bottom: 1rem; left: 1rem; right: 1rem; padding: 1rem; background: rgba(0,0,0,0.7); color: white; border-radius: 8px; display: none; z-index: 999;">
+  <p>RVE uses cookies to manage login sessions and keep your projects secure. By continuing, you accept this.</p>
+  <button id="accept-cookies" class="button" style="margin-top: 0.5rem;">Accept</button>
+</div>
+
             <section class="glass profile-card">
               <h2>Contributor Info</h2>
               <p>Email: <strong>${user.email}</strong></p>
@@ -100,6 +105,11 @@
   // Redirect to editor with project ID
   window.location.href = `/rve/editor.html?id=${projectId}`;
 });
+
+        <div id="cookie-consent" class="glass cookie-banner" style="position: fixed; bottom: 1rem; left: 1rem; right: 1rem; padding: 1rem; background: rgba(0,0,0,0.7); color: white; border-radius: 8px; display: none; z-index: 999;">
+  <p>RVE uses cookies to manage login sessions and keep your projects secure. By continuing, you accept this.</p>
+  <button id="accept-cookies" class="button" style="margin-top: 0.5rem;">Accept</button>
+</div>
 
       } else {
         // ❌ Not logged in: show fallback
