@@ -27,12 +27,13 @@
   </nav>
 
   <!-- Media Preview Zone -->
- <section class="media-preview glass">
-  <div class="import-zone">
-    <input type="file" id="video-upload" accept="video/*" multiple style="display: none;" />
+<section class="media-preview glass">
+    <input type="file" id="video-upload" accept="video/*" multiple /> 
     
-    <button class="button" id="upload-btn">Upload Video</button>
-  </div>
+    <label for="video-upload" class="button" id="upload-label">Upload Video</label>
+    
+    <video id="video-preview" controls></video>
+</section>
   
   <video id="video-preview" controls></video>
 </section>
