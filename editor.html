@@ -1,129 +1,179 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Editor - Rutwik Video Editor</title>
-  <link rel="stylesheet" href="/rve/style.css"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Editor - Rutwik Video Editor</title>
+    <!-- Note: CSS file path needs to be correct for styling -->
+    <link rel="stylesheet" href="/rve/style.css"/> 
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
-  <nav class="editor-nav glass">
-    <div class="nav-left">
-  <a href="/rve/dashboard.html" id="logo-link">
-    <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
-  </a>
-  <span class="rve-title">RVE</span>
-</div>
-    <div class="nav-center">
-      <input type="text" id="project-title-input" placeholder="Project File Name" />
-    </div>
-    <div class="nav-right">
-      <button class="button">Download</button>
-      <button class="button">Share</button>
-      <button class="button">Next</button>
-    </div>
-  </nav>
-
-  <!-- Media Preview Zone -->
-<section class="media-preview glass">
-    <input type="file" id="video-upload" accept="video/*" multiple /> 
+    <!-- Top Navigation Bar -->
+    <nav class="editor-nav glass">
+        <div class="nav-left">
+            <a href="/rve/dashboard.html" id="logo-link">
+                <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
+            </a>
+            <span class="rve-title">RVE</span>
+        </div>
+        <div class="nav-center">
+            <input type="text" id="project-title-input" placeholder="Project File Name" />
+        </div>
+        <div class="nav-right">
+            <button class="button">Download</button>
+            <button class="button">Share</button>
+            <button class="button">Next</button>
+        </div>
+    </nav>
     
-    <label for="video-upload" class="button" id="upload-label">Upload Video</label>
-  
-    <video id="video-preview" controls></video>
-</section>
+    <!-- Custom visual alert box for debugging without console (FIX) -->
+    <div id="rve-error-alert" style="
+        position: fixed; top: 10px; right: 10px; 
+        background: #ff4d4d; color: white; 
+        padding: 10px; border-radius: 5px; 
+        z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
+        max-width: 300px; display: none;">
+    </div>
 
-  <!-- Project Info & Save -->
-  <main class="glass editor-content">
-    <h2 id="project-title">Loading Project...</h2>
-    <input type="text" id="title-input" placeholder="Project Title" />
-    <button class="button" id="save-btn">Save Project</button>
-  </main>
+    <!-- Media Preview Zone -->
+    <section class="media-preview glass">
+        <!-- Input file is now hidden via CSS -->
+        <input type="file" id="video-upload" accept="video/*" multiple /> 
+        
+        <!-- The visible button is the LABEL linked by 'for' -->
+        <label for="video-upload" class="button" id="upload-label">Upload Video</label>
+        
+        <!-- The single, official video player -->
+        <video id="video-preview" controls></video>
+    </section>
 
-  <!-- Editor Logic -->
-  <script type="module">
-    window.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const projectId = urlParams.get("id");
+    <!-- Project Info & Save -->
+    <main class="glass editor-content">
+        <h2 id="project-title">Loading Project...</h2>
+        <input type="text" id="title-input" placeholder="Project Title" />
+        <button class="button" id="save-btn">Save Project</button>
+    </main>
 
-      if (!projectId) {
-        document.getElementById("project-title").textContent = "No project ID found.";
-        return;
-      }
-
-      const project = {
-        id: projectId,
-        title: "Untitled Project",
-        createdAt: new Date().toISOString(),
-        lastEdited: new Date().toISOString()
-      };
-
-      document.getElementById("project-title").textContent = `Editing: ${project.title}`;
-      document.getElementById("title-input").value = project.title;
-
-      document.getElementById("save-btn").addEventListener("click", () => {
-  const newTitle = document.getElementById("title-input").value;
-  project.title = newTitle;
-  project.lastEdited = new Date().toISOString();
-
-  // Update header
-  document.getElementById("project-title").textContent = `Editing: ${newTitle}`;
-
-  //Update <title> tag
-  document.title = `${newTitle} - Rutwik Video Editor`;
-
-  console.log("Project saved locally:", project);
-  alert("Project saved locally!");
-});
-
-// --- Video Upload Logic (Clean Fix) ---
-const videoUpload = document.getElementById("video-upload");
-const videoPreview = document.getElementById("video-preview");
-const uploadBtn = document.getElementById("upload-btn");
-
-
-    // 2. Change Handler (Handles the files once selected)
-    videoUpload.addEventListener("change", () => {
-        const files = Array.from(videoUpload.files);
-        if (files.length === 0) {
-            console.warn("No files selected");
-            return;
+    <!-- Editor Logic: FINAL SCRIPT BLOCK -->
+    <script type="module">
+        // Helper function to show a visual error message (FIX: added this function back)
+        function displayVisualError(message) {
+            let errorBox = document.getElementById("rve-error-alert");
+            if (errorBox) {
+                errorBox.textContent = message;
+                errorBox.style.display = 'block';
+                setTimeout(() => errorBox.style.display = 'none', 10000); // Hide after 10 seconds
+            }
         }
 
-        // Preview the first clip
-        const firstFile = files[0];
-        const firstURL = URL.createObjectURL(firstFile);
-        videoPreview.src = firstURL;
-        videoPreview.load();
+        window.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const projectId = urlParams.get("id");
 
-        // Log all clips for future timeline use
-        files.forEach((file, index) => {
-            const url = URL.createObjectURL(file);
-            console.log(`Clip ${index + 1}: ${file.name}, URL: ${url}`);
-            // Future: push to timeline array
+            let currentObjectURL = null; // Memory management variable
+            
+            // --- Project Initialization ---
+            if (!projectId) {
+                document.getElementById("project-title").textContent = "No project ID found.";
+                return;
+            }
+
+            const project = {
+                id: projectId,
+                title: "Untitled Project",
+                createdAt: new Date().toISOString(),
+                lastEdited: new Date().toISOString()
+            };
+
+            document.getElementById("project-title").textContent = `Editing: ${project.title}`;
+            document.getElementById("title-input").value = project.title;
+
+            // --- Save Button Handler ---
+            document.getElementById("save-btn").addEventListener("click", () => {
+                const newTitle = document.getElementById("title-input").value;
+                project.title = newTitle;
+                project.lastEdited = new Date().toISOString();
+
+                document.getElementById("project-title").textContent = `Editing: ${newTitle}`;
+                document.title = `${newTitle} - Rutwik Video Editor`;
+
+                console.log("Project saved locally:", project);
+                // FIX: Removed illegal alert() and used visual error display instead
+                displayVisualError("Project saved successfully!"); 
+            });
+
+            // --- Video Upload & Playback Logic (Structural Fix) ---
+            
+            // FIX: Correctly referencing upload-label instead of upload-btn
+            const videoUpload = document.getElementById("video-upload");
+            const videoPreview = document.getElementById("video-preview");
+            const uploadLabel = document.getElementById("upload-label"); 
+
+            if (!videoUpload || !videoPreview || !uploadLabel) {
+                displayVisualError("CRITICAL RVE ERROR: Editor elements missing (x00003).");
+                return;
+            }
+
+            // *** CRITICAL MEDIA ERROR HANDLER ***
+            videoPreview.onerror = function() {
+                let errorText = "MEDIA LOAD FAILED: Codec Unsupported or Corrupted!";
+                if (videoPreview.error && videoPreview.error.code) {
+                     errorText += ` (Code ${videoPreview.error.code})`;
+                }
+                document.getElementById("project-title").textContent = `!! ${errorText} !!`;
+                displayVisualError(errorText);
+            };
+            
+            // Handle the file selection (Change Handler)
+            videoUpload.addEventListener("change", () => {
+                const files = Array.from(videoUpload.files);
+                if (files.length === 0) {
+                    displayVisualError("No files selected.");
+                    return;
+                }
+
+                // Revoke the previous object URL to free up memory (FIX: Memory Management)
+                if (currentObjectURL) {
+                    URL.revokeObjectURL(currentObjectURL);
+                }
+
+                // Preview the first clip
+                const firstFile = files[0];
+                const newURL = URL.createObjectURL(firstFile);
+                
+                currentObjectURL = newURL;
+
+                // Clear any previous error messages
+                document.getElementById("project-title").textContent = `Editing: ${project.title}`;
+
+                // FIX: Use setTimeout (0ms) to bypass potential race conditions
+                setTimeout(() => {
+                    videoPreview.src = newURL;
+                    videoPreview.load(); 
+                }, 0);
+
+
+                // Log for future timeline use
+                files.forEach((file) => {
+                    console.log(`Clip Loaded: ${file.name}`);
+                });
+            });
         });
-    });
-} else {
-    // for error messages
-    console.error("CRITICAL UPLOAD ERROR: One or more required elements were not found. Error code x00003");
-    console.log("Error Code: x00003, please check https://rutwik-stuff.github.io/rve/error-codes.html for more details.");
-}
-// --- End Video Upload Logic ---
-  </script>
+    </script>
+    <!-- Editor Logic: END SCRIPT BLOCK -->
 
-  <!-- for progress bar at the bottom -->
-  <footer class="progress-footer glass">
-  <div class="progress-bar">
-    <div class="progress-step active" data-step="Import">Import</div>
-    <div class="progress-step" data-step="Edit">Edit</div>
-    <div class="progress-step" data-step="Music">Music</div>
-    <div class="progress-step" data-step="Final Checks">Final Checks</div>
-    <div class="progress-step" data-step="Export">Export</div>
-    <div class="progress-step" data-step="Upload">Upload</div>
-  </div>
-</footer>
-  
+    <!-- for progress bar at the bottom -->
+    <footer class="progress-footer glass">
+        <div class="progress-bar">
+            <div class="progress-step active" data-step="Import">Import</div>
+            <div class="progress-step" data-step="Edit">Edit</div>
+            <div class="progress-step" data-step="Music">Music</div>
+            <div class="progress-step" data-step="Final Checks">Final Checks</div>
+            <div class="progress-step" data-step="Export">Export</div>
+            <div class="progress-step" data-step="Upload">Upload</div>
+        </div>
+    </footer>
+    
 </body>
 </html>
