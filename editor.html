@@ -80,52 +80,45 @@
   alert("Project saved locally!");
 });
 
-      const videoUpload = document.getElementById("video-upload");
+// --- Video Upload Logic (Clean Fix) ---
+const videoUpload = document.getElementById("video-upload");
 const videoPreview = document.getElementById("video-preview");
 const uploadBtn = document.getElementById("upload-btn");
 
-      // Check for null variables in your JS
-const videoUpload = document.getElementById("video-upload");
-const uploadBtn = document.getElementById("upload-btn");
-
-if (!videoUpload || !uploadBtn) {
-    console.error("CRITICAL ERROR: One or both elements were not found in the DOM! Error Code: x00003")
-    console.log("Error x00003, check https://rutwik-stuff.github.io/rve/error-codes.html to check meanings");
-    // This tells you if the element IDs are wrong or the script ran too early.
-} else {
-    // The working code goes here
+if (videoUpload && uploadBtn && videoPreview) {
+    // 1. Click Handler (Triggers the file dialog)
     uploadBtn.addEventListener("click", () => {
+        // This is the core functionality
         videoUpload.click();
     });
+
+    // 2. Change Handler (Handles the files once selected)
+    videoUpload.addEventListener("change", () => {
+        const files = Array.from(videoUpload.files);
+        if (files.length === 0) {
+            console.warn("No files selected");
+            return;
+        }
+
+        // Preview the first clip
+        const firstFile = files[0];
+        const firstURL = URL.createObjectURL(firstFile);
+        videoPreview.src = firstURL;
+        videoPreview.load();
+
+        // Log all clips for future timeline use
+        files.forEach((file, index) => {
+            const url = URL.createObjectURL(file);
+            console.log(`Clip ${index + 1}: ${file.name}, URL: ${url}`);
+            // Future: push to timeline array
+        });
+    });
+} else {
+    // for error messages
+    console.error("CRITICAL UPLOAD ERROR: One or more required elements were not found. Error code x00003");
+    console.log("Error Code: x00003, please check https://rutwik-stuff.github.io/rve/error-codes.html for more details.");
 }
-
-// Trigger hidden input when button is clicked
-uploadBtn.addEventListener("click", () => {
-  videoUpload.click();
-});
-
-// Handle multiple file uploads
-videoUpload.addEventListener("change", () => {
-  const files = Array.from(videoUpload.files);
-  if (files.length === 0) {
-    console.warn("No files selected");
-    return;
-  }
-
-  // Preview the first clip
-  const firstFile = files[0];
-  const firstURL = URL.createObjectURL(firstFile);
-  videoPreview.src = firstURL;
-  videoPreview.load();
-
-  // Log all clips for future timeline use
-  files.forEach((file, index) => {
-    const url = URL.createObjectURL(file);
-    console.log(`Clip ${index + 1}: ${file.name}`, url);
-    // Future: push to timeline array
-    // clips.push({ name: file.name, url });
-  });
-});
+// --- End Video Upload Logic ---
   </script>
 
   <!-- for progress bar at the bottom -->
