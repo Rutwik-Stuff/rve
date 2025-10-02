@@ -11,7 +11,8 @@ function displayVisualError(message) {
     if (errorBox) {
         errorBox.textContent = message;
         errorBox.style.display = 'block';
-        setTimeout(() => errorBox.style.display = 'none', 10000); // Hide after 10 seconds
+        // Fade out after 6 seconds
+        setTimeout(() => errorBox.style.display = 'none', 6000); 
     }
 }
 
@@ -20,6 +21,7 @@ function displayVisualError(message) {
  */
 function revokeCurrentURL() {
     if (currentObjectURL) {
+        // Free up memory associated with the previous blob URL
         URL.revokeObjectURL(currentObjectURL);
         currentObjectURL = null;
     }
@@ -27,33 +29,32 @@ function revokeCurrentURL() {
 
 /**
  * GLOBAL ERROR HANDLER FUNCTION (Callable from HTML onerror attribute).
- * This function handles media loading errors (codec issues, corrupted files)
+ * Handles media loading errors (codec issues, corrupted files)
  * and displays a user-friendly error state on the video player.
- * @param {HTMLMediaElement} mediaElement - The video or audio element that failed.
+ * * NOTE: This function only fires when the browser fails to load the media 
+ * stream at runtime (e.g., codec failure), NOT on click.
+ * * @param {HTMLMediaElement} mediaElement - The video or audio element that failed.
  */
 window.handleGlobalMediaError = function(mediaElement) {
+    // 1. Clear previous error state
     mediaElement.style.backgroundColor = 'transparent'; 
     mediaElement.classList.remove('media-error');
     
-    let errorText = "MEDIA LOAD FAILED: Codec Unsupported or Corrupted!";
-    let errorCode = "(Unknown)";
-    let errorMessage = "";
-    
-    if (mediaElement.error) {
-         errorCode = `Code ${mediaElement.error.code}`;
-         if (mediaElement.error.message) {
-             errorMessage = `: ${mediaElement.error.message}`;
-         }
-    }
+    // Get a brief error code for logging/debugging
+    let errorCode = mediaElement.error ? `(Code ${mediaElement.error.code})` : '';
 
-    const fullMessage = `!! ${errorText}${errorMessage} (${errorCode}) !!`;
-    document.getElementById("project-title").textContent = fullMessage;
-    displayVisualError(fullMessage);
+    // 2. Display simplified, non-disruptive error in the visual alert box
+    const visualAlert = `Playback failed for this file. Format or codec not supported. ${errorCode}`;
+    displayVisualError(visualAlert);
     
-    // Set the error style for visual feedback
+    // 3. Set the error style on the video element itself, keeping the project title clean
     mediaElement.classList.add('media-error');
-    // Note: We don't try to maintain height here, the CSS will handle the styling.
-    mediaElement.innerHTML = `ERROR: Cannot Play Media.<br>The browser codec check failed.`;
+    mediaElement.innerHTML = `
+        <div style="padding: 20px;">
+            <p style="font-size: 1.2em;">Playback Error ⚠️</p>
+            <p>File format or codec is not supported by the browser.</p>
+        </div>
+    `;
 };
 
 /**
@@ -63,24 +64,21 @@ window.handleGlobalMediaError = function(mediaElement) {
  * @param {HTMLElement} currentMediaTitle - The title element above the player.
  */
 function loadMediaPreview(media, videoPreview, currentMediaTitle) {
-    // Revoke the URL of the previously loaded file to prevent memory leaks
+    // 1. Memory cleanup
     revokeCurrentURL();
     
     const newURL = media.url;
     currentObjectURL = newURL; // Update tracking variable
 
-    // --- CRITICAL STEP: Reset player attributes ---
+    // 2. CRITICAL STEP: Reset player attributes and state
     videoPreview.classList.remove('media-error');
     videoPreview.style.backgroundColor = '#000';
     videoPreview.innerHTML = '';
+    videoPreview.removeAttribute('poster'); 
     
-    // If it's audio, reset video-specific attributes
-    if (media.type.startsWith('audio')) {
-        videoPreview.setAttribute('poster', ''); 
-    }
-    
-    // Set the source and title
+    // 3. Set the source and title
     videoPreview.src = newURL;
+    // Calling .load() starts the media stream process, which will trigger onerror if needed.
     videoPreview.load(); 
     
     currentMediaTitle.textContent = media.name;
@@ -97,16 +95,19 @@ function renderMediaLibrary(videoPreview, currentMediaTitle, activeMediaName = n
     mediaListContainer.innerHTML = ''; // Clear existing list
 
     if (mediaLibrary.length === 0) {
-         mediaListContainer.innerHTML = `<p style="color: #999; opacity: 0.7; font-size: 0.9em; padding: 10px;">
-            Upload a video or audio file to begin building your project library.
+         mediaListContainer.innerHTML = `<p class="text-sm text-gray-500 p-2">
+            Upload a video or audio file to start editing.
         </p>`;
         return;
     }
 
+    // Clear all previously active states
+    document.querySelectorAll('.media-list-item').forEach(el => el.removeAttribute('data-active'));
+
     mediaLibrary.forEach((media) => {
         const item = document.createElement('div');
         item.className = 'media-list-item';
-        // Use symbols based on media type
+        // Use emojis for video and audio icons
         const icon = media.type.startsWith('video') ? '🎬' : '🎵'; 
 
         item.innerHTML = `
@@ -120,13 +121,11 @@ function renderMediaLibrary(videoPreview, currentMediaTitle, activeMediaName = n
         }
 
         item.addEventListener('click', () => {
-            // 1. Remove active state from all items
+            // 1. Set active state on the clicked item
             document.querySelectorAll('.media-list-item').forEach(el => el.removeAttribute('data-active'));
-            
-            // 2. Set active state on the clicked item
             item.setAttribute('data-active', 'true');
 
-            // 3. Load media
+            // 2. Load media
             loadMediaPreview(media, videoPreview, currentMediaTitle);
         });
 
@@ -136,51 +135,52 @@ function renderMediaLibrary(videoPreview, currentMediaTitle, activeMediaName = n
 
 
 document.addEventListener("DOMContentLoaded", () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const projectId = urlParams.get("id");
-
+    // Get all necessary DOM elements
     const currentMediaTitle = document.getElementById('current-media-title');
     const videoPreview = document.getElementById("video-preview");
     const videoUpload = document.getElementById("video-upload");
+    const projectTitleDisplay = document.getElementById("project-title");
+    const projectTitleInput = document.getElementById("title-input");
+    const navTitleInput = document.getElementById("project-title-input");
     
-    // --- Project Initialization ---
-    if (!projectId) {
-        document.getElementById("project-title").textContent = "No project ID found (using default).";
-    }
-
+    // --- Project Initialization (Placeholder data) ---
     const project = {
-        id: projectId || 'default-project-id',
-        title: "Untitled Project",
+        id: crypto.randomUUID(), 
+        title: navTitleInput.value || "Untitled Project",
         createdAt: new Date().toISOString(),
         lastEdited: new Date().toISOString()
     };
 
-    document.getElementById("project-title").textContent = `Editing: ${project.title}`;
-    document.getElementById("title-input").value = project.title;
-    document.getElementById("project-title-input").value = project.title;
+    projectTitleDisplay.textContent = `Project: ${project.title}`;
+    projectTitleInput.value = project.title;
+    navTitleInput.value = project.title;
 
     // --- Save Button Handler ---
     document.getElementById("save-btn").addEventListener("click", () => {
-        const newTitle = document.getElementById("title-input").value;
+        const newTitle = projectTitleInput.value.trim() || "Untitled Project";
         project.title = newTitle;
         project.lastEdited = new Date().toISOString();
 
-        document.getElementById("project-title").textContent = `Editing: ${newTitle}`;
-        document.getElementById("project-title-input").value = newTitle;
+        // Update all UI elements
+        projectTitleDisplay.textContent = `Project: ${newTitle}`;
+        navTitleInput.value = newTitle;
         document.title = `${newTitle} - Rutwik Video Editor`;
 
-        console.log("Project saved locally:", project);
-        displayVisualError("Project saved successfully!"); 
+        console.log("Project data updated locally:", project);
+        displayVisualError(`Project "${newTitle}" saved successfully!`); 
     });
 
-    // --- Video Upload & Playback Logic ---
+    // Sync input changes between the two title fields
+    projectTitleInput.addEventListener('input', (e) => navTitleInput.value = e.target.value);
+    navTitleInput.addEventListener('input', (e) => projectTitleInput.value = e.target.value);
 
+
+    // --- File Upload & Playback Logic ---
     if (!videoUpload || !videoPreview) {
         displayVisualError("CRITICAL RVE ERROR: Editor elements missing (x00003).");
         return;
     }
     
-    // Handle the file selection (Change Handler)
     videoUpload.addEventListener("change", () => {
         const files = Array.from(videoUpload.files);
         if (files.length === 0) {
@@ -188,22 +188,20 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Revoke the URL of the previously loaded file for immediate memory cleanup
         revokeCurrentURL();
-        
-        let lastMedia = null; // Track the last media added for automatic loading
+        let lastMedia = null; 
 
-        // Process all new files
         files.forEach((file) => {
             // CRITICAL CHECK: Use canPlayType to see if the browser supports the file's codec/mime type
             const canPlay = videoPreview.canPlayType(file.type);
             
+            // We only block files if the browser says it absolutely cannot play them.
             if (canPlay === "" || canPlay === "no") {
                 const fileExtension = file.name.split('.').pop().toUpperCase();
-                const warningMsg = `UNSUPPORTED FILE: The browser cannot play "${file.name}" (Codec/Format: ${fileExtension}). Try converting to H.264 MP4.`;
+                const warningMsg = `UNSUPPORTED FILE: Skipping "${file.name}" (Codec/Format: ${fileExtension}).`;
                 console.warn(warningMsg);
                 displayVisualError(warningMsg);
-                return; // Skips this file, allowing other files in the selection to process
+                return; // Skips this file
             }
 
             const newURL = URL.createObjectURL(file);
@@ -216,22 +214,17 @@ document.addEventListener("DOMContentLoaded", () => {
             };
 
             mediaLibrary.push(newMedia);
-            lastMedia = newMedia; // Update the last media uploaded
+            lastMedia = newMedia; 
             
             console.log(`Clip Added to Library: ${file.name}`);
         });
 
         if (lastMedia) {
-            // Render the library, passing the name of the last uploaded item to set it active during render.
             renderMediaLibrary(videoPreview, currentMediaTitle, lastMedia.name);
-
-            // Automatically load the LAST uploaded file into the preview
-            setTimeout(() => {
-                loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
-            }, 0);
+            loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
         }
     });
     
-    // Initialize the list display
+    // Initial render of the media list on load
     renderMediaLibrary(videoPreview, currentMediaTitle);
 });
