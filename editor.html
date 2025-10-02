@@ -4,8 +4,9 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Editor - Rutwik Video Editor</title>
-    <!-- Note: CSS file path needs to be correct for styling -->
+    <!-- Linking to the external style sheet, which now contains all necessary styles -->
     <link rel="stylesheet" href="/rve/style.css"/> 
+    <!-- The <style> block has been successfully removed -->
 </head>
 <body>
 
@@ -66,7 +67,7 @@
                 <h2>Media Library</h2>
                 <div id="media-list" class="media-list">
                     <!-- Media items will be injected here -->
-                    <p style="color: #666; font-size: 0.9em; padding: 10px;">
+                    <p style="color: var(--text-light); opacity: 0.7; font-size: 0.9em; padding: 10px;">
                         Upload a video or audio file to begin building your project library.
                     </p>
                 </div>
@@ -103,6 +104,70 @@
                 currentObjectURL = null;
             }
         }
+        
+        // New function to attach the robust error handler
+        function attachMediaErrorHandling(mediaElement) {
+            mediaElement.onerror = function() {
+                // Reset to default look (in case it was audio and needs to be video again, or vice versa)
+                mediaElement.style.backgroundColor = 'transparent'; 
+                mediaElement.classList.remove('media-error');
+                
+                let errorText = "MEDIA LOAD FAILED: Codec Unsupported or Corrupted!";
+                let errorCode = "(Unknown)";
+                let errorMessage = "";
+                
+                if (mediaElement.error) {
+                     errorCode = `Code ${mediaElement.error.code}`;
+                     if (mediaElement.error.message) {
+                         errorMessage = `: ${mediaElement.error.message}`;
+                     }
+                }
+
+                const fullMessage = `!! ${errorText}${errorMessage} (${errorCode}) !!`;
+                document.getElementById("project-title").textContent = fullMessage;
+                displayVisualError(fullMessage);
+                
+                // Set the error style for visual feedback
+                mediaElement.classList.add('media-error');
+                mediaElement.style.height = mediaElement.clientHeight + 'px'; // Maintain height
+                mediaElement.innerHTML = `ERROR: Cannot Play Media.<br>Try converting the file to standard H.264 MP4.`;
+            };
+            
+            // Re-bind onloadeddata to clear error state if successful load happens later
+             mediaElement.onloadeddata = function() {
+                mediaElement.classList.remove('media-error');
+                mediaElement.innerHTML = ''; // Clear error message
+                mediaElement.style.backgroundColor = '#000'; // Back to black
+            };
+        }
+
+
+        // Function to handle loading media into the preview
+        function loadMediaPreview(media, videoPreview, currentMediaTitle) {
+            // Revoke the URL of the previously loaded file
+            revokeCurrentURL();
+            
+            const newURL = media.url;
+            currentObjectURL = newURL; // Update tracking variable
+
+            // --- CRITICAL STEP: Reset player attributes ---
+            videoPreview.classList.remove('media-error');
+            videoPreview.style.backgroundColor = '#000';
+            videoPreview.innerHTML = '';
+            
+            // If it's audio, remove video-specific posters/size hacks
+            if (media.type.startsWith('audio')) {
+                // When an audio file is loaded into a video tag, the browser typically just shows audio controls.
+                // We ensure it looks like a proper audio player.
+                videoPreview.setAttribute('poster', ''); 
+            }
+            
+            // Set the source and title
+            videoPreview.src = newURL;
+            videoPreview.load(); 
+            
+            currentMediaTitle.textContent = media.name;
+        }
 
         // Function to render the list of uploaded files
         function renderMediaLibrary(videoPreview, currentMediaTitle) {
@@ -110,14 +175,14 @@
             mediaListContainer.innerHTML = ''; // Clear existing list
 
             if (mediaLibrary.length === 0) {
-                 mediaListContainer.innerHTML = '<p style="color: #666; font-size: 0.9em; padding: 10px;">Upload a video or audio file to begin building your project library.</p>';
+                 mediaListContainer.innerHTML = '<p style="color: var(--text-light); opacity: 0.7; font-size: 0.9em; padding: 10px;">Upload a video or audio file to begin building your project library.</p>';
                  return;
             }
 
             mediaLibrary.forEach((media, index) => {
                 const item = document.createElement('div');
                 item.className = 'media-list-item';
-                // Font Awesome icons are assumed to be loaded for better visual experience
+                // Use symbols based on media type
                 const icon = media.type.startsWith('video') ? '🎬' : '🎵'; 
 
                 item.innerHTML = `
@@ -126,44 +191,33 @@
                 `;
 
                 item.addEventListener('click', () => {
-                    // Load this item into the main preview player
+                    // 1. Remove active state from all items
+                    document.querySelectorAll('.media-list-item').forEach(el => el.setAttribute('data-active', 'false'));
+                    
+                    // 2. Set active state on the clicked item (for NewUI CSS styling)
+                    item.setAttribute('data-active', 'true');
+
+                    // 3. Load media
                     loadMediaPreview(media, videoPreview, currentMediaTitle);
-                    // Add active class for visual feedback (optional)
-                    document.querySelectorAll('.media-list-item').forEach(el => el.style.backgroundColor = '#f4f4f9');
-                    item.style.backgroundColor = '#dbeafe'; // A light blue to show active
                 });
 
                 mediaListContainer.appendChild(item);
             });
         }
 
-        // Function to handle loading media into the preview
-        function loadMediaPreview(media, videoPreview, currentMediaTitle) {
-            // Revoke the URL of the previously loaded file
-            revokeCurrentURL();
-
-            // Set the new URL
-            const newURL = media.url;
-            currentObjectURL = newURL; // Update tracking variable
-
-            // Set the source and title
-            videoPreview.src = newURL;
-            videoPreview.load(); // Force the browser to start loading the new media
-            
-            // Set the element type and display the title
-            videoPreview.style.display = 'block';
-            videoPreview.tagName = media.type.startsWith('audio') ? 'AUDIO' : 'VIDEO';
-            videoPreview.setAttribute('type', media.type);
-            currentMediaTitle.textContent = media.name;
-        }
 
         window.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get("id");
 
             const currentMediaTitle = document.getElementById('current-media-title');
+            const videoPreview = document.getElementById("video-preview");
+            const videoUpload = document.getElementById("video-upload");
             
-            // --- Project Initialization ---
+            // Attach initial error handling
+            attachMediaErrorHandling(videoPreview); 
+
+            // --- Project Initialization (rest unchanged) ---
             if (!projectId) {
                 document.getElementById("project-title").textContent = "No project ID found.";
                 return;
@@ -193,24 +247,11 @@
             });
 
             // --- Video Upload & Playback Logic ---
-            const videoUpload = document.getElementById("video-upload");
-            const videoPreview = document.getElementById("video-preview");
-            const uploadLabel = document.getElementById("upload-label"); 
 
-            if (!videoUpload || !videoPreview || !uploadLabel) {
+            if (!videoUpload || !videoPreview) {
                 displayVisualError("CRITICAL RVE ERROR: Editor elements missing (x00003).");
                 return;
             }
-
-            // *** CRITICAL MEDIA ERROR HANDLER ***
-            videoPreview.onerror = function() {
-                let errorText = "MEDIA LOAD FAILED: Codec Unsupported or Corrupted!";
-                if (videoPreview.error && videoPreview.error.code) {
-                     errorText += ` (Code ${videoPreview.error.code})`;
-                }
-                document.getElementById("project-title").textContent = `!! ${errorText} !!`;
-                displayVisualError(errorText);
-            };
             
             // Handle the file selection (Change Handler)
             videoUpload.addEventListener("change", () => {
@@ -231,7 +272,7 @@
                         name: file.name,
                         type: file.type,
                         url: newURL,
-                        file: file // Keep the original file object if needed later
+                        file: file 
                     });
                     
                     console.log(`Clip Added to Library: ${file.name}`);
@@ -240,10 +281,15 @@
                 // Render the entire library list
                 renderMediaLibrary(videoPreview, currentMediaTitle);
                 
-                // Automatically load the LAST uploaded file into the preview
-                const lastMedia = mediaLibrary[mediaLibrary.length - 1];
+                // Automatically load the LAST uploaded file into the preview and set it active
+                const lastMediaIndex = mediaLibrary.length - 1;
+                const lastMedia = mediaLibrary[lastMediaIndex];
                 if (lastMedia) {
-                     // Use setTimeout (0ms) to bypass potential race conditions when setting src
+                    // Find the newly created list item and set it active
+                    const lastListItem = document.getElementById('media-list').children[lastMediaIndex];
+                    if(lastListItem) {
+                        lastListItem.setAttribute('data-active', 'true');
+                    }
                      setTimeout(() => {
                         loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
                     }, 0);
