@@ -1,3 +1,6 @@
+//for testing purposes to make sure the JS has loaded
+console.log("The JavaScript file for the RVE editor has loaded");
+
 window.addEventListener("DOMContentLoaded", () => {
       const urlParams = new URLSearchParams(window.location.search);
       const projectId = urlParams.get("id");
