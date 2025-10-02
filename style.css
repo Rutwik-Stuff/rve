@@ -502,10 +502,21 @@ place it in the .infobox above the heading for the infobox
 }
 
 #video-upload {
-  font-size: 1rem;
-  padding: 0.5rem;
+  /* Hides the element visually but keeps it accessible to JavaScript and screen readers */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
 
+/* * DELETE/REMOVE the old styling:
+* font-size: 1rem;
+* padding: 0.5rem;
+*/
 #video-preview {
   width: 80%;
   max-width: 960px;
