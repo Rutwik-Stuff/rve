@@ -107,6 +107,19 @@ videoUpload.addEventListener("change", () => {
     // clips.push({ name: file.name, url });
   });
 });
+
+      function setProgressStep(stepName) {
+  document.querySelectorAll(".progress-step").forEach((step) => {
+    step.classList.remove("active");
+    if (step.dataset.step === stepName) {
+      step.classList.add("active");
+    }
+  });
+}
+
+// Initialize to Import
+setProgressStep("Import");
+
   </script>
 
   <!-- for progress bar at the bottom -->
