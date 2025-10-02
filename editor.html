@@ -1,107 +1,125 @@
-<!DOCTYPE html>
-
+  <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Editor - Rutwik Video Editor</title>
-<link rel="stylesheet" href="/rve/style.css"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editor - Rutwik Video Editor</title>
+  <link rel="stylesheet" href="/rve/style.css"/>
 </head>
 <body>
 
-<!-- Top Navigation Bar -->
-<nav class="editor-nav glass">
+  <!-- Top Navigation Bar -->
+  <nav class="editor-nav glass">
     <div class="nav-left">
-        <a href="/rve/dashboard.html" id="logo-link">
-            <!-- Placeholder for logo image -->
-            <div class="rve-logo flex items-center justify-center bg-rve-primary text-rve-darker font-bold">R</div>
-        </a>
-        <span class="rve-title">RVE</span>
-    </div>
+  <a href="/rve/dashboard.html" id="logo-link">
+    <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
+  </a>
+  <span class="rve-title">RVE</span>
+</div>
     <div class="nav-center">
-        <input type="text" id="project-title-input" placeholder="Project File Name" />
+      <input type="text" id="project-title-input" placeholder="Project File Name" />
     </div>
     <div class="nav-right">
-        <button class="button">Download</button>
-        <button class="button">Share</button>
-        <button class="button bg-rve-primary text-rve-darker border-none hover:bg-green-500">Next</button>
+      <button class="button">Download</button>
+      <button class="button">Share</button>
+      <button class="button">Next</button>
     </div>
-</nav>
+  </nav>
 
-<!-- Custom visual alert box for debugging without console -->
-<div id="rve-error-alert" style="
-    position: fixed; top: 10px; right: 10px; 
-    background: var(--rve-primary); color: #1a1a1a; 
-    padding: 10px 20px; border-radius: 8px; 
-    z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
-    max-width: 300px; display: none; font-weight: 600;
-    border: 1px solid white;">
-</div>
+  <!-- Media Preview Zone -->
+  <section class="media-preview glass">
+    <input type="file" id="video-upload" accept="video/*" multiple style="display: none;" />    
+    <button class="button" id="upload-btn">Upload Video</button>
+    <video id="video-preview" controls></video>
+  </section>
 
-<!-- Main Editor Layout -->
-<div class="editor-layout">
-    
-    <!-- Left Panel: Media Preview -->
-    <section class="media-viewer glass">
-        <h3 id="current-media-title">No Media Selected</h3>
-        
-        <!-- The single, official video player -->
-        <!-- Global error handler is called from JS file -->
-        <video id="video-preview" controls 
-            onerror="handleGlobalMediaError(this)" 
-            onloadeddata="this.classList.remove('media-error'); this.innerHTML=''; this.style.backgroundColor='#000';">
-        </video>
+  <!-- Project Info & Save -->
+  <main class="glass editor-content">
+    <h2 id="project-title">Loading Project...</h2>
+    <input type="text" id="title-input" placeholder="Project Title" />
+    <button class="button" id="save-btn">Save Project</button>
+  </main>
 
-        <!-- The upload controls are now a drag-and-drop zone style -->
-        <div class="upload-zone">
-            <!-- Input file is hidden via CSS. Accepts video and audio. -->
-            <input type="file" id="video-upload" accept="video/*,audio/*" multiple /> 
-            
-            <!-- The visible button is the LABEL linked by 'for' -->
-            <label for="video-upload" class="button" id="upload-label">
-                + Click to Add Files
-            </label>
-        </div>
-    </section>
+  <!-- Editor Logic -->
+  <script type="module">
+    window.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const projectId = urlParams.get("id");
 
-    <!-- Right Panel: Media Library & Project Info -->
-    <div class="media-library-panel">
-        
-        <!-- Media Library List -->
-        <div class="media-library glass">
-            <h2>Media Library</h2>
-            <div id="media-list" class="media-list">
-                <!-- Media items will be injected here -->
-                <p style="color: var(--rve-light); opacity: 0.7; font-size: 0.9em; padding: 10px;">
-                    Upload a video or audio file to begin building your project library.
-                </p>
-            </div>
-        </div>
+      if (!projectId) {
+        document.getElementById("project-title").textContent = "No project ID found.";
+        return;
+      }
 
-        <!-- Project Info & Save -->
-        <main class="glass project-info">
-            <h2 id="project-title">Loading Project...</h2>
-            <input type="text" id="title-input" placeholder="Project Title" />
-            <button class="button bg-rve-primary text-rve-darker border-none hover:bg-green-500" id="save-btn">Save Project</button>
-        </main>
-    </div>
-</div>
+      const project = {
+        id: projectId,
+        title: "Untitled Project",
+        createdAt: new Date().toISOString(),
+        lastEdited: new Date().toISOString()
+      };
 
-<!-- Load the JS file (since it's too long) -->
-<script type="module" src="/rve/editor.js"></script>
-   <script src="/rve/required.js"></script>  <!-- Load NewUI 4 JS -->
+      document.getElementById("project-title").textContent = `Editing: ${project.title}`;
+      document.getElementById("title-input").value = project.title;
 
-<!-- for progress bar at the bottom -->
-<footer class="progress-footer glass">
-    <div class="progress-bar">
-        <div class="progress-step active" data-step="Import">Import</div>
-        <div class="progress-step" data-step="Edit">Edit</div>
-        <div class="progress-step" data-step="Music">Music</div>
-        <div class="progress-step" data-step="Final Checks">Final Checks</div>
-        <div class="progress-step" data-step="Export">Export</div>
-        <div class="progress-step" data-step="Upload">Upload</div>
-    </div>
+      document.getElementById("save-btn").addEventListener("click", () => {
+  const newTitle = document.getElementById("title-input").value;
+  project.title = newTitle;
+  project.lastEdited = new Date().toISOString();
+
+  // Update header
+  document.getElementById("project-title").textContent = `Editing: ${newTitle}`;
+
+  //Update <title> tag
+  document.title = `${newTitle} - Rutwik Video Editor`;
+
+  console.log("Project saved locally:", project);
+  alert("Project saved locally!");
+});
+
+      const videoUpload = document.getElementById("video-upload");
+const videoPreview = document.getElementById("video-preview");
+const uploadBtn = document.getElementById("upload-btn");
+
+// Trigger hidden input when button is clicked
+uploadBtn.addEventListener("click", () => {
+  videoUpload.click();
+});
+
+// Handle multiple file uploads
+videoUpload.addEventListener("change", () => {
+  const files = Array.from(videoUpload.files);
+  if (files.length === 0) {
+    console.warn("No files selected");
+    return;
+  }
+
+  // Preview the first clip
+  const firstFile = files[0];
+  const firstURL = URL.createObjectURL(firstFile);
+  videoPreview.src = firstURL;
+  videoPreview.load();
+
+  // Log all clips for future timeline use
+  files.forEach((file, index) => {
+    const url = URL.createObjectURL(file);
+    console.log(`Clip ${index + 1}: ${file.name}`, url);
+    // Future: push to timeline array
+    // clips.push({ name: file.name, url });
+  });
+});
+  </script>
+
+  <!-- for progress bar at the bottom -->
+  <footer class="progress-footer glass">
+  <div class="progress-bar">
+    <div class="progress-step active" data-step="Import">Import</div>
+    <div class="progress-step" data-step="Edit">Edit</div>
+    <div class="progress-step" data-step="Music">Music</div>
+    <div class="progress-step" data-step="Final Checks">Final Checks</div>
+    <div class="progress-step" data-step="Export">Export</div>
+    <div class="progress-step" data-step="Upload">Upload</div>
+  </div>
 </footer>
-
+  
 </body>
 </html>
