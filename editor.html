@@ -86,12 +86,6 @@ const videoUpload = document.getElementById("video-upload");
 const videoPreview = document.getElementById("video-preview");
 const uploadBtn = document.getElementById("upload-btn");
 
-if (videoUpload && uploadBtn && videoPreview) {
-    // 1. Click Handler (Triggers the file dialog)
-    uploadBtn.addEventListener("click", () => {
-        // This is the core functionality
-        videoUpload.click();
-    });
 
     // 2. Change Handler (Handles the files once selected)
     videoUpload.addEventListener("change", () => {
