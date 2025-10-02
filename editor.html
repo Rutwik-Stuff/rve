@@ -84,6 +84,21 @@
 const videoPreview = document.getElementById("video-preview");
 const uploadBtn = document.getElementById("upload-btn");
 
+      // Check for null variables in your JS
+const videoUpload = document.getElementById("video-upload");
+const uploadBtn = document.getElementById("upload-btn");
+
+if (!videoUpload || !uploadBtn) {
+    console.error("CRITICAL ERROR: One or both elements were not found in the DOM! Error Code: x00003")
+    console.log("Error x00003, check https://rutwik-stuff.github.io/rve/error-codes.html to check meanings");
+    // This tells you if the element IDs are wrong or the script ran too early.
+} else {
+    // The working code goes here
+    uploadBtn.addEventListener("click", () => {
+        videoUpload.click();
+    });
+}
+
 // Trigger hidden input when button is clicked
 uploadBtn.addEventListener("click", () => {
   videoUpload.click();
