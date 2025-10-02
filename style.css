@@ -502,24 +502,23 @@ place it in the .infobox above the heading for the infobox
 }
 
 /* Revert the #video-upload styles back to the standard hiding technique */
-#video-upload {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-}
+ /* CRITICAL CSS FIX 1: Standard technique to hide the file input, keeping it in the DOM */
+        #video-upload {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
 
-/* Ensure the LABEL element is treated like a button visually */
-#upload-label {
-    cursor: pointer; /* Makes it look clickable */
-    display: inline-block; /* Allows padding and width to be applied */
-    /* If your .button class doesn't style the label, you may need to copy styling from .button here */
-}
-
+        /* CRITICAL CSS FIX 2: Ensures the LABEL (which is now the visible button) looks clickable */
+        #upload-label {
+            cursor: pointer;
+            display: inline-block;
+        }
 
 #video-preview {
   width: 80%;
