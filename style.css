@@ -1,676 +1,547 @@
 /* The official NewUI 4 CSS File, made by 7Zeb, now open-source */
-/* Dependencies: NewUI v4.1.3 (with Dark Mode JavaScript file in place) */
+/* NewUI Login Extension */
+/* Dependencies: NewUI v4.1.3 (with Dark Mode JavaScript file in place) 
 
 /* Import Segoe UI */
 @import url('https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;700&display=swap');
 
 /* Root variables for easy theming */
 :root {
-    --primary-gradient: linear-gradient(135deg, #2fd6e8 0%, #2494c1 60%, #37e6c4 100%);
-    --glass-bg: rgba(255,255,255,0.25);
-    --glass-border: rgba(255,255,255,0.18);
-    --navbar-height: 64px;
-    --footer-height: 50px;
-    --card-bg: rgba(255,255,255,0.22);
-    --card-hover-bg: rgba(255,255,255,0.38);
-    --text-light: #1a2128;
-    --text-dark: #e6f4fa;
-    --button-bg: #2494c1;
-    --button-hover-bg: #37e6c4;
-    --link-color: #2494c1;
-    --section-padding: 2.5rem 1.5rem;
-    --infobox-width: 320px;
+  --primary-gradient: linear-gradient(135deg, #2fd6e8 0%, #2494c1 60%, #37e6c4 100%);
+  --glass-bg: rgba(255,255,255,0.25);
+  --glass-border: rgba(255,255,255,0.18);
+  --navbar-height: 64px;
+  --footer-height: 50px;
+  --card-bg: rgba(255,255,255,0.22);
+  --card-hover-bg: rgba(255,255,255,0.38);
+  --text-light: #1a2128;
+  --text-dark: #e6f4fa;
+  --button-bg: #2494c1;
+  --button-hover-bg: #37e6c4;
+  --link-color: #2494c1;
+  --section-padding: 2.5rem 1.5rem;
+  --infobox-width: 320px;
 }
 
 /* Dark mode variables */
 body.dark-mode {
-    --glass-bg: rgba(25,34,40,0.25);
-    --glass-border: rgba(25,34,40,0.18);
-    --card-bg: rgba(33,37,41,0.30);
-    --card-hover-bg: rgba(33,37,41,0.50);
-    --text-light: #e6f4fa;
-    --text-dark: #1a2128;
-    --button-bg: #37e6c4;
-    --button-hover-bg: #2494c1;
-    --link-color: #37e6c4;
+  --glass-bg: rgba(25,34,40,0.25);
+  --glass-border: rgba(25,34,40,0.18);
+  --card-bg: rgba(33,37,41,0.30);
+  --card-hover-bg: rgba(33,37,41,0.50);
+  --text-light: #e6f4fa;
+  --text-dark: #1a2128;
+  --button-bg: #37e6c4;
+  --button-hover-bg: #2494c1;
+  --link-color: #37e6c4;
 }
 
 /* Body and gradient background */
 body {
-    min-height: 100vh;
-    font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
-    color: var(--text-light);
-    background: var(--primary-gradient);
-    transition: background 0.4s, color 0.3s;
+  min-height: 100vh;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  color: var(--text-light);
+  background: var(--primary-gradient);
+  transition: background 0.4s, color 0.3s;
 }
 
 /* Glassmorphism utility */
 .glass {
-    background: var(--glass-bg);
-    border-radius: 18px;
-    border: 1.5px solid var(--glass-border);
-    box-shadow: 0 6px 32px rgba(18, 58, 89, 0.08), 0 1.5px 6px rgba(18,58,89,0.03);
-    backdrop-filter: blur(13px) saturate(1.2);
-    -webkit-backdrop-filter: blur(13px) saturate(1.2);
+  background: var(--glass-bg);
+  border-radius: 18px;
+  border: 1.5px solid var(--glass-border);
+  box-shadow: 0 6px 32px rgba(18, 58, 89, 0.08), 0 1.5px 6px rgba(18,58,89,0.03);
+  backdrop-filter: blur(13px) saturate(1.2);
+  -webkit-backdrop-filter: blur(13px) saturate(1.2);
 }
 
 /* Navbar styles */
 nav.navbar {
-    height: var(--navbar-height);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: var(--glass-bg);
-    border-bottom: 1.5px solid var(--glass-border);
-    transition: background 0.4s;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--glass-bg);
+  border-bottom: 1.5px solid var(--glass-border);
+  transition: background 0.4s;
 }
 nav.navbar .nav-links {
-    display: flex;
-    gap: 2rem;
+  display: flex;
+  gap: 2rem;
 }
 nav.navbar a {
-    color: var(--link-color);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.4em 0.7em;
-    border-radius: 7px;
-    transition: background 0.2s, color 0.2s;
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.4em 0.7em;
+  border-radius: 7px;
+  transition: background 0.2s, color 0.2s;
 }
 nav.navbar a:hover {
-    background: var(--button-hover-bg);
-    color: #fff;
+  background: var(--button-hover-bg);
+  color: #fff;
 }
 nav.navbar .mode-toggle {
-    background: var(--button-bg);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5em 1em;
-    font-size: 1em;
-    cursor: pointer;
-    margin-left: 1.5em;
-    transition: background 0.2s;
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  margin-left: 1.5em;
+  transition: background 0.2s;
 }
 nav.navbar .mode-toggle:hover {
-    background: var(--button-hover-bg);
+  background: var(--button-hover-bg);
 }
 
 /* Footer styles */
 footer.footer {
-    height: var(--footer-height);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--glass-bg);
-    border-top: 1.5px solid var(--glass-border);
-    color: var(--text-light);
-    font-size: 1rem;
-    letter-spacing: 0.03em;
-    margin-top: 3rem;
+  height: var(--footer-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  border-top: 1.5px solid var(--glass-border);
+  color: var(--text-light);
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  margin-top: 3rem;
 }
 
 /* Section styling */
 section {
-    padding: var(--section-padding);
-    margin: 1rem auto;
-    max-width: 900px;
-    width: 100%;
-    position: relative;
-    box-sizing: border-box;
+  padding: var(--section-padding);
+  margin: 1rem auto;
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
 }
 
 .main-flex {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-    max-width: 1100px;
-    width: 100%;
-    margin: 2rem auto 0 auto;
-    box-sizing: border-box;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  max-width: 1100px;
+  width: 100%;
+  margin: 2rem auto 0 auto;
+  box-sizing: border-box;
 }
 .main-flex section {
-    flex: 2 1 0;
-    min-width: 0;
+  flex: 2 1 0;
+  min-width: 0;
 }
 .main-flex .infobox {
-    flex: 1 1 320px;
-    min-width: 250px;
-    max-width: 350px;
-    margin-top: 0;
-    position: static;
+  flex: 1 1 320px;
+  min-width: 250px;
+  max-width: 350px;
+  margin-top: 0;
+  position: static;
 }
 
 @media (max-width: 1000px) {
-    .main-flex {
-        flex-direction: column;
-        gap: 1.5rem;
-        max-width: 98vw;
-    }
-    .main-flex .infobox {
-        max-width: 100%;
-        width: 100%;
-    }
+  .main-flex {
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 98vw;
+  }
+  .main-flex .infobox {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 /* Remove fixed positioning from .infobox, infobox will now float depending on size of window */
 .infobox {
-    padding: 1.5rem 1.5rem 1.5rem 1.8rem; /* Fix a text issue that makes the infobox look cursed */
-    position: static;
-    margin-bottom: 2rem;
-    width: auto;
+  padding: 1.5rem 1.5rem 1.5rem 1.8rem; /* Fix a text issue that makes the infobox look cursed */
+  position: static;
+  margin-bottom: 2rem;
+  width: auto;
 }
 
 .glass.infobox {
-    box-shadow: 0 8px 32px rgba(18,58,89,0.12), 0 2px 8px rgba(18,58,89,0.07);
-    border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(18,58,89,0.12), 0 2px 8px rgba(18,58,89,0.07);
+  border-radius: 20px;
 }
 
 /* Responsive infobox */
 @media (max-width: 900px) {
-    .infobox {
-        position: static;
-        width: 100%;
-        margin-bottom: 2rem;
-    }
+  .infobox {
+    position: static;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
 }
 
 /* Cards styling */
 .cards {
-    display: flex;
-    gap: 2rem;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .card {
-    background: var(--card-bg);
-    border-radius: 15px;
-    box-shadow: 0 3px 18px rgba(33, 150, 243, 0.10);
-    transition: transform 0.22s cubic-bezier(.26,.68,.32,1.37), box-shadow 0.3s, background 0.2s;
-    padding: 1.5rem;
-    min-width: 230px;
-    max-width: 320px;
-    cursor: pointer;
-    border: 1.5px solid var(--glass-border);
-    text-align: left;
+  background: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 3px 18px rgba(33, 150, 243, 0.10);
+  transition: transform 0.22s cubic-bezier(.26,.68,.32,1.37), box-shadow 0.3s, background 0.2s;
+  padding: 1.5rem;
+  min-width: 230px;
+  max-width: 320px;
+  cursor: pointer;
+  border: 1.5px solid var(--glass-border);
+  text-align: left;
 }
 .card:hover {
-    transform: translateY(-10px) scale(1.04);
-    background: var(--card-hover-bg);
-    box-shadow: 0 8px 34px rgba(33, 150, 243, 0.17);
+  transform: translateY(-10px) scale(1.04);
+  background: var(--card-hover-bg);
+  box-shadow: 0 8px 34px rgba(33, 150, 243, 0.17);
 }
 
 /* Button styling */
 .button, button {
-    background: var(--button-bg);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.75em 1.5em;
-    font-size: 1em;
-    font-weight: 500;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    box-shadow: 0 2px 10px rgba(33, 150, 243, 0.08);
-    transition: background 0.2s, box-shadow 0.2s;
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75em 1.5em;
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(33, 150, 243, 0.08);
+  transition: background 0.2s, box-shadow 0.2s;
 }
 .button:hover, button:hover {
-    background: var(--button-hover-bg);
-    box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+  background: var(--button-hover-bg);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
 }
 
 a {
-    color: var(--link-color);
-    text-decoration: underline;
-    transition: color 0.18s;
+  color: var(--link-color);
+  text-decoration: underline;
+  transition: color 0.18s;
 }
 a:hover {
-    color: var(--button-hover-bg);
-    text-decoration: none;
+  color: var(--button-hover-bg);
+  text-decoration: none;
 }
 
 /* Text carousel layout */
 .text-carousel {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    background: var(--glass-bg);
-    border-radius: 15px;
-    padding: 1.2rem 2rem;
-    box-shadow: 0 2px 12px rgba(18, 58, 89, 0.10);
-    border: 1px solid var(--glass-border);
-    min-height: 80px;
-    margin: 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--glass-bg);
+  border-radius: 15px;
+  padding: 1.2rem 2rem;
+  box-shadow: 0 2px 12px rgba(18, 58, 89, 0.10);
+  border: 1px solid var(--glass-border);
+  min-height: 80px;
+  margin: 1.5rem 0;
 }
 .text-carousel .carousel-content {
-    flex: 1;
-    font-size: 1.15em;
-    color: var(--text-light);
+  flex: 1;
+  font-size: 1.15em;
+  color: var(--text-light);
 }
 .text-carousel .carousel-button {
-    background: var(--button-bg);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5em 1em;
-    font-size: 1em;
-    cursor: pointer;
-    transition: background 0.2s;
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 .text-carousel .carousel-button:hover {
-    background: var(--button-hover-bg);
+  background: var(--button-hover-bg);
 }
 
 /* Responsive design */
 @media (max-width: 600px) {
-    nav.navbar {
-        flex-direction: column;
-        height: auto;
-        padding: 1rem;
-        gap: 1rem;
-    }
-    nav.navbar .nav-links {
-        gap: 1rem;
-    }
-    section {
-        padding: 1.2rem 0.5rem;
-        max-width: 100vw;
-    }
-    .cards {
-        flex-direction: column;
-        gap: 1.2rem;
-    }
+  nav.navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  nav.navbar .nav-links {
+    gap: 1rem;
+  }
+  section {
+    padding: 1.2rem 0.5rem;
+    max-width: 100vw;
+  }
+  .cards {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
 }
 
 /* Utility: visually hide */
 .visually-hidden {
-    position: absolute !important;
-    height: 1px; width: 1px;
-    overflow: hidden;
-    clip: rect(1px, 1px, 1px, 1px);
-    white-space: nowrap;
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
 }
 
 /* Tables */
 /* Glassy Table Styles */
 table {
-    width: 100%;
-    margin: 2rem 0;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: var(--glass-bg);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 24px rgba(33, 150, 243, 0.05);
-    font-size: 1em;
-    color: var(--text-light);
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--glass-bg);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(33, 150, 243, 0.05);
+  font-size: 1em;
+  color: var(--text-light);
 }
 
 th, td {
-    padding: 1em 1.3em;
-    border-bottom: 1px solid var(--glass-border);
-    text-align: left;
+  padding: 1em 1.3em;
+  border-bottom: 1px solid var(--glass-border);
+  text-align: left;
 }
 
 th {
-    background: rgba(47, 214, 232, 0.23);
-    color: var(--text-dark);
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    border-bottom: 2px solid var(--glass-border);
+  background: rgba(47, 214, 232, 0.23);
+  color: var(--text-dark);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--glass-border);
 }
 
 tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 tr:hover {
-    background: var(--card-hover-bg);
+  background: var(--card-hover-bg);
 }
 
 table caption {
-    caption-side: top;
-    font-size: 1.2em;
-    font-weight: 600;
-    margin: 0.5em 0 1em 0;
-    color: var(--link-color);
+  caption-side: top;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0.5em 0 1em 0;
+  color: var(--link-color);
 }
 
 body.dark-mode table {
-    color: var(--text-light);
+  color: var(--text-light);
 }
 
 body.dark-mode th {
-    background: rgba(55, 230, 196, 0.16);
-    color: var(--text-light);
+  background: rgba(55, 230, 196, 0.16);
+  color: var(--text-light);
 }
 
 @media (max-width: 700px) {
-    table, thead, tbody, th, td, tr {
-        display: block;
-    }
-    th, td {
-        padding: 0.8em 0.7em;
-    }
-    tr {
-        margin-bottom: 1em;
-    }
-    th {
-        border-bottom: none;
-    }
-    td {
-        border-bottom: 1px solid var(--glass-border);
-    }
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  th, td {
+    padding: 0.8em 0.7em;
+  }
+  tr {
+    margin-bottom: 1em;
+  }
+  th {
+    border-bottom: none;
+  }
+  td {
+    border-bottom: 1px solid var(--glass-border);
+  }
 }
 
 
 /* NewUI Login Extension Package starts here */
 /* Loginbox styling */
 .loginbox {
-    max-width: 420px;
-    margin: 4rem auto;
-    padding: 2.5rem 2rem;
-    background: var(--glass-bg);
-    border: 1.5px solid var(--glass-border);
-    border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(18, 58, 89, 0.12), 0 2px 8px rgba(18, 58, 89, 0.07);
-    backdrop-filter: blur(13px) saturate(1.2);
-    -webkit-backdrop-filter: blur(13px) saturate(1.2);
-    text-align: center;
-    color: var(--text-light);
+  max-width: 420px;
+  margin: 4rem auto;
+  padding: 2.5rem 2rem;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(18, 58, 89, 0.12), 0 2px 8px rgba(18, 58, 89, 0.07);
+  backdrop-filter: blur(13px) saturate(1.2);
+  -webkit-backdrop-filter: blur(13px) saturate(1.2);
+  text-align: center;
+  color: var(--text-light);
 }
 
 /* Loginbox heading */
 .loginbox h2 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-    font-weight: 700;
-    color: var(--text-light);
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: var(--text-light);
 }
 
 /* Login form inputs */
 .loginbox input[type="text"],
 .loginbox input[type="password"] {
-    width: 100%;
-    padding: 0.75em 0.65em;
-    margin-bottom: 1.2rem;
-    border-radius: 8px;
-    border: 1px solid var(--glass-border);
-    background: rgba(255, 255, 255, 0.15);
-    color: var(--text-light);
-    font-size: 1em;
-    transition: background 0.2s, border 0.2s;
+  width: 100%;
+  padding: 0.75em 0.65em;
+  margin-bottom: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-light);
+  font-size: 1em;
+  transition: background 0.2s, border 0.2s;
 }
 
 .loginbox input:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.25);
-    border-color: var(--button-hover-bg);
+  outline: none;
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--button-hover-bg);
 }
 
 /* Login button */
 .loginbox button {
-    width: 100%;
-    margin-top: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
 }
 
 /* Caption carousel inside loginbox */
 .loginbox .text-carousel {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 /* Contributor profile picture styling */
 .profile-picture {
-    width: 96px;
-    height: 96px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--glass-border);
-    box-shadow: 0 4px 16px rgba(18, 58, 89, 0.12);
-    margin: 0 auto 1.5rem auto;
-    display: block;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 4px 16px rgba(18, 58, 89, 0.12);
+  margin: 0 auto 1.5rem auto;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .profile-picture:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 24px rgba(18, 58, 89, 0.18);
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(18, 58, 89, 0.18);
 }
 
-/* Editor Extension: Navigation Correction (Updated) */
+/* here is the stuff for HTML
+
+place it in the .infobox above the heading for the infobox
+
+<section class="glass infobox loginbox">
+  <img src="/newui-extensions/login/default.png" alt="Contributor Avatar" class="profile-picture" />
+  <h2>Welcome, Contributor</h2>
+  <!-- Login form goes here -->
+</section>
+
+*/
+
+/* Editor Extension */
 .editor-nav {
-    /* Use NewUI standards: height, sticky, and use the .glass class */
-    height: var(--navbar-height);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    /* Remove original background/border and rely on .glass class in HTML */
-    transition: all 0.4s;
-}
-
-.editor-nav.glass {
-    /* Ensure the editor nav applies the same glass style */
-    border-bottom: 1.5px solid var(--glass-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .nav-left {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .rve-logo {
-    height: 40px;
-    width: auto;
+  height: 40px;
+  width: auto;
 }
 
 .rve-title {
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--text-light); /* Use theme variable */
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
 .nav-center input {
-    font-size: 1em;
-    padding: 0.5em 0.65em; /* Match loginbox input padding */
-    width: 250px;
-    border-radius: 8px; /* Match button/input radius */
-    border: 1px solid var(--glass-border);
-    background: rgba(255, 255, 255, 0.15); /* Match loginbox input background */
-    color: var(--text-light);
-    transition: background 0.2s, border 0.2s;
-}
-
-.nav-center input:focus {
-    outline: none;
-    background: rgba(255, 255, 255, 0.25);
-    border-color: var(--button-hover-bg);
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 250px;
+  border-radius: 6px;
+  border: none;
 }
 
 .nav-right .button {
-    margin-left: 0.5rem;
+  margin-left: 0.5rem;
 }
 
-/* --- Import Page Layout & Components (Final Merge) --- */
+/* Video Preview */
+.media-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+}
 
-/* CRITICAL CSS 1: Standard technique to hide the file input, keeping it in the DOM */
 #video-upload {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    border: 0;
-}
-
-/* CRITICAL CSS 2: Ensures the LABEL (which is now the visible button) looks clickable */
-#upload-label {
-    cursor: pointer;
-    /* Match .button styles for visual consistency */
-    padding: 8px 16px;
-    border-radius: 8px;
-    font-weight: 600;
-    text-align: center;
-}
-
-/* NEW STYLES for the redesigned Import View */
-.editor-layout {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    min-height: calc(100vh - var(--navbar-height) - var(--footer-height)); /* Fill space excluding nav and footer */
-    max-width: 1400px; 
-    margin: 0 auto;
-}
-
-.media-viewer {
-    flex: 2; /* Takes 2/3 of the space */
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px;
-}
-
-.media-library-panel {
-    flex: 1; /* Takes 1/3 of the space */
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  font-size: 1rem;
+  padding: 0.5rem;
 }
 
 #video-preview {
-    width: 100%;
-    height: auto;
-    min-height: 200px;
-    background-color: #000;
-    border-radius: 8px;
+  width: 80%;
+  max-width: 960px;
+  border-radius: 12px;
+  background-color: #000;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
 }
 
-.upload-zone {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 20px;
-    /* Use NewUI border variable */
-    border: 2px dashed var(--glass-border); 
-    border-radius: 8px;
-}
-
-.media-library {
-    flex-grow: 1; /* Takes remaining vertical space */
-    padding: 15px;
-    max-height: 60vh; /* Control max height for scrollability */
-    overflow-y: auto;
-}
-
-.media-list-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    margin-bottom: 8px;
-    border-radius: 8px;
-    /* Use card theme variables */
-    background: var(--card-bg); 
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition: background 0.2s, border 0.2s;
-}
-    
-.media-list-item:hover {
-    background: var(--card-hover-bg); 
-    border-color: var(--glass-border);
-}
-
-.media-list-item[data-active="true"] {
-    background: var(--button-bg); /* Highlight with primary button color */
-    color: #fff;
-}
-
-.media-list-item[data-active="true"]:hover {
-    background: var(--button-hover-bg);
-}
-
-.media-icon {
-    margin-right: 10px;
-    font-size: 1.2rem;
-}
-
-.project-info {
-    padding: 15px;
-    border-radius: 12px;
-}
-
-/* Style for error state */
-.media-error {
-    background-color: #ff4d4d !important;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.2rem;
-    text-align: center;
-    padding: 20px;
-}
-
-/* Progress bar at the bottom of screen (Ensure it aligns with NewUI footer standards) */
+/* Progress bar at the bottom of screen */
 .progress-footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: var(--footer-height);
-    background: var(--glass-bg); /* Use glass background */
-    border-top: 1.5px solid var(--glass-border); /* Use glass border */
-    z-index: 1000;
-    padding: 0 2rem; /* Match nav/footer horizontal padding */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 1000;
 }
 
 .progress-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    color: var(--text-light); /* Use theme color */
-    width: 100%;
-    max-width: 800px; /* Keep progress bar centered and readable */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+  color: white;
 }
 
 .progress-step {
-    padding: 0.5rem 1rem;
-    border-radius: 8px; /* Consistent border radius */
-    opacity: 0.5;
-    transition: all 0.3s ease;
-    color: var(--text-light);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  opacity: 0.5;
+  transition: all 0.3s ease;
 }
 
 .progress-step.active {
-    background: var(--button-bg); /* Use theme color for active state */
-    opacity: 1;
-    font-weight: bold;
-    color: #fff;
-}
-
-
-/* Responsive adjustments for import page */
-@media (max-width: 1000px) {
-    .editor-layout {
-        flex-direction: column;
-        gap: 1.5rem;
-        padding: 1rem;
-    }
-    .media-library {
-        max-height: 40vh; /* Allow library to scroll on small screens */
-    }
+  background: limegreen;
+  opacity: 1;
+  font-weight: bold;
 }
