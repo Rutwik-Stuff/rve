@@ -1,422 +1,106 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Editor - Rutwik Video Editor</title>
-    <!-- Linking to the external style sheet, which now contains all necessary styles -->
-    <link rel="stylesheet" href="/rve/style.css"/> 
-    <!-- The <style> block has been successfully removed -->
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Editor - Rutwik Video Editor</title>
+<link rel="stylesheet" href="rve/style.css"/>
 </head>
 <body>
 
-    <!-- Top Navigation Bar -->
-    <nav class="editor-nav glass">
-        <div class="nav-left">
-            <a href="/rve/dashboard.html" id="logo-link">
-                <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
-            </a>
-            <span class="rve-title">RVE</span>
-        </div>
-        <div class="nav-center">
-            <input type="text" id="project-title-input" placeholder="Project File Name" />
-        </div>
-        <div class="nav-right">
-            <button class="button">Download</button>
-            <button class="button">Share</button>
-            <button class="button">Next</button>
-        </div>
-    </nav>
-    
-    <!-- Custom visual alert box for debugging without console (FIX) -->
-    <div id="rve-error-alert" style="
-        position: fixed; top: 10px; right: 10px; 
-        background: #2cc985; color: white; 
-        padding: 10px; border-radius: 5px; 
-        z-index: 9999; box-shadow: 0 4px 6px rgba(0,0,0,0.2); 
-        max-width: 300px; display: none;">
+<!-- Top Navigation Bar -->
+<nav class="editor-nav glass">
+    <div class="nav-left">
+        <a href="/rve/dashboard.html" id="logo-link">
+            <!-- Placeholder for logo image -->
+            <div class="rve-logo flex items-center justify-center bg-rve-primary text-rve-darker font-bold">R</div>
+        </a>
+        <span class="rve-title">RVE</span>
     </div>
-
-    <!-- Main Editor Layout -->
-    <div class="editor-layout">
-        
-        <!-- Left Panel: Media Preview -->
-        <section class="media-viewer glass">
-            <h3 id="current-media-title">No Media Selected</h3>
-            
-            <!-- The single, official video player -->
-            <video id="video-preview" controls></video>
-
-            <!-- The upload controls are now a drag-and-drop zone style -->
-            <div class="upload-zone">
-                <!-- Input file is hidden via CSS. Accepts video and audio. -->
-                <input type="file" id="video-upload" accept="video/*,audio/*" multiple /> 
-                
-                <!-- The visible button is the LABEL linked by 'for' -->
-                <label for="video-upload" class="button" id="upload-label">
-                    + Click to Add Files
-                </label>
-            </div>
-        </section>
-
-        <!-- Right Panel: Media Library & Project Info -->
-        <div class="media-library-panel">
-            
-            <!-- Media Library List -->
-            <div class="media-library glass">
-                <h2>Media Library</h2>
-                <div id="media-list" class="media-list">
-                    <!-- Media items will be injected here -->
-                    <p style="color: var(--text-light); opacity: 0.7; font-size: 0.9em; padding: 10px;">
-                        Upload a video or audio file to begin building your project library.
-                    </p>
-                </div>
-            </div>
-
-            <!-- Project Info & Save -->
-            <main class="glass project-info">
-                <h2 id="project-title">Loading Project...</h2>
-                <input type="text" id="title-input" placeholder="Project Title" />
-                <button class="button" id="save-btn">Save Project</button>
-            </main>
-        </div>
+    <div class="nav-center">
+        <input type="text" id="project-title-input" placeholder="Project File Name" />
     </div>
+    <div class="nav-right">
+        <button class="button">Download</button>
+        <button class="button">Share</button>
+        <button class="button bg-rve-primary text-rve-darker border-none hover:bg-green-500">Next</button>
+    </div>
+</nav>
 
-    <!-- Editor Logic: FINAL SCRIPT BLOCK -->
-    <script type="module">
-        // Helper function to show a visual error message
-        function displayVisualError(message) {
-            let errorBox = document.getElementById("rve-error-alert");
-            if (errorBox) {
-                errorBox.textContent = message;
-                errorBox.style.display = 'block';
-                setTimeout(() => errorBox.style.display = 'none', 10000); // Hide after 10 seconds
-            }
-        }
+<!-- Custom visual alert box for debugging without console -->
+<div id="rve-error-alert" style="
+    position: fixed; top: 10px; right: 10px; 
+    background: var(--rve-primary); color: #1a1a1a; 
+    padding: 10px 20px; border-radius: 8px; 
+    z-index: 9999; box-shadow: 0 4px 10px rgba(0,0,0,0.5); 
+    max-width: 300px; display: none; font-weight: 600;
+    border: 1px solid white;">
+</div>
 
-        // Global library to store all imported media assets
-        let mediaLibrary = [];
-        let currentObjectURL = null; // Memory management variable
-
-        function revokeCurrentURL() {
-             if (currentObjectURL) {
-                URL.revokeObjectURL(currentObjectURL);
-                currentObjectURL = null;
-            }
-        }
-        
-        // New function to attach the robust error handler
-        function attachMediaErrorHandling(mediaElement) {
-            mediaElement.onerror = function() {
-                // Reset to default look (in case it was audio and needs to be video again, or vice versa)
-                mediaElement.style.backgroundColor = 'transparent'; 
-                mediaElement.classList.remove('media-error');
-                
-                let errorText = "MEDIA LOAD FAILED: Codec Unsupported or Corrupted!";
-                let errorCode = "(Unknown)";
-                let errorMessage = "";
-                
-                if (mediaElement.error) {
-                     errorCode = `Code ${mediaElement.error.code}`;
-                     if (mediaElement.error.message) {
-                         errorMessage = `: ${mediaElement.error.message}`;
-                     }
-                }
-
-                const fullMessage = `!! ${errorText}${errorMessage} (${errorCode}) !!`;
-                document.getElementById("project-title").textContent = fullMessage;
-                displayVisualError(fullMessage);
-                
-                // Set the error style for visual feedback
-                mediaElement.classList.add('media-error');
-                mediaElement.style.height = mediaElement.clientHeight + 'px'; // Maintain height
-                mediaElement.innerHTML = `ERROR: Cannot Play Media.<br>Try converting the file to standard H.264 MP4.`;
-            };
-            
-            // Re-bind onloadeddata to clear error state if successful load happens later
-             mediaElement.onloadeddata = function() {
-                mediaElement.classList.remove('media-error');
-                mediaElement.innerHTML = ''; // Clear error message
-                mediaElement.style.backgroundColor = '#000'; // Back to black
-            };
-        }
-
-
-        // Function to handle loading media into the preview
-        function loadMediaPreview(media, videoPreview, currentMediaTitle) {
-            // Revoke the URL of the previously loaded file
-            revokeCurrentURL();
-            
-            const newURL = media.url;
-            currentObjectURL = newURL; // Update tracking variable
-
-            // --- CRITICAL STEP: Reset player attributes ---
-            videoPreview.classList.remove('media-error');
-            videoPreview.style.backgroundColor = '#000';
-            videoPreview.innerHTML = '';
-            
-            // If it's audio, remove video-specific posters/size hacks
-            if (media.type.startsWith('audio')) {
-                // When an audio file is loaded into a video tag, the browser typically just shows audio controls.
-                // We ensure it looks like a proper audio player.
-                videoPreview.setAttribute('poster', ''); 
-            }
-            
-            // Set the source and title
-            videoPreview.src = newURL;
-            videoPreview.load(); 
-            
-            currentMediaTitle.textContent = media.name;
-        }
-
-        // Function to render the list of uploaded files
-       function renderMediaLibrary(videoPreview, currentMediaTitle) {
-
-
-| Action | Location |
-| :--- | :--- |
-| **WITH** | The new function definition: |
-
-```javascript
-function renderMediaLibrary(videoPreview, currentMediaTitle, activeMediaName = null) {
-
-
----
-
-## 2. Update `renderMediaLibrary` Activation Logic
-
-Replace the existing `item.addEventListener('click', ...)` block inside the `mediaLibrary.forEach` loop.
-
-| Action | Location |
-| :--- | :--- |
-| **REPLACE** | The activation and click logic: |
-
-```javascript
-                item.addEventListener('click', () => {
-                    // 1. Remove active state from all items
-                    document.querySelectorAll('.media-list-item').forEach(el => el.removeAttribute('data-active'));
-                    
-                    // 2. Set active state on the clicked item (for NewUI CSS styling)
-                    item.setAttribute('data-active', 'true');
-
-                    // 3. Load media
-                    loadMediaPreview(media, videoPreview, currentMediaTitle);
-                });
-
-
-| Action | Location |
-| :--- | :--- |
-| **WITH** | The new logic, which checks the `activeMediaName` during rendering: |
-
-```javascript
-                // Check if this item should be the active one right now
-                if (media.name === activeMediaName) {
-                    item.setAttribute('data-active', 'true');
-                }
-
-                item.addEventListener('click', () => {
-                    // 1. Remove active state from all items (use removeAttribute for consistency)
-                    document.querySelectorAll('.media-list-item').forEach(el => el.removeAttribute('data-active'));
-                    
-                    // 2. Set active state on the clicked item
-                    item.setAttribute('data-active', 'true');
-
-                    // 3. Load media
-                    loadMediaPreview(media, videoPreview, currentMediaTitle);
-                });
-
-
----
-
-## 3. Update `videoUpload.addEventListener` Logic
-
-Replace the entire block of code that runs *after* you've added the new files to `mediaLibrary`. This removes the fragile index lookup (`lastMediaIndex`).
-
-| Action | Location |
-| :--- | :--- |
-| **REPLACE** | The logic block starting with `// Render the entire library list`: |
-
-```javascript
-                // Render the entire library list
-                renderMediaLibrary(videoPreview, currentMediaTitle);
-                
-                // Automatically load the LAST uploaded file into the preview and set it active
-                const lastMediaIndex = mediaLibrary.length - 1;
-                const lastMedia = mediaLibrary[lastMediaIndex];
-                if (lastMedia) {
-                    // Find the newly created list item and set it active
-                    const lastListItem = document.getElementById('media-list').children[lastMediaIndex];
-                    if(lastListItem) {
-                        lastListItem.setAttribute('data-active', 'true');
-                    }
-                     setTimeout(() => {
-                        loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
-                    }, 0);
-                }
-
-
-| Action | Location |
-| :--- | :--- |
-| **WITH** | The robust logic: |
-
-```javascript
-                const lastMedia = mediaLibrary[mediaLibrary.length - 1];
-
-                // Render the library, passing the name of the last uploaded item to set it active during render.
-                renderMediaLibrary(videoPreview, currentMediaTitle, lastMedia.name);
-
-                // Automatically load the LAST uploaded file into the preview
-                if (lastMedia) {
-                     setTimeout(() => {
-                        loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
-                    }, 0);
-                }
-
-            mediaLibrary.forEach((media, index) => {
-                const item = document.createElement('div');
-                item.className = 'media-list-item';
-                // Use symbols based on media type
-                const icon = media.type.startsWith('video') ? '🎬' : '🎵'; 
-
-                item.innerHTML = `
-                    <span class="media-icon">${icon}</span>
-                    <span class="media-name">${media.name}</span>
-                `;
-
-                item.addEventListener('click', () => {
-                    // 1. Remove active state from all items
-                    document.querySelectorAll('.media-list-item').forEach(el => el.setAttribute('data-active', 'false'));
-                    
-                    // 2. Set active state on the clicked item (for NewUI CSS styling)
-                    item.setAttribute('data-active', 'true');
-
-                    // 3. Load media
-                    loadMediaPreview(media, videoPreview, currentMediaTitle);
-                });
-
-                mediaListContainer.appendChild(item);
-            });
-        }
-
-
-        window.addEventListener("DOMContentLoaded", () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const projectId = urlParams.get("id");
-
-            const currentMediaTitle = document.getElementById('current-media-title');
-            const videoPreview = document.getElementById("video-preview");
-            const videoUpload = document.getElementById("video-upload");
-            
-            // Attach initial error handling
-            attachMediaErrorHandling(videoPreview); 
-
-            // --- Project Initialization (rest unchanged) ---
-            if (!projectId) {
-                document.getElementById("project-title").textContent = "No project ID found.";
-                return;
-            }
-
-            const project = {
-                id: projectId,
-                title: "Untitled Project",
-                createdAt: new Date().toISOString(),
-                lastEdited: new Date().toISOString()
-            };
-
-            document.getElementById("project-title").textContent = `Editing: ${project.title}`;
-            document.getElementById("title-input").value = project.title;
-
-            // --- Save Button Handler ---
-            document.getElementById("save-btn").addEventListener("click", () => {
-                const newTitle = document.getElementById("title-input").value;
-                project.title = newTitle;
-                project.lastEdited = new Date().toISOString();
-
-                document.getElementById("project-title").textContent = `Editing: ${newTitle}`;
-                document.title = `${newTitle} - Rutwik Video Editor`;
-
-                console.log("Project saved locally:", project);
-                displayVisualError("Project saved successfully!"); 
-            });
-
-            // --- Video Upload & Playback Logic ---
-
-            if (!videoUpload || !videoPreview) {
-                displayVisualError("CRITICAL RVE ERROR: Editor elements missing (x00003).");
-                return;
-            }
-            
-            // Handle the file selection (Change Handler)
-            videoUpload.addEventListener("change", () => {
-                const files = Array.from(videoUpload.files);
-                if (files.length === 0) {
-                    displayVisualError("No files selected.");
-                    return;
-                }
-
-                // Revoke the URL of the previously loaded file for immediate memory cleanup
-                revokeCurrentURL();
-                
-                // Process all new files
-                files.forEach((file) => {
-                    // CRITICAL CHECK: Use canPlayType to see if the browser supports the file's codec/mime type
-                    const canPlay = videoPreview.canPlayType(file.type);
-                    
-                    if (canPlay === "" || canPlay === "no") {
-                        const fileExtension = file.name.split('.').pop().toUpperCase();
-                        const warningMsg = `UNSUPPORTED FILE: The browser cannot play "${file.name}" (Codec/Format: ${fileExtension}). Try converting to H.264 MP4.`;
-                        console.warn(warningMsg);
-                        displayVisualError(warningMsg);
-                        return; // Skips this file, allowing other files in the selection to process
-                    }
-
-                    const newURL = URL.createObjectURL(file);
-                    
-                    mediaLibrary.push({
-                        name: file.name,
-                        type: file.type,
-                        url: newURL,
-                        file: file 
-                    });
-                    
-                    console.log(`Clip Added to Library: ${file.name}`);
-                });
-
-                // Render the entire library list
-                renderMediaLibrary(videoPreview, currentMediaTitle);
-                
-                // Automatically load the LAST uploaded file into the preview and set it active
-                const lastMediaIndex = mediaLibrary.length - 1;
-                const lastMedia = mediaLibrary[lastMediaIndex];
-                if (lastMedia) {
-                    // Find the newly created list item and set it active
-                    const lastListItem = document.getElementById('media-list').children[lastMediaIndex];
-                    if(lastListItem) {
-                        lastListItem.setAttribute('data-active', 'true');
-                    }
-                     setTimeout(() => {
-                        loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
-                    }, 0);
-                }
-            });
-            
-            // Initialize the list display
-            renderMediaLibrary(videoPreview, currentMediaTitle);
-        });
-    </script>
-    <!-- Editor Logic: END SCRIPT BLOCK -->
-
-    <!-- for progress bar at the bottom -->
-    <footer class="progress-footer glass">
-        <div class="progress-bar">
-            <div class="progress-step active" data-step="Import">Import</div>
-            <div class="progress-step" data-step="Edit">Edit</div>
-            <div class="progress-step" data-step="Music">Music</div>
-            <div class="progress-step" data-step="Final Checks">Final Checks</div>
-            <div class="progress-step" data-step="Export">Export</div>
-            <div class="progress-step" data-step="Upload">Upload</div>
-        </div>
-    </footer>
+<!-- Main Editor Layout -->
+<div class="editor-layout">
     
+    <!-- Left Panel: Media Preview -->
+    <section class="media-viewer glass">
+        <h3 id="current-media-title">No Media Selected</h3>
+        
+        <!-- The single, official video player -->
+        <!-- Global error handler is called from JS file -->
+        <video id="video-preview" controls 
+            onerror="handleGlobalMediaError(this)" 
+            onloadeddata="this.classList.remove('media-error'); this.innerHTML=''; this.style.backgroundColor='#000';">
+        </video>
+
+        <!-- The upload controls are now a drag-and-drop zone style -->
+        <div class="upload-zone">
+            <!-- Input file is hidden via CSS. Accepts video and audio. -->
+            <input type="file" id="video-upload" accept="video/*,audio/*" multiple /> 
+            
+            <!-- The visible button is the LABEL linked by 'for' -->
+            <label for="video-upload" class="button" id="upload-label">
+                + Click to Add Files
+            </label>
+        </div>
+    </section>
+
+    <!-- Right Panel: Media Library & Project Info -->
+    <div class="media-library-panel">
+        
+        <!-- Media Library List -->
+        <div class="media-library glass">
+            <h2>Media Library</h2>
+            <div id="media-list" class="media-list">
+                <!-- Media items will be injected here -->
+                <p style="color: var(--rve-light); opacity: 0.7; font-size: 0.9em; padding: 10px;">
+                    Upload a video or audio file to begin building your project library.
+                </p>
+            </div>
+        </div>
+
+        <!-- Project Info & Save -->
+        <main class="glass project-info">
+            <h2 id="project-title">Loading Project...</h2>
+            <input type="text" id="title-input" placeholder="Project Title" />
+            <button class="button bg-rve-primary text-rve-darker border-none hover:bg-green-500" id="save-btn">Save Project</button>
+        </main>
+    </div>
+</div>
+
+<!-- Load the JS file (since it's too long) -->
+<script type="module" src="rve/editor.js"></script>
+
+<!-- for progress bar at the bottom -->
+<footer class="progress-footer glass">
+    <div class="progress-bar">
+        <div class="progress-step active" data-step="Import">Import</div>
+        <div class="progress-step" data-step="Edit">Edit</div>
+        <div class="progress-step" data-step="Music">Music</div>
+        <div class="progress-step" data-step="Final Checks">Final Checks</div>
+        <div class="progress-step" data-step="Export">Export</div>
+        <div class="progress-step" data-step="Upload">Upload</div>
+    </div>
+</footer>
+
 </body>
 </html>
