@@ -170,14 +170,107 @@
         }
 
         // Function to render the list of uploaded files
-        function renderMediaLibrary(videoPreview, currentMediaTitle) {
-            const mediaListContainer = document.getElementById('media-list');
-            mediaListContainer.innerHTML = ''; // Clear existing list
+       function renderMediaLibrary(videoPreview, currentMediaTitle) {
 
-            if (mediaLibrary.length === 0) {
-                 mediaListContainer.innerHTML = '<p style="color: var(--text-light); opacity: 0.7; font-size: 0.9em; padding: 10px;">Upload a video or audio file to begin building your project library.</p>';
-                 return;
-            }
+
+| Action | Location |
+| :--- | :--- |
+| **WITH** | The new function definition: |
+
+```javascript
+function renderMediaLibrary(videoPreview, currentMediaTitle, activeMediaName = null) {
+
+
+---
+
+## 2. Update `renderMediaLibrary` Activation Logic
+
+Replace the existing `item.addEventListener('click', ...)` block inside the `mediaLibrary.forEach` loop.
+
+| Action | Location |
+| :--- | :--- |
+| **REPLACE** | The activation and click logic: |
+
+```javascript
+                item.addEventListener('click', () => {
+                    // 1. Remove active state from all items
+                    document.querySelectorAll('.media-list-item').forEach(el => el.removeAttribute('data-active'));
+                    
+                    // 2. Set active state on the clicked item (for NewUI CSS styling)
+                    item.setAttribute('data-active', 'true');
+
+                    // 3. Load media
+                    loadMediaPreview(media, videoPreview, currentMediaTitle);
+                });
+
+
+| Action | Location |
+| :--- | :--- |
+| **WITH** | The new logic, which checks the `activeMediaName` during rendering: |
+
+```javascript
+                // Check if this item should be the active one right now
+                if (media.name === activeMediaName) {
+                    item.setAttribute('data-active', 'true');
+                }
+
+                item.addEventListener('click', () => {
+                    // 1. Remove active state from all items (use removeAttribute for consistency)
+                    document.querySelectorAll('.media-list-item').forEach(el => el.removeAttribute('data-active'));
+                    
+                    // 2. Set active state on the clicked item
+                    item.setAttribute('data-active', 'true');
+
+                    // 3. Load media
+                    loadMediaPreview(media, videoPreview, currentMediaTitle);
+                });
+
+
+---
+
+## 3. Update `videoUpload.addEventListener` Logic
+
+Replace the entire block of code that runs *after* you've added the new files to `mediaLibrary`. This removes the fragile index lookup (`lastMediaIndex`).
+
+| Action | Location |
+| :--- | :--- |
+| **REPLACE** | The logic block starting with `// Render the entire library list`: |
+
+```javascript
+                // Render the entire library list
+                renderMediaLibrary(videoPreview, currentMediaTitle);
+                
+                // Automatically load the LAST uploaded file into the preview and set it active
+                const lastMediaIndex = mediaLibrary.length - 1;
+                const lastMedia = mediaLibrary[lastMediaIndex];
+                if (lastMedia) {
+                    // Find the newly created list item and set it active
+                    const lastListItem = document.getElementById('media-list').children[lastMediaIndex];
+                    if(lastListItem) {
+                        lastListItem.setAttribute('data-active', 'true');
+                    }
+                     setTimeout(() => {
+                        loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
+                    }, 0);
+                }
+
+
+| Action | Location |
+| :--- | :--- |
+| **WITH** | The robust logic: |
+
+```javascript
+                const lastMedia = mediaLibrary[mediaLibrary.length - 1];
+
+                // Render the library, passing the name of the last uploaded item to set it active during render.
+                renderMediaLibrary(videoPreview, currentMediaTitle, lastMedia.name);
+
+                // Automatically load the LAST uploaded file into the preview
+                if (lastMedia) {
+                     setTimeout(() => {
+                        loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
+                    }, 0);
+                }
 
             mediaLibrary.forEach((media, index) => {
                 const item = document.createElement('div');
