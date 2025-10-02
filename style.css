@@ -515,33 +515,45 @@ place it in the .infobox above the heading for the infobox
 }
 
 /* Progress bar at the bottom of screen */
-.progress-footer {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+footer.progress-footer {
+  height: var(--footer-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  border-top: 1.5px solid var(--glass-border);
+  color: var(--text-light);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
   padding: 0.5rem 1rem;
-  background: rgba(0, 0, 0, 0.6);
-  z-index: 1000;
+  margin-top: 2rem;
 }
 
 .progress-bar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  color: white;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
 }
 
 .progress-step {
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
-  opacity: 0.5;
-  transition: all 0.3s ease;
+  background: var(--card-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 0.4rem 1rem;
+  font-weight: 500;
+  color: var(--text-light);
+  transition: background 0.3s, transform 0.2s;
+  cursor: default;
+  box-shadow: 0 2px 8px rgba(18, 58, 89, 0.08);
 }
 
 .progress-step.active {
-  background: limegreen;
-  opacity: 1;
-  font-weight: bold;
+  background: var(--button-bg);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
 }
+
