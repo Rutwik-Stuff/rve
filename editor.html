@@ -36,28 +36,54 @@
         max-width: 300px; display: none;">
     </div>
 
-    <!-- Media Preview Zone -->
-    <section class="media-preview glass">
-        <!-- Input file is now hidden via CSS -->
-        <input type="file" id="video-upload" accept="video/*" multiple /> 
+    <!-- Main Editor Layout -->
+    <div class="editor-layout">
         
-        <!-- The visible button is the LABEL linked by 'for' -->
-        <label for="video-upload" class="button" id="upload-label">Upload Video</label>
-        
-        <!-- The single, official video player -->
-        <video id="video-preview" controls></video>
-    </section>
+        <!-- Left Panel: Media Preview -->
+        <section class="media-viewer glass">
+            <h3 id="current-media-title">No Media Selected</h3>
+            
+            <!-- The single, official video player -->
+            <video id="video-preview" controls></video>
 
-    <!-- Project Info & Save -->
-    <main class="glass editor-content">
-        <h2 id="project-title">Loading Project...</h2>
-        <input type="text" id="title-input" placeholder="Project Title" />
-        <button class="button" id="save-btn">Save Project</button>
-    </main>
+            <!-- The upload controls are now a drag-and-drop zone style -->
+            <div class="upload-zone">
+                <!-- Input file is hidden via CSS. Accepts video and audio. -->
+                <input type="file" id="video-upload" accept="video/*,audio/*" multiple /> 
+                
+                <!-- The visible button is the LABEL linked by 'for' -->
+                <label for="video-upload" class="button" id="upload-label">
+                    + Click to Add Files
+                </label>
+            </div>
+        </section>
+
+        <!-- Right Panel: Media Library & Project Info -->
+        <div class="media-library-panel">
+            
+            <!-- Media Library List -->
+            <div class="media-library glass">
+                <h2>Media Library</h2>
+                <div id="media-list" class="media-list">
+                    <!-- Media items will be injected here -->
+                    <p style="color: #666; font-size: 0.9em; padding: 10px;">
+                        Upload a video or audio file to begin building your project library.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Project Info & Save -->
+            <main class="glass project-info">
+                <h2 id="project-title">Loading Project...</h2>
+                <input type="text" id="title-input" placeholder="Project Title" />
+                <button class="button" id="save-btn">Save Project</button>
+            </main>
+        </div>
+    </div>
 
     <!-- Editor Logic: FINAL SCRIPT BLOCK -->
     <script type="module">
-        // Helper function to show a visual error message (FIX: added this function back)
+        // Helper function to show a visual error message
         function displayVisualError(message) {
             let errorBox = document.getElementById("rve-error-alert");
             if (errorBox) {
@@ -67,11 +93,75 @@
             }
         }
 
+        // Global library to store all imported media assets
+        let mediaLibrary = [];
+        let currentObjectURL = null; // Memory management variable
+
+        function revokeCurrentURL() {
+             if (currentObjectURL) {
+                URL.revokeObjectURL(currentObjectURL);
+                currentObjectURL = null;
+            }
+        }
+
+        // Function to render the list of uploaded files
+        function renderMediaLibrary(videoPreview, currentMediaTitle) {
+            const mediaListContainer = document.getElementById('media-list');
+            mediaListContainer.innerHTML = ''; // Clear existing list
+
+            if (mediaLibrary.length === 0) {
+                 mediaListContainer.innerHTML = '<p style="color: #666; font-size: 0.9em; padding: 10px;">Upload a video or audio file to begin building your project library.</p>';
+                 return;
+            }
+
+            mediaLibrary.forEach((media, index) => {
+                const item = document.createElement('div');
+                item.className = 'media-list-item';
+                // Font Awesome icons are assumed to be loaded for better visual experience
+                const icon = media.type.startsWith('video') ? '🎬' : '🎵'; 
+
+                item.innerHTML = `
+                    <span class="media-icon">${icon}</span>
+                    <span class="media-name">${media.name}</span>
+                `;
+
+                item.addEventListener('click', () => {
+                    // Load this item into the main preview player
+                    loadMediaPreview(media, videoPreview, currentMediaTitle);
+                    // Add active class for visual feedback (optional)
+                    document.querySelectorAll('.media-list-item').forEach(el => el.style.backgroundColor = '#f4f4f9');
+                    item.style.backgroundColor = '#dbeafe'; // A light blue to show active
+                });
+
+                mediaListContainer.appendChild(item);
+            });
+        }
+
+        // Function to handle loading media into the preview
+        function loadMediaPreview(media, videoPreview, currentMediaTitle) {
+            // Revoke the URL of the previously loaded file
+            revokeCurrentURL();
+
+            // Set the new URL
+            const newURL = media.url;
+            currentObjectURL = newURL; // Update tracking variable
+
+            // Set the source and title
+            videoPreview.src = newURL;
+            videoPreview.load(); // Force the browser to start loading the new media
+            
+            // Set the element type and display the title
+            videoPreview.style.display = 'block';
+            videoPreview.tagName = media.type.startsWith('audio') ? 'AUDIO' : 'VIDEO';
+            videoPreview.setAttribute('type', media.type);
+            currentMediaTitle.textContent = media.name;
+        }
+
         window.addEventListener("DOMContentLoaded", () => {
             const urlParams = new URLSearchParams(window.location.search);
             const projectId = urlParams.get("id");
 
-            let currentObjectURL = null; // Memory management variable
+            const currentMediaTitle = document.getElementById('current-media-title');
             
             // --- Project Initialization ---
             if (!projectId) {
@@ -99,13 +189,10 @@
                 document.title = `${newTitle} - Rutwik Video Editor`;
 
                 console.log("Project saved locally:", project);
-                // FIX: Removed illegal alert() and used visual error display instead
                 displayVisualError("Project saved successfully!"); 
             });
 
-            // --- Video Upload & Playback Logic (Structural Fix) ---
-            
-            // FIX: Correctly referencing upload-label instead of upload-btn
+            // --- Video Upload & Playback Logic ---
             const videoUpload = document.getElementById("video-upload");
             const videoPreview = document.getElementById("video-preview");
             const uploadLabel = document.getElementById("upload-label"); 
@@ -133,32 +220,38 @@
                     return;
                 }
 
-                // Revoke the previous object URL to free up memory (FIX: Memory Management)
-                if (currentObjectURL) {
-                    URL.revokeObjectURL(currentObjectURL);
-                }
-
-                // Preview the first clip
-                const firstFile = files[0];
-                const newURL = URL.createObjectURL(firstFile);
+                // Revoke the URL of the previously loaded file for immediate memory cleanup
+                revokeCurrentURL();
                 
-                currentObjectURL = newURL;
-
-                // Clear any previous error messages
-                document.getElementById("project-title").textContent = `Editing: ${project.title}`;
-
-                // FIX: Use setTimeout (0ms) to bypass potential race conditions
-                setTimeout(() => {
-                    videoPreview.src = newURL;
-                    videoPreview.load(); 
-                }, 0);
-
-
-                // Log for future timeline use
+                // Process all new files
                 files.forEach((file) => {
-                    console.log(`Clip Loaded: ${file.name}`);
+                    const newURL = URL.createObjectURL(file);
+                    
+                    mediaLibrary.push({
+                        name: file.name,
+                        type: file.type,
+                        url: newURL,
+                        file: file // Keep the original file object if needed later
+                    });
+                    
+                    console.log(`Clip Added to Library: ${file.name}`);
                 });
+
+                // Render the entire library list
+                renderMediaLibrary(videoPreview, currentMediaTitle);
+                
+                // Automatically load the LAST uploaded file into the preview
+                const lastMedia = mediaLibrary[mediaLibrary.length - 1];
+                if (lastMedia) {
+                     // Use setTimeout (0ms) to bypass potential race conditions when setting src
+                     setTimeout(() => {
+                        loadMediaPreview(lastMedia, videoPreview, currentMediaTitle);
+                    }, 0);
+                }
             });
+            
+            // Initialize the list display
+            renderMediaLibrary(videoPreview, currentMediaTitle);
         });
     </script>
     <!-- Editor Logic: END SCRIPT BLOCK -->
