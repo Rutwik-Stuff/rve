@@ -44,3 +44,16 @@ document.addEventListener('DOMContentLoaded', () => {
     showCarousel(index);
   });
 });
+
+//JS code used to make our progress bar work
+function setProgressStep(stepName) {
+  document.querySelectorAll(".progress-step").forEach((step) => {
+    step.classList.remove("active");
+    if (step.dataset.step === stepName) {
+      step.classList.add("active");
+    }
+  });
+}
+
+// Initialize to Import
+setProgressStep("Import");
