@@ -266,6 +266,17 @@
                 
                 // Process all new files
                 files.forEach((file) => {
+                    // CRITICAL CHECK: Use canPlayType to see if the browser supports the file's codec/mime type
+                    const canPlay = videoPreview.canPlayType(file.type);
+                    
+                    if (canPlay === "" || canPlay === "no") {
+                        const fileExtension = file.name.split('.').pop().toUpperCase();
+                        const warningMsg = `UNSUPPORTED FILE: The browser cannot play "${file.name}" (Codec/Format: ${fileExtension}). Try converting to H.264 MP4.`;
+                        console.warn(warningMsg);
+                        displayVisualError(warningMsg);
+                        return; // Skips this file, allowing other files in the selection to process
+                    }
+
                     const newURL = URL.createObjectURL(file);
                     
                     mediaLibrary.push({
