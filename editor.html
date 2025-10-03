@@ -1,59 +1,67 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Untitled Project - Rutwik Video Editor</title>  
-  <link rel="stylesheet" href="/rve/style.css"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Untitled Project - Rutwik Video Editor</title> 
+    <link rel="stylesheet" href="/rve/style.css"/>
 </head>
 <body>
 
-  <!-- Top Navigation Bar -->
-  <nav class="editor-nav glass">
-    <div class="nav-left">
-  <a href="/rve/dashboard.html" id="logo-link">
-    <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
-  </a>
-  <span class="rve-title">RVE</span>
-</div>
-    <div class="nav-center">
-      <input type="text" id="project-title-input" placeholder="Project File Name" />
-    </div>
-    <div class="nav-right">
-      <button class="button">Download</button>
-      <button class="button">Share</button>
-      <button class="button">Next</button>
-    </div>
-  </nav>
+    <div id="rve-error-alert" style="display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: #ff5733; color: white; padding: 10px 20px; border-radius: 4px; z-index: 9999;"></div>
 
-  <!-- Media Preview Zone -->
- <section class="glass media-import">
-  <input type="file" id="video-upload" accept="video/*" multiple style="display: none;" />
-  <button class="button" id="upload-btn">Upload Video</button>
-  <video id="video-preview" controls></video>
-</section>
+    <nav class="editor-nav glass">
+        <div class="nav-left">
+            <a href="/rve/dashboard.html" id="logo-link">
+                <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
+            </a>
+            <span class="rve-title">RVE</span>
+        </div>
+        <div class="nav-center">
+            <input type="text" id="project-title-input" placeholder="Project File Name" />
+        </div>
+        <div class="nav-right">
+            <button class="button">Download</button>
+            <button class="button">Share</button>
+            <button class="button">Next</button>
+        </div>
+    </nav>
 
-  <!-- Project Info & Save -->
-  <main class="glass editor-content">
-    <h2 id="project-title">Loading Project...</h2>
-    <input type="text" id="title-input" placeholder="Project Title" />
-    <button class="button" id="save-btn">Save Project</button>
-  </main>
+    <!-- Media Preview Zone -->
+    <section class="glass media-import">
+        <!-- Media Title added for JS compatibility -->
+        <h3 id="current-media-title">No Media Selected</h3>
+        
+        <input type="file" id="video-upload" accept="video/*" multiple style="display: none;" />
+        <button class="button" id="upload-btn">Upload Video</button>
+        <video id="video-preview" controls></video>
+        
+        <!-- Placeholder for Media Library (REQUIRED by mediaListContainer variable in JS) -->
+        <div id="media-list" style="display: none;"></div>
+    </section>
 
-  <!-- for progress bar at the bottom -->
- <footer class="progress-footer glass">
-  <div class="progress-bar">
-    <div class="progress-step active" data-step="Import">Import</div>
-    <div class="progress-step" data-step="Edit">Edit</div>
-    <div class="progress-step" data-step="Music">Music</div>
-    <div class="progress-step" data-step="Final Checks">Final Checks</div>
-    <div class="progress-step" data-step="Export">Export</div>
-    <div class="progress-step" data-step="Upload">Upload</div>
-  </div>
-</footer>
+    <!-- Project Info & Save -->
+    <main class="glass editor-content">
+        <h2 id="project-title">Loading Project...</h2>
+        <input type="text" id="title-input" placeholder="Project Title" />
+        <button class="button" id="save-btn">Save Project</button>
+    </main>
+
+    <!-- for progress bar at the bottom -->
+    <footer class="progress-footer glass">
+        <div class="progress-bar">
+            <div class="progress-step active" data-step="Import">Import</div>
+            <div class="progress-step" data-step="Edit">Edit</div>
+            <div class="progress-step" data-step="Music">Music</div>
+            <div class="progress-step" data-step="Final Checks">Final Checks</div>
+            <div class="progress-step" data-step="Export">Export</div>
+            <div class="progress-step" data-step="Upload">Upload</div>
+        </div>
+    </footer>
 
     <!-- Editor Logic -->
- <script type="module" src="/rve/editor.js"></script>
- <script src="/rve/required.js"></script> 
+    <script type="module" src="/rve/editor.js"></script>
+    <!-- load NewUI 4 required files -->
+    <script src="/rve/required.js"></script> 
 </body>
 </html>
