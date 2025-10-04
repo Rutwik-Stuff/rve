@@ -28,17 +28,27 @@
     </nav>
 
     <!-- Media Preview Zone -->
-    <section class="glass media-import">
-        <!-- Media Title added for JS compatibility -->
-        <h3 id="current-media-title">No Media Selected</h3>
-        
-        <input type="file" id="video-upload" accept="video/*,.mkv" multiple style="display: none;" />
-        <button class="button" id="upload-btn">Upload Video</button>
-        <video id="video-preview" controls></video>
-        
-        <!-- Placeholder for Media Library (REQUIRED by mediaListContainer variable in JS) -->
-        <div id="media-list" style="display: none;"></div>
-    </section>
+   <section class="glass import-zone">
+  <!-- Left Side: Upload + Preview -->
+  <div class="upload-left">
+    <h3 id="current-media-title">No Media Selected</h3>
+
+    <div id="drag-drop-area" class="drop-area">
+      <p>Drag & drop your media files here</p>
+      <button class="button" id="upload-btn">Browse Files</button>
+      <input type="file" id="video-upload" accept="video/*,audio/*,.mkv" multiple hidden />
+    </div>
+
+    <video id="video-preview" controls></video>
+    <div id="rve-error-alert" class="error-box" style="display: none;"></div>
+  </div>
+
+  <!-- Right Side: Media Library -->
+  <aside class="media-library glass">
+    <h3>Media Library</h3>
+    <ul id="media-list" class="media-list"></ul>
+  </aside>
+</section>
 
     <!-- Project Info & Save -->
     <main class="glass editor-content">
