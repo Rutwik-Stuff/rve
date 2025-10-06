@@ -170,28 +170,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 console.warn("No files selected, drag and drop or click the button to start building your media library");
                 return;
             }
-
-            if (dropArea) {
-                ["dragenter", "dragover"].forEach((event) => {
-                dropArea.addEventListener(event, (e) => {
-                e.preventDefault();
-                dropArea.classList.add("hover");
-            });
-    });
-
-    ["dragleave", "drop"].forEach((event) => {
-      dropArea.addEventListener(event, (e) => {
-        e.preventDefault();
-        dropArea.classList.remove("hover");
-      });
-    });
-
-    dropArea.addEventListener("drop", (e) => {
-      const files = Array.from(e.dataTransfer.files);
-      handleMediaUpload(files);
-    });
   
-
             revokeCurrentURL(); // Clean up memory from the previously previewed clip.
 
             let lastFile = null;
@@ -227,6 +206,33 @@ window.addEventListener("DOMContentLoaded", () => {
 
 });
 ]
+
+//drag and drop (OUTSIDE of the click)
+// --- Drag and Drop Setup (runs once when page loads) ---
+if (dropArea) {
+  // When user drags files into the drop zone
+  ["dragenter", "dragover"].forEach((event) => {
+    dropArea.addEventListener(event, (e) => {
+      e.preventDefault(); // Prevent default browser behavior
+      dropArea.classList.add("hover"); // Add hover effect
+    });
+  });
+
+  // When user leaves or drops files
+  ["dragleave", "drop"].forEach((event) => {
+    dropArea.addEventListener(event, (e) => {
+      e.preventDefault();
+      dropArea.classList.remove("hover"); // Remove hover effect
+    });
+  });
+
+  // When user drops files into the drop zone
+  dropArea.addEventListener("drop", (e) => {
+    const files = Array.from(e.dataTransfer.files); // Get dropped files
+    handleMediaUpload(files); // Upload them
+  });
+}
+
 
 // --- Media Upload Handler ---
 function handleMediaUpload(files) {
