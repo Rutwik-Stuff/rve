@@ -1,3 +1,4 @@
+
 /* The official NewUI 4 CSS File, made by 7Zeb, now open-source */
 /* NewUI Login Extension */
 /* Dependencies: NewUI v4.1.3 (with Dark Mode JavaScript file in place) 
@@ -37,100 +38,533 @@ body.dark-mode {
 }
 
 /* Body and gradient background */
-/* Core Layout and Styling */
 body {
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    /* Deep, modern gradient background */
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); 
-    color: #f0f0f0;
-    min-height: 100vh;
-    display: flex; /* Use flex to arrange major sections vertically */
-    flex-direction: column;
-    gap: 15px; /* Spacing between major blocks like nav, section, footer */
-    padding: 15px;
-    box-sizing: border-box; /* Crucial for responsive design */
+  min-height: 100vh;
+  font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+  color: var(--text-light);
+  background: var(--primary-gradient);
+  transition: background 0.4s, color 0.3s;
 }
 
-/* Glassmorphism Effect */
+/* Glassmorphism utility */
 .glass {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 10px; /* Default padding, overridden in specific containers */
+  background: var(--glass-bg);
+  border-radius: 18px;
+  border: 1.5px solid var(--glass-border);
+  box-shadow: 0 6px 32px rgba(18, 58, 89, 0.08), 0 1.5px 6px rgba(18,58,89,0.03);
+  backdrop-filter: blur(13px) saturate(1.2);
+  -webkit-backdrop-filter: blur(13px) saturate(1.2);
 }
 
-/* --- Navigation Bar --- */
+/* Navbar styles */
+nav.navbar {
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--glass-bg);
+  border-bottom: 1.5px solid var(--glass-border);
+  transition: background 0.4s;
+}
+nav.navbar .nav-links {
+  display: flex;
+  gap: 2rem;
+}
+nav.navbar a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.4em 0.7em;
+  border-radius: 7px;
+  transition: background 0.2s, color 0.2s;
+}
+nav.navbar a:hover {
+  background: var(--button-hover-bg);
+  color: #fff;
+}
+nav.navbar .mode-toggle {
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  margin-left: 1.5em;
+  transition: background 0.2s;
+}
+nav.navbar .mode-toggle:hover {
+  background: var(--button-hover-bg);
+}
+
+/* Footer styles */
+footer.footer {
+  height: var(--footer-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  border-top: 1.5px solid var(--glass-border);
+  color: var(--text-light);
+  font-size: 1rem;
+  letter-spacing: 0.03em;
+  margin-top: 3rem;
+}
+
+/* Section styling */
+section {
+  padding: var(--section-padding);
+  margin: 1rem auto;
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.main-flex {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  max-width: 1100px;
+  width: 100%;
+  margin: 2rem auto 0 auto;
+  box-sizing: border-box;
+}
+.main-flex section {
+  flex: 2 1 0;
+  min-width: 0;
+}
+.main-flex .infobox {
+  flex: 1 1 320px;
+  min-width: 250px;
+  max-width: 350px;
+  margin-top: 0;
+  position: static;
+}
+
+@media (max-width: 1000px) {
+  .main-flex {
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 98vw;
+  }
+  .main-flex .infobox {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Remove fixed positioning from .infobox, infobox will now float depending on size of window */
+.infobox {
+  padding: 1.5rem 1.5rem 1.5rem 1.8rem; /* Fix a text issue that makes the infobox look cursed */
+  position: static;
+  margin-bottom: 2rem;
+  width: auto;
+}
+
+.glass.infobox {
+  box-shadow: 0 8px 32px rgba(18,58,89,0.12), 0 2px 8px rgba(18,58,89,0.07);
+  border-radius: 20px;
+}
+
+/* Responsive infobox */
+@media (max-width: 900px) {
+  .infobox {
+    position: static;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Cards styling */
+.cards {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 3px 18px rgba(33, 150, 243, 0.10);
+  transition: transform 0.22s cubic-bezier(.26,.68,.32,1.37), box-shadow 0.3s, background 0.2s;
+  padding: 1.5rem;
+  min-width: 230px;
+  max-width: 320px;
+  cursor: pointer;
+  border: 1.5px solid var(--glass-border);
+  text-align: left;
+}
+.card:hover {
+  transform: translateY(-10px) scale(1.04);
+  background: var(--card-hover-bg);
+  box-shadow: 0 8px 34px rgba(33, 150, 243, 0.17);
+}
+
+/* Button styling */
+.button, button {
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75em 1.5em;
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(33, 150, 243, 0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.button:hover, button:hover {
+  background: var(--button-hover-bg);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: underline;
+  transition: color 0.18s;
+}
+a:hover {
+  color: var(--button-hover-bg);
+  text-decoration: none;
+}
+
+/* Text carousel layout */
+.text-carousel {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--glass-bg);
+  border-radius: 15px;
+  padding: 1.2rem 2rem;
+  box-shadow: 0 2px 12px rgba(18, 58, 89, 0.10);
+  border: 1px solid var(--glass-border);
+  min-height: 80px;
+  margin: 1.5rem 0;
+}
+.text-carousel .carousel-content {
+  flex: 1;
+  font-size: 1.15em;
+  color: var(--text-light);
+}
+.text-carousel .carousel-button {
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.text-carousel .carousel-button:hover {
+  background: var(--button-hover-bg);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  nav.navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  nav.navbar .nav-links {
+    gap: 1rem;
+  }
+  section {
+    padding: 1.2rem 0.5rem;
+    max-width: 100vw;
+  }
+  .cards {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+}
+
+/* Utility: visually hide */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* Tables */
+/* Glassy Table Styles */
+table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--glass-bg);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(33, 150, 243, 0.05);
+  font-size: 1em;
+  color: var(--text-light);
+}
+
+th, td {
+  padding: 1em 1.3em;
+  border-bottom: 1px solid var(--glass-border);
+  text-align: left;
+}
+
+th {
+  background: rgba(47, 214, 232, 0.23);
+  color: var(--text-dark);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--glass-border);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background: var(--card-hover-bg);
+}
+
+table caption {
+  caption-side: top;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0.5em 0 1em 0;
+  color: var(--link-color);
+}
+
+body.dark-mode table {
+  color: var(--text-light);
+}
+
+body.dark-mode th {
+  background: rgba(55, 230, 196, 0.16);
+  color: var(--text-light);
+}
+
+@media (max-width: 700px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  th, td {
+    padding: 0.8em 0.7em;
+  }
+  tr {
+    margin-bottom: 1em;
+  }
+  th {
+    border-bottom: none;
+  }
+  td {
+    border-bottom: 1px solid var(--glass-border);
+  }
+}
+
+
+/* NewUI Login Extension Package starts here */
+/* Loginbox styling */
+.loginbox {
+  max-width: 420px;
+  margin: 4rem auto;
+  padding: 2.5rem 2rem;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(18, 58, 89, 0.12), 0 2px 8px rgba(18, 58, 89, 0.07);
+  backdrop-filter: blur(13px) saturate(1.2);
+  -webkit-backdrop-filter: blur(13px) saturate(1.2);
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* Loginbox heading */
+.loginbox h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+/* Login form inputs */
+.loginbox input[type="text"],
+.loginbox input[type="password"] {
+  width: 100%;
+  padding: 0.75em 0.65em;
+  margin-bottom: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-light);
+  font-size: 1em;
+  transition: background 0.2s, border 0.2s;
+}
+
+.loginbox input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--button-hover-bg);
+}
+
+/* Login button */
+.loginbox button {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* Caption carousel inside loginbox */
+.loginbox .text-carousel {
+  margin-top: 2rem;
+}
+
+/* Contributor profile picture styling */
+.profile-picture {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 4px 16px rgba(18, 58, 89, 0.12);
+  margin: 0 auto 1.5rem auto;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-picture:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(18, 58, 89, 0.18);
+}
+
+/* here is the stuff for HTML
+
+place it in the .infobox above the heading for the infobox
+
+<section class="glass infobox loginbox">
+  <img src="/newui-extensions/login/default.png" alt="Contributor Avatar" class="profile-picture" />
+  <h2>Welcome, Contributor</h2>
+  <!-- Login form goes here -->
+</section>
+
+*/
+
+/* Editor Extension */
 .editor-nav {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.nav-left, .nav-right {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.rve-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #00bcd4; /* Accent color */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .rve-logo {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    /* Placeholder style if no real logo is available */
-    background-color: #f0f0f0;
+  height: 40px;
+  width: auto;
 }
 
-#project-title-input {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 8px 12px;
-    border-radius: 6px;
-    color: #f0f0f0;
-    width: 300px;
+.rve-title {
+  font-weight: 700;
+  font-size: 1.5rem;
 }
 
-#project-title-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+.nav-center input {
+  font-size: 1rem;
+  padding: 0.5rem;
+  width: 250px;
+  border-radius: 6px;
+  border: none;
 }
 
-/* --- Buttons --- */
-.button {
-    background: linear-gradient(45deg, #00bcd4, #0097a7);
-    color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+.nav-right .button {
+  margin-left: 0.5rem;
 }
 
-.button:hover {
-    background: linear-gradient(45deg, #0097a7, #00bcd4);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transform: translateY(-1px);
+/* Video Preview */
+.media-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
 }
 
-/* --- Media Import/Preview/Library Layout --- */
+#video-upload {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+#video-preview {
+  width: 80%;
+  max-width: 960px;
+  border-radius: 12px;
+  background-color: #000;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+/* Progress bar at the bottom of screen */
+footer.progress-footer {
+  height: var(--footer-height);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--glass-bg);
+  border-top: 1.5px solid var(--glass-border);
+  color: var(--text-light);
+  font-size: 0.95rem;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 1rem;
+  margin-top: 2rem;
+}
+
+.progress-bar {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+}
+
+.progress-step {
+  background: var(--card-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 0.4rem 1rem;
+  font-weight: 500;
+  color: var(--text-light);
+  transition: background 0.3s, transform 0.2s;
+  cursor: default;
+  box-shadow: 0 2px 8px rgba(18, 58, 89, 0.08);
+}
+
+.progress-step.active {
+  background: var(--button-bg);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+}
+
+/* --- Import Shrine Layout --- */
 .import-zone {
     display: flex;
     gap: 20px;
     padding: 20px;
-    flex-grow: 1; /* Allows this section to fill the remaining space */
-    min-height: 450px; /* Minimum height for better visibility */
+    margin-bottom: 20px;
+    height: 60vh; /* Make it large enough to see everything */
 }
 
 /* Left side: upload area and video preview */
@@ -141,23 +575,28 @@ body {
     gap: 15px;
 }
 
-#current-media-title {
-    margin: 0;
-    padding-bottom: 5px;
-    font-size: 1.2rem;
+/* Right side: media library sidebar */
+.media-library {
+    flex: 1; /* Takes up less space (e.g., ~30%) */
+    padding: 15px;
+    overflow-y: auto; /* Allow scrolling if many files are added */
+}
+
+.media-library h3 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Video Preview Player */
 #video-preview {
     width: 100%;
-    /* Flex-grow allows it to take up the space below the title/drop area */
-    flex-grow: 1; 
-    max-height: 100%; /* Important for height management */
+    /* Must reserve space, but ensure it doesn't push the drop area */
+    max-height: 100%; 
     background-color: #000;
     border-radius: 8px;
+    flex-grow: 1; /* Allows it to take up available height */
     object-fit: contain;
-    /* Ensure the player looks good even before a video is loaded */
-    display: block; 
 }
 
 /* Drag and Drop Area Styling */
@@ -185,29 +624,11 @@ body {
     display: none;
 }
 
-/* Right Side: Media Library Sidebar */
-.media-library {
-    flex: 1; /* Takes up less space (e.g., ~30%) */
-    padding: 15px;
-    overflow-y: auto; /* Allow scrolling if many files are added */
-    /* Ensure the media library takes the same height as the import-zone */
-    display: flex;
-    flex-direction: column;
-}
-
-.media-library h3 {
-    margin-top: 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    flex-shrink: 0; /* Prevents title from shrinking */
-}
-
 /* Media List in the sidebar */
 .media-list {
     list-style: none;
     padding: 0;
     margin-top: 10px;
-    flex-grow: 1; /* Allows the list to fill the available space */
 }
 
 .media-list li {
@@ -219,118 +640,8 @@ body {
     transition: background-color 0.15s;
     font-size: 0.9em;
     word-break: break-all;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
 }
 
 .media-list li:hover {
     background-color: rgba(0, 0, 0, 0.4);
-}
-
-/* --- Project Info & Save Section (Fixing the overlap) --- */
-.editor-content {
-    /* This section is now guaranteed to sit below the import-zone due to body's flex-direction: column */
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-top: 0; /* No need for extra margin */
-}
-
-.editor-content h2 {
-    margin: 0;
-    font-size: 1.5rem;
-}
-
-#title-input {
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 8px 12px;
-    border-radius: 6px;
-    color: #f0f0f0;
-    flex-grow: 1;
-    min-width: 150px;
-}
-#title-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
-}
-
-/* --- Progress Footer --- */
-.progress-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 15px 20px;
-    flex-shrink: 0; /* Prevents it from shrinking if content is tall */
-    margin-top: auto; /* Pushes the footer to the bottom */
-}
-
-.progress-bar {
-    display: flex;
-    gap: 30px;
-}
-
-.progress-step {
-    padding: 8px 15px;
-    border-radius: 20px;
-    background-color: rgba(0, 0, 0, 0.2);
-    color: rgba(255, 255, 255, 0.7);
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.progress-step.active {
-    background: #00bcd4; /* Accent color for active step */
-    color: white;
-    box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
-    transform: scale(1.05);
-}
-
-/* Global Error Alert Styling */
-#rve-error-alert {
-    background: #ff5733; /* Red color for error */
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    body {
-        gap: 10px;
-        padding: 10px;
-    }
-    .editor-nav {
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-    }
-    .nav-center {
-        width: 100%;
-        order: 3; /* Move title input below logo/links */
-    }
-    #project-title-input {
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .import-zone {
-        flex-direction: column;
-        height: auto;
-        min-height: auto;
-    }
-    .media-library {
-        min-height: 200px; /* Give library some height on mobile */
-    }
-    .editor-content {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .progress-bar {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
 }
