@@ -27,14 +27,14 @@ let dropArea;
  * @param {string} message - The error message text.
  */
 function displayVisualError(message) {
-    let errorBox = document.getElementById("rve-error-alert");
-    if (errorBox) { // Always check to make sure the element exists (null check).
-        errorBox.textContent = message;
-        errorBox.style.display = 'block';
-        // After 6 seconds (6000ms), hide the box using a timer function.
-        setTimeout(() => errorBox.style.display = 'none', 6000); 
-    }
+  let errorBox = document.getElementById("rve-error-box");
+  if (errorBox) {
+    errorBox.textContent = message;
+    errorBox.style.display = "block";
+    setTimeout(() => (errorBox.style.display = "none"), 6000);
+  }
 }
+
 
 /**
  * Revokes the current Object URL to prevent memory leaks.
