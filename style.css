@@ -582,6 +582,7 @@ footer.progress-footer {
     flex: 1; /* Takes up less space (e.g., ~30%) */
     padding: 15px;
     overflow-y: auto; /* Allow scrolling if many files are added */
+    max-height: 100%;
 }
 
 .media-library h3 {
