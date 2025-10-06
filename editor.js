@@ -81,164 +81,60 @@ window.handleGlobalMediaError = function(mediaElement) {
 /**
  * The DOMContentLoaded event listener is the entry point for all application logic.
  * It guarantees that the entire HTML structure (the DOM) is ready before we try to manipulate it.
- */
-window.addEventListener("DOMContentLoaded", () => {
-    console.log("RVE editor.js loaded!"); //shows this once loaded
-    // --- 0. INITIALIZE DOM ELEMENTS (First thing we do after the DOM is ready!) ---
-    // Now that the HTML is loaded, we can safely grab elements by their ID.
-    currentMediaTitle = document.getElementById('current-media-title');
-    videoPreview = document.getElementById("video-preview");
-    videoUpload = document.getElementById("video-upload");
-    mediaListContainer = document.getElementById('media-list');
-    projectTitleDisplay = document.getElementById("project-title");
-    projectTitleInput = document.getElementById("title-input");
-    navTitleInput = document.getElementById("project-title-input");
-    uploadBtn = document.getElementById("upload-btn");
-    dropArea = document.getElementById("drag-drop-area"); 
-    
+ */window.addEventListener("DOMContentLoaded", () => {
+  console.log("RVE editor.js loaded!");
 
-    // 1. PROJECT ID CHECK & INITIAL STATE SETUP
-    const urlParams = new URLSearchParams(window.location.search);
-    const projectId = urlParams.get("id"); // Tries to get the project ID from the URL (e.g., ?id=12345).
+  // --- Initialize DOM Elements ---
+  currentMediaTitle = document.getElementById("current-media-title");
+  videoPreview = document.getElementById("video-preview");
+  videoUpload = document.getElementById("video-upload");
+  mediaListContainer = document.getElementById("media-list");
+  projectTitleDisplay = document.getElementById("project-title");
+  projectTitleInput = document.getElementById("title-input");
+  navTitleInput = document.getElementById("project-title-input");
+  uploadBtn = document.getElementById("upload-btn");
+  dropArea = document.getElementById("drag-drop-area");
 
-    if (!projectId) {
-        // If no ID is found, we assume a new project and generate a random ID.
-        displayVisualError("WARNING: No project ID found in URL. Using a temporary ID.");
-        project.id = crypto.randomUUID(); // CSP concept: Generating unique IDs using cryptography APIs.
-    } else {
-        project.id = projectId;
-        isProjectIdValid = true;
-    }
-
-    // Set default project metadata
-    project.title = "Untitled Project";
-    project.createdAt = new Date().toISOString();
-    project.lastEdited = new Date().toISOString();
-
-    // Update the UI with the initial project state
-    if(projectTitleDisplay) projectTitleDisplay.textContent = `Editing: ${project.title}`;
-    if(projectTitleInput) projectTitleInput.value = project.title;
-    if(navTitleInput) navTitleInput.value = project.title;
-    if(currentMediaTitle) currentMediaTitle.textContent = "No Media Selected";
-
-
-    //save the project
-    const saveBtn = document.getElementById("save-btn");
-    if (saveBtn) {
-        // Attach the event listener for the 'Save Project' button.
-        saveBtn.addEventListener("click", () => {
-            const newTitle = projectTitleInput.value.trim();
-            
-            if (!newTitle) {
-                displayVisualError("Project title cannot be empty!");
-                return;
-            }
-
-            // Update the project object with new data
-            project.title = newTitle;
-            project.lastEdited = new Date().toISOString();
-
-            // Update UI elements using DOM manipulation
-            if(projectTitleDisplay) projectTitleDisplay.textContent = `Editing: ${newTitle}`;
-            if(navTitleInput) navTitleInput.value = newTitle;
-            document.title = `${newTitle} - Rutwik Video Editor`; // Change the browser tab title
-
-            console.log("Project saved locally:", project);
-            displayVisualError(`Project "${newTitle}" saved locally!`);
-        });
-    }
-    
-    // Sync logic: Makes sure the title input fields stay the same when typing in either one.
-    if (projectTitleInput && navTitleInput) {
-        projectTitleInput.addEventListener('input', (e) => navTitleInput.value = e.target.value);
-        navTitleInput.addEventListener('input', (e) => projectTitleInput.value = e.target.value);
-    }
-
-
-    if (uploadBtn && videoUpload) {
-        // Step A: Make the visible button click the hidden file input element.
-        // This solves the core bug where the button does nothing.
-        uploadBtn.addEventListener("click", () => {
-            videoUpload.click(); 
-        });
-        
-        videoUpload.addEventListener("change", () => {
-            const files = Array.from(videoUpload.files); // Convert the list of files into a true Array.
-            handleMediaUpload(files); //handles multiple file uploads
-
-            if (files.length === 0) { //if statement saying if there are no files
-                console.warn("No files selected, drag and drop or click the button to start building your media library");
-                return;
-            }
-  
-            revokeCurrentURL(); // Clean up memory from the previously previewed clip.
-
-            let lastFile = null;
-
-            // Iterate (loop) through all selected files.
-            files.forEach((file) => {
-                // Check if the browser can even play this file type.
-                const canPlay = videoPreview.canPlayType(file.type);
-                if (canPlay === "" || canPlay === "no") {
-                     displayVisualError(`Skipping unsupported file: ${file.name}`);
-                     return;
-                }
-
-                // Create a temporary local URL for the file data.
-                const url = URL.createObjectURL(file); 
-                const newMedia = { name: file.name, url: url, file: file };
-                mediaLibrary.push(newMedia);
-                lastFile = newMedia;
-            });
-
-            // Update the preview player with the last file uploaded.
-            if (lastFile) {
-                videoPreview.src = lastFile.url;
-                videoPreview.load(); // Tells the video element to prepare the new source.
-                currentObjectURL = lastFile.url; // Save the new URL for future cleanup.
-                if(currentMediaTitle) currentMediaTitle.textContent = lastFile.name;
-            }
-        });
-    }
-
-    // Set the initial step on the progress bar.
-    setProgressStep("Import");
-
-});
-]
-
-//drag and drop (OUTSIDE of the click)
-// --- Drag and Drop Setup (runs once when page loads) ---
-if (dropArea) {
-  // When user drags files into the drop zone
-  ["dragenter", "dragover"].forEach((event) => {
-    dropArea.addEventListener(event, (e) => {
-      e.preventDefault(); // Prevent default browser behavior
-      dropArea.classList.add("hover"); // Add hover effect
+  // --- Upload Button Logic ---
+  if (uploadBtn && videoUpload) {
+    uploadBtn.addEventListener("click", () => {
+      videoUpload.click(); // Opens file dialog
     });
-  });
 
-  // When user leaves or drops files
-  ["dragleave", "drop"].forEach((event) => {
-    dropArea.addEventListener(event, (e) => {
-      e.preventDefault();
-      dropArea.classList.remove("hover"); // Remove hover effect
+    videoUpload.addEventListener("change", () => {
+      const files = Array.from(videoUpload.files);
+      handleMediaUpload(files); // Uploads selected files
     });
-  });
+  }
 
-  // When user drops files into the drop zone
-  dropArea.addEventListener("drop", (e) => {
-    const files = Array.from(e.dataTransfer.files); // Get dropped files
-    handleMediaUpload(files); // Upload them
-  });
-}
+  // --- Drag and Drop Logic ---
+  if (dropArea) {
+    ["dragenter", "dragover"].forEach((event) => {
+      dropArea.addEventListener(event, (e) => {
+        e.preventDefault();
+        dropArea.classList.add("hover");
+      });
+    });
+
+    ["dragleave", "drop"].forEach((event) => {
+      dropArea.addEventListener(event, (e) => {
+        e.preventDefault();
+        dropArea.classList.remove("hover");
+      });
+    });
+
+    dropArea.addEventListener("drop", (e) => {
+      const files = Array.from(e.dataTransfer.files);
+      handleMediaUpload(files); // Uploads dropped files
+    });
+  }
 
 
 // --- Media Upload Handler ---
 function handleMediaUpload(files) {
   if (!files || files.length === 0) return;
 
-  revokeCurrentURL();
+  revokeCurrentURL(); // Clean up previous preview
   let lastFile = null;
 
   files.forEach((file) => {
