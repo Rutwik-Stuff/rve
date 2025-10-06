@@ -516,39 +516,28 @@ place it in the .infobox above the heading for the infobox
 
 /* Progress bar at the bottom of screen */
 footer.progress-footer {
-  height: var(--footer-height);
+  min-height: 80px; /* Allow enough space */
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Align steps to top */
   justify-content: center;
-  background: var(--glass-bg);
-  border-top: 1.5px solid var(--glass-border);
-  color: var(--text-light);
-  font-size: 0.95rem;
-  letter-spacing: 0.03em;
-  padding: 0.5rem 1rem;
+  padding: 1rem 1.5rem;
   margin-top: 2rem;
 }
 
+
 .progress-bar {
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-  max-width: 900px;
+  gap: 0.75rem;
+  flex-wrap: nowrap; /* Prevent wrapping unless necessary */
+  overflow-x: auto; /* Allow horizontal scroll if needed */
+  padding: 0.5rem 0;
 }
 
 .progress-step {
-  background: var(--card-bg);
-  border: 1.5px solid var(--glass-border);
-  border-radius: 12px;
-  padding: 0.4rem 1rem;
-  font-weight: 500;
-  color: var(--text-light);
-  transition: background 0.3s, transform 0.2s;
-  cursor: default;
-  box-shadow: 0 2px 8px rgba(18, 58, 89, 0.08);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
+
 
 .progress-step.active {
   background: var(--button-bg);
