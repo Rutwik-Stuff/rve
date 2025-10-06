@@ -94,7 +94,7 @@ function handleMediaUpload(files) {
         const fileType = file.type;
         
         // Basic file type check
-        if (!fileType.startsWith("video/") && !fileType.startsWith("audio/") && !fileType.startsWith("image/") {
+        if (!fileType.startsWith("video/") && !fileType.startsWith("audio/")) {
             displayVisualError(`Skipping unsupported file: ${file.name}`);
             return;
         }
@@ -104,13 +104,6 @@ function handleMediaUpload(files) {
             displayVisualError(`Playback not supported for file: ${file.name}`);
             return;
         }
-
-        //if .mkv file
-        if (file.type === 'video/x-matroska' || file.name.endsWith('.mkv')) {
-            displayVisualError(`${file.name} is a .mkv file, these file types will be supported later.`);
-            return;
-        }
-
 
         const url = URL.createObjectURL(file);
         const type = fileType.split('/')[0]; // 'video' or 'audio'
