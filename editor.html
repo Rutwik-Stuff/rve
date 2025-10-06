@@ -1,79 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Untitled Project - Rutwik Video Editor</title> 
-    <link rel="stylesheet" href="/rve/style.css"/>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Untitled Project - Rutwik Video Editor</title> 
+    <link rel="stylesheet" href="/rve/style.css"/>
 </head>
 <body>
 
-    <!-- Global Error/Alert Container (used by displayVisualError) -->
-    <div id="rve-error-alert" style="display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: #ff5733; color: white; padding: 10px 20px; border-radius: 4px; z-index: 9999;"></div>
+    <div id="rve-error-alert" style="display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: #ff5733; color: white; padding: 10px 20px; border-radius: 4px; z-index: 9999;"></div>
 
-    <nav class="editor-nav glass">
-        <div class="nav-left">
-            <a href="/rve/dashboard.html" id="logo-link">
-                <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
-            </a>
-            <span class="rve-title">RVE</span>
-        </div>
-        <div class="nav-center">
-            <input type="text" id="project-title-input" placeholder="Project File Name" />
-        </div>
-        <div class="nav-right">
-            <button class="button">Download</button>
-            <button class="button">Share</button>
-            <button class="button">Next</button>
-        </div>
-    </nav>
+    <nav class="editor-nav glass">
+        <div class="nav-left">
+            <a href="/rve/dashboard.html" id="logo-link">
+                <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
+            </a>
+            <span class="rve-title">RVE</span>
+        </div>
+        <div class="nav-center">
+            <input type="text" id="project-title-input" placeholder="Project File Name" />
+        </div>
+        <div class="nav-right">
+            <button class="button">Download</button>
+            <button class="button">Share</button>
+            <button class="button">Next</button>
+        </div>
+    </nav>
+<div class="editor-wrapper">
+    <!-- Media Preview Zone -->
+   <section class="glass import-zone">
+  <!-- Left Side: Upload + Preview -->
+  <div class="upload-left">
+    <h3 id="current-media-title">No Media Selected</h3>
 
-    <!-- Media Preview Zone -->
-   <section class="glass import-zone">
-  <!-- Left Side: Upload + Preview -->
-  <div class="upload-left">
-    <h3 id="current-media-title">No Media Selected</h3>
+    <div id="drag-drop-area" class="drop-area">
+      <p>Drag & drop your media files here</p>
+      <button class="button" id="upload-btn">Browse Files</button>
+      <input type="file" id="video-upload" accept="video/*,audio/*,.mkv" multiple hidden />
+    </div>
 
-    <div id="drag-drop-area" class="drop-area">
-      <p>Drag & drop your media files here</p>
-      <button class="button" id="upload-btn">Browse Files</button>
-      <input type="file" id="video-upload" accept="video/*,audio/*,.mkv" multiple hidden/>    
-    </div>
+    <video id="video-preview" controls></video>
+    <div id="rve-error-box" class="error-box" style="display: none;"></div>
+  </div>
 
-    <!-- Ensure video-preview has onerror handler for media errors -->
-    <video id="video-preview" controls onerror="window.handleGlobalMediaError(this)"></video>
-  </div>
-
-  <!-- Right Side: Media Library -->
-  <aside class="media-library glass">
-    <!-- Span for Media Count -->
-    <h3>Media Library (<span id="media-count">0</span>)</h3>
-    <ul id="media-list" class="media-list"></ul>
-  </aside>
+  <!-- Right Side: Media Library -->
+  <aside class="media-library glass">
+    <h3>Media Library</h3>
+    <ul id="media-list" class="media-list"></ul>
+  </aside>
 </section>
 
-    <!-- Project Info & Save -->
-    <main class="glass editor-content">
-        <h2 id="project-title">Loading Project...</h2>
-        <input type="text" id="title-input" placeholder="Project Title" />
-        <button class="button" id="save-btn">Save Project</button>
-    </main>
+    <!-- Project Info & Save -->
+    <main class="glass editor-content">
+        <h2 id="project-title">Loading Project...</h2>
+        <input type="text" id="title-input" placeholder="Project Title" />
+        <button class="button" id="save-btn">Save Project</button>
+    </main>
 
-    <!-- for progress bar at the bottom -->
-    <footer class="progress-footer glass">
-        <div class="progress-bar">
-            <div class="progress-step active" data-step="Import">Import</div>
-            <div class="progress-step" data-step="Edit">Edit</div>
-            <div class="progress-step" data-step="Music">Music</div>
-            <div class="progress-step" data-step="Final Checks">Final Checks</div>
-            <div class="progress-step" data-step="Export">Export</div>
-            <div class="progress-step" data-step="Upload">Upload</div>
-        </div>
-    </footer>
-
-    <!-- Editor Logic -->
-    <script type="module" src="/rve/editor.js"></script>
-    <!-- load NewUI 4 required files -->
-    <script src="/rve/required.js"></script> 
+    <!-- for progress bar at the bottom -->
+    <footer class="progress-footer glass">
+    <div class="progress-bar">
+      <button class="progress-step active" data-step="Import">Import</button>
+      <button class="progress-step" data-step="Edit">Edit</button>
+      <button class="progress-step" data-step="Music">Music</button>
+      <button class="progress-step" data-step="Final Checks">Final Checks</button>
+      <button class="progress-step" data-step="Export">Export</button>
+      <button class="progress-step" data-step="Upload">Upload</button>
+      </div>
+  </footer>
+</div>
+  
+    <!-- Editor Logic -->
+    <script type="module" src="/rve/editor.js"></script>
+    <!-- load NewUI 4 required files -->
+    <script src="/rve/required.js"></script> 
 </body>
 </html>
