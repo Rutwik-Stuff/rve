@@ -168,9 +168,10 @@ window.addEventListener("DOMContentLoaded", () => {
         // Step B: Handle the 'change' event when the user selects files from the dialog.
         videoUpload.addEventListener("change", () => {
             const files = Array.from(videoUpload.files); // Convert the list of files into a true Array.
+            handleMediaUpload(files); //handles multiple file uploads
 
-            if (files.length === 0) {
-                console.warn("No files selected");
+            if (files.length === 0) { //if statement saying if there are no files
+                console.warn("No files selected, drag and drop or click the button to start building your media library");
                 return;
             }
 
@@ -208,3 +209,80 @@ window.addEventListener("DOMContentLoaded", () => {
     setProgressStep("Import");
 
 });
+]
+
+//add drag and drop support
+const dropArea = document.getElementById("drag-drop-area");
+
+["dragenter", "dragover"].forEach(event => {
+  dropArea.addEventListener(event, e => {
+    e.preventDefault();
+    dropArea.classList.add("hover");
+  });
+});
+
+["dragleave", "drop"].forEach(event => {
+  dropArea.addEventListener(event, e => {
+    e.preventDefault();
+    dropArea.classList.remove("hover");
+  });
+});
+
+dropArea.addEventListener("drop", e => {
+  const files = Array.from(e.dataTransfer.files);
+  handleMediaUpload(files);
+});
+
+//media library with click to preview elements
+function renderMediaLibrary() {
+  const list = document.getElementById("media-list");
+  list.innerHTML = "";
+
+  mediaLibrary.forEach((media, index) => {
+    const item = document.createElement("li");
+    item.textContent = media.name;
+    item.addEventListener("click", () => {
+      if (media.file.type.startsWith("video")) {
+        videoPreview.src = media.url;
+        videoPreview.load();
+        currentMediaTitle.textContent = media.name;
+      } else if (media.file.type.startsWith("audio")) {
+        const audio = new Audio(media.url);
+        audio.play();
+        currentMediaTitle.textContent = `Playing: ${media.name}`;
+      }
+    });
+    list.appendChild(item);
+  });
+}
+
+//more drag and drop logic
+function handleMediaUpload(files) {
+  if (!files || files.length === 0) return;
+
+  revokeCurrentURL(); // Clean up previous preview
+
+  let lastFile = null;
+
+  files.forEach(file => {
+    const canPlay = videoPreview.canPlayType(file.type);
+    if (canPlay === "" || canPlay === "no") {
+      displayVisualError(`Unsupported file: ${file.name}`);
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    const newMedia = { name: file.name, url, file };
+    mediaLibrary.push(newMedia);
+    lastFile = newMedia;
+  });
+
+  if (lastFile && lastFile.file.type.startsWith("video")) {
+    videoPreview.src = lastFile.url;
+    videoPreview.load();
+    currentObjectURL = lastFile.url;
+    currentMediaTitle.textContent = lastFile.name;
+  }
+
+  renderMediaLibrary();
+}
