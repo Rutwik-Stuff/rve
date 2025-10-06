@@ -95,39 +95,39 @@ window.handleGlobalMediaError = function(mediaElement) {
   uploadBtn = document.getElementById("upload-btn");
   dropArea = document.getElementById("drag-drop-area");
 
-  // --- Upload Button Logic ---
-  if (uploadBtn && videoUpload) {
-    uploadBtn.addEventListener("click", () => {
-      videoUpload.click(); // Opens file dialog
-    });
+// --- Upload Button Logic ---
+if (uploadBtn && videoUpload) {
+  uploadBtn.addEventListener("click", () => {
+    videoUpload.click(); // Opens file dialog
+  });
 
-    videoUpload.addEventListener("change", () => {
-      const files = Array.from(videoUpload.files);
-      handleMediaUpload(files); // Uploads selected files
-    });
-  }
+  videoUpload.addEventListener("change", () => {
+    const files = Array.from(videoUpload.files);
+    handleMediaUpload(files);
+  });
+}
 
-  // --- Drag and Drop Logic ---
-  if (dropArea) {
-    ["dragenter", "dragover"].forEach((event) => {
-      dropArea.addEventListener(event, (e) => {
-        e.preventDefault();
-        dropArea.classList.add("hover");
-      });
+// --- Drag-and-Drop Logic ---
+if (dropArea) {
+  ["dragenter", "dragover"].forEach((event) => {
+    dropArea.addEventListener(event, (e) => {
+      e.preventDefault();
+      dropArea.classList.add("hover");
     });
+  });
 
-    ["dragleave", "drop"].forEach((event) => {
-      dropArea.addEventListener(event, (e) => {
-        e.preventDefault();
-        dropArea.classList.remove("hover");
-      });
+  ["dragleave", "drop"].forEach((event) => {
+    dropArea.addEventListener(event, (e) => {
+      e.preventDefault();
+      dropArea.classList.remove("hover");
     });
+  });
 
-    dropArea.addEventListener("drop", (e) => {
-      const files = Array.from(e.dataTransfer.files);
-      handleMediaUpload(files); // Uploads dropped files
-    });
-  }
+  dropArea.addEventListener("drop", (e) => {
+    const files = Array.from(e.dataTransfer.files);
+    handleMediaUpload(files);
+  });
+}
 
 
 // --- Media Upload Handler ---
