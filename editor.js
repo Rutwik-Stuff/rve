@@ -15,6 +15,7 @@ let projectTitleDisplay;
 let projectTitleInput;
 let navTitleInput;
 let uploadBtn; 
+let dropArea;
 
 
 // --- Utility Functions ---
@@ -77,16 +78,12 @@ window.handleGlobalMediaError = function(mediaElement) {
 };
 
 
-// --- Core Initialization and Event Handlers ---
-
-console.log("The JavaScript file for the RVE editor has loaded");
-
 /**
  * The DOMContentLoaded event listener is the entry point for all application logic.
  * It guarantees that the entire HTML structure (the DOM) is ready before we try to manipulate it.
  */
 window.addEventListener("DOMContentLoaded", () => {
-    
+    console.log("RVE editor.js loaded!"); //shows this once loaded
     // --- 0. INITIALIZE DOM ELEMENTS (First thing we do after the DOM is ready!) ---
     // Now that the HTML is loaded, we can safely grab elements by their ID.
     currentMediaTitle = document.getElementById('current-media-title');
@@ -97,6 +94,7 @@ window.addEventListener("DOMContentLoaded", () => {
     projectTitleInput = document.getElementById("title-input");
     navTitleInput = document.getElementById("project-title-input");
     uploadBtn = document.getElementById("upload-btn");
+    dropArea = document.getElementById("drag-drop-area"); 
     
 
     // 1. PROJECT ID CHECK & INITIAL STATE SETUP
@@ -124,7 +122,7 @@ window.addEventListener("DOMContentLoaded", () => {
     if(currentMediaTitle) currentMediaTitle.textContent = "No Media Selected";
 
 
-    // 2. PROJECT SAVE LOGIC
+    //save the project
     const saveBtn = document.getElementById("save-btn");
     if (saveBtn) {
         // Attach the event listener for the 'Save Project' button.
@@ -157,7 +155,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    // 3. FILE UPLOAD LOGIC (Fixing Issue #13)
     if (uploadBtn && videoUpload) {
         // Step A: Make the visible button click the hidden file input element.
         // This solves the core bug where the button does nothing.
@@ -165,7 +162,6 @@ window.addEventListener("DOMContentLoaded", () => {
             videoUpload.click(); 
         });
         
-        // Step B: Handle the 'change' event when the user selects files from the dialog.
         videoUpload.addEventListener("change", () => {
             const files = Array.from(videoUpload.files); // Convert the list of files into a true Array.
             handleMediaUpload(files); //handles multiple file uploads
@@ -174,6 +170,27 @@ window.addEventListener("DOMContentLoaded", () => {
                 console.warn("No files selected, drag and drop or click the button to start building your media library");
                 return;
             }
+
+            if (dropArea) {
+                ["dragenter", "dragover"].forEach((event) => {
+                dropArea.addEventListener(event, (e) => {
+                e.preventDefault();
+                dropArea.classList.add("hover");
+            });
+    });
+
+    ["dragleave", "drop"].forEach((event) => {
+      dropArea.addEventListener(event, (e) => {
+        e.preventDefault();
+        dropArea.classList.remove("hover");
+      });
+    });
+
+    dropArea.addEventListener("drop", (e) => {
+      const files = Array.from(e.dataTransfer.files);
+      handleMediaUpload(files);
+    });
+  
 
             revokeCurrentURL(); // Clean up memory from the previously previewed clip.
 
@@ -211,60 +228,14 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 ]
 
-//add drag and drop support
-const dropArea = document.getElementById("drag-drop-area");
-
-["dragenter", "dragover"].forEach(event => {
-  dropArea.addEventListener(event, e => {
-    e.preventDefault();
-    dropArea.classList.add("hover");
-  });
-});
-
-["dragleave", "drop"].forEach(event => {
-  dropArea.addEventListener(event, e => {
-    e.preventDefault();
-    dropArea.classList.remove("hover");
-  });
-});
-
-dropArea.addEventListener("drop", e => {
-  const files = Array.from(e.dataTransfer.files);
-  handleMediaUpload(files);
-});
-
-//media library with click to preview elements
-function renderMediaLibrary() {
-  const list = document.getElementById("media-list");
-  list.innerHTML = "";
-
-  mediaLibrary.forEach((media, index) => {
-    const item = document.createElement("li");
-    item.textContent = media.name;
-    item.addEventListener("click", () => {
-      if (media.file.type.startsWith("video")) {
-        videoPreview.src = media.url;
-        videoPreview.load();
-        currentMediaTitle.textContent = media.name;
-      } else if (media.file.type.startsWith("audio")) {
-        const audio = new Audio(media.url);
-        audio.play();
-        currentMediaTitle.textContent = `Playing: ${media.name}`;
-      }
-    });
-    list.appendChild(item);
-  });
-}
-
-//more drag and drop logic
+// --- Media Upload Handler ---
 function handleMediaUpload(files) {
   if (!files || files.length === 0) return;
 
-  revokeCurrentURL(); // Clean up previous preview
-
+  revokeCurrentURL();
   let lastFile = null;
 
-  files.forEach(file => {
+  files.forEach((file) => {
     const canPlay = videoPreview.canPlayType(file.type);
     if (canPlay === "" || canPlay === "no") {
       displayVisualError(`Unsupported file: ${file.name}`);
@@ -285,4 +256,26 @@ function handleMediaUpload(files) {
   }
 
   renderMediaLibrary();
+}
+
+// --- Media Library Renderer ---
+function renderMediaLibrary() {
+  mediaListContainer.innerHTML = "";
+
+  mediaLibrary.forEach((media) => {
+    const item = document.createElement("li");
+    item.textContent = media.name;
+    item.addEventListener("click", () => {
+      if (media.file.type.startsWith("video")) {
+        videoPreview.src = media.url;
+        videoPreview.load();
+        currentMediaTitle.textContent = media.name;
+      } else if (media.file.type.startsWith("audio")) {
+        const audio = new Audio(media.url);
+        audio.play();
+        currentMediaTitle.textContent = `Playing: ${media.name}`;
+      }
+    });
+    mediaListContainer.appendChild(item);
+  });
 }
