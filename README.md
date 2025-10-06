@@ -41,7 +41,7 @@ currently nothing here as project is not finished yet.
 
 ## 📜 Roadmap
 
-find the roadmap in the 'editor-roadmap.md' file
+find the roadmap in the `editor-roadmap.md` file
 
 ---
 
