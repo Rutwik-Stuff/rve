@@ -1,3 +1,4 @@
+
 /* The official NewUI 4 CSS File, made by 7Zeb, now open-source */
 /* NewUI Login Extension */
 /* Dependencies: NewUI v4.1.3 (with Dark Mode JavaScript file in place) 
@@ -43,12 +44,6 @@ body {
   color: var(--text-light);
   background: var(--primary-gradient);
   transition: background 0.4s, color 0.3s;
-  
-  /* RVE LAYOUT FIX: Use Flexbox to stack major sections and fill the viewport */
-  display: flex;
-  flex-direction: column;
-  padding: 15px; 
-  gap: 15px;
 }
 
 /* Glassmorphism utility */
@@ -75,7 +70,22 @@ nav.navbar {
   border-bottom: 1.5px solid var(--glass-border);
   transition: background 0.4s;
 }
-/* ... Existing Navbar Styles ... */
+nav.navbar .nav-links {
+  display: flex;
+  gap: 2rem;
+}
+nav.navbar a {
+  color: var(--link-color);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.4em 0.7em;
+  border-radius: 7px;
+  transition: background 0.2s, color 0.2s;
+}
+nav.navbar a:hover {
+  background: var(--button-hover-bg);
+  color: #fff;
+}
 nav.navbar .mode-toggle {
   background: var(--button-bg);
   color: #fff;
@@ -128,21 +138,331 @@ section {
   flex: 2 1 0;
   min-width: 0;
 }
-/* ... Existing NewUI Styles ... */
+.main-flex .infobox {
+  flex: 1 1 320px;
+  min-width: 250px;
+  max-width: 350px;
+  margin-top: 0;
+  position: static;
+}
+
+@media (max-width: 1000px) {
+  .main-flex {
+    flex-direction: column;
+    gap: 1.5rem;
+    max-width: 98vw;
+  }
+  .main-flex .infobox {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Remove fixed positioning from .infobox, infobox will now float depending on size of window */
+.infobox {
+  padding: 1.5rem 1.5rem 1.5rem 1.8rem; /* Fix a text issue that makes the infobox look cursed */
+  position: static;
+  margin-bottom: 2rem;
+  width: auto;
+}
+
+.glass.infobox {
+  box-shadow: 0 8px 32px rgba(18,58,89,0.12), 0 2px 8px rgba(18,58,89,0.07);
+  border-radius: 20px;
+}
+
+/* Responsive infobox */
+@media (max-width: 900px) {
+  .infobox {
+    position: static;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Cards styling */
+.cards {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.card {
+  background: var(--card-bg);
+  border-radius: 15px;
+  box-shadow: 0 3px 18px rgba(33, 150, 243, 0.10);
+  transition: transform 0.22s cubic-bezier(.26,.68,.32,1.37), box-shadow 0.3s, background 0.2s;
+  padding: 1.5rem;
+  min-width: 230px;
+  max-width: 320px;
+  cursor: pointer;
+  border: 1.5px solid var(--glass-border);
+  text-align: left;
+}
+.card:hover {
+  transform: translateY(-10px) scale(1.04);
+  background: var(--card-hover-bg);
+  box-shadow: 0 8px 34px rgba(33, 150, 243, 0.17);
+}
+
+/* Button styling */
+.button, button {
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75em 1.5em;
+  font-size: 1em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(33, 150, 243, 0.08);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+.button:hover, button:hover {
+  background: var(--button-hover-bg);
+  box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: underline;
+  transition: color 0.18s;
+}
+a:hover {
+  color: var(--button-hover-bg);
+  text-decoration: none;
+}
+
+/* Text carousel layout */
+.text-carousel {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--glass-bg);
+  border-radius: 15px;
+  padding: 1.2rem 2rem;
+  box-shadow: 0 2px 12px rgba(18, 58, 89, 0.10);
+  border: 1px solid var(--glass-border);
+  min-height: 80px;
+  margin: 1.5rem 0;
+}
+.text-carousel .carousel-content {
+  flex: 1;
+  font-size: 1.15em;
+  color: var(--text-light);
+}
+.text-carousel .carousel-button {
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5em 1em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.text-carousel .carousel-button:hover {
+  background: var(--button-hover-bg);
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  nav.navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 1rem;
+    gap: 1rem;
+  }
+  nav.navbar .nav-links {
+    gap: 1rem;
+  }
+  section {
+    padding: 1.2rem 0.5rem;
+    max-width: 100vw;
+  }
+  .cards {
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+}
+
+/* Utility: visually hide */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
+}
+
+/* Tables */
+/* Glassy Table Styles */
+table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--glass-bg);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 24px rgba(33, 150, 243, 0.05);
+  font-size: 1em;
+  color: var(--text-light);
+}
+
+th, td {
+  padding: 1em 1.3em;
+  border-bottom: 1px solid var(--glass-border);
+  text-align: left;
+}
+
+th {
+  background: rgba(47, 214, 232, 0.23);
+  color: var(--text-dark);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--glass-border);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+tr:hover {
+  background: var(--card-hover-bg);
+}
+
+table caption {
+  caption-side: top;
+  font-size: 1.2em;
+  font-weight: 600;
+  margin: 0.5em 0 1em 0;
+  color: var(--link-color);
+}
+
+body.dark-mode table {
+  color: var(--text-light);
+}
+
+body.dark-mode th {
+  background: rgba(55, 230, 196, 0.16);
+  color: var(--text-light);
+}
+
+@media (max-width: 700px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+  th, td {
+    padding: 0.8em 0.7em;
+  }
+  tr {
+    margin-bottom: 1em;
+  }
+  th {
+    border-bottom: none;
+  }
+  td {
+    border-bottom: 1px solid var(--glass-border);
+  }
+}
+
 
 /* NewUI Login Extension Package starts here */
-/* ... Existing Login Box Styles ... */
+/* Loginbox styling */
+.loginbox {
+  max-width: 420px;
+  margin: 4rem auto;
+  padding: 2.5rem 2rem;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(18, 58, 89, 0.12), 0 2px 8px rgba(18, 58, 89, 0.07);
+  backdrop-filter: blur(13px) saturate(1.2);
+  -webkit-backdrop-filter: blur(13px) saturate(1.2);
+  text-align: center;
+  color: var(--text-light);
+}
 
-/* Editor Extension Overrides (RVE Specific) */
+/* Loginbox heading */
+.loginbox h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: var(--text-light);
+}
+
+/* Login form inputs */
+.loginbox input[type="text"],
+.loginbox input[type="password"] {
+  width: 100%;
+  padding: 0.75em 0.65em;
+  margin-bottom: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--text-light);
+  font-size: 1em;
+  transition: background 0.2s, border 0.2s;
+}
+
+.loginbox input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--button-hover-bg);
+}
+
+/* Login button */
+.loginbox button {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+/* Caption carousel inside loginbox */
+.loginbox .text-carousel {
+  margin-top: 2rem;
+}
+
+/* Contributor profile picture styling */
+.profile-picture {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--glass-border);
+  box-shadow: 0 4px 16px rgba(18, 58, 89, 0.12);
+  margin: 0 auto 1.5rem auto;
+  display: block;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-picture:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 24px rgba(18, 58, 89, 0.18);
+}
+
+/* here is the stuff for HTML
+
+place it in the .infobox above the heading for the infobox
+
+<section class="glass infobox loginbox">
+  <img src="/newui-extensions/login/default.png" alt="Contributor Avatar" class="profile-picture" />
+  <h2>Welcome, Contributor</h2>
+  <!-- Login form goes here -->
+</section>
+
+*/
+
+/* Editor Extension */
 .editor-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background: var(--glass-bg); /* Use glass variable */
-  backdrop-filter: blur(13px) saturate(1.2);
-  border-bottom: 1px solid var(--glass-border); /* Use glass variable */
-  border-radius: 18px; /* Match .glass border radius */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .nav-left {
@@ -166,19 +486,38 @@ section {
   padding: 0.5rem;
   width: 250px;
   border-radius: 6px;
-  border: 1px solid var(--glass-border);
-  background: rgba(255, 255, 255, 0.15);
-  color: var(--text-light);
+  border: none;
 }
 
 .nav-right .button {
   margin-left: 0.5rem;
 }
 
+/* Video Preview */
+.media-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 2rem;
+}
+
+#video-upload {
+  font-size: 1rem;
+  padding: 0.5rem;
+}
+
+#video-preview {
+  width: 80%;
+  max-width: 960px;
+  border-radius: 12px;
+  background-color: #000;
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
 /* Progress bar at the bottom of screen */
 footer.progress-footer {
-  /* Override default footer margin/height for RVE column layout */
-  height: auto; 
+  height: var(--footer-height);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,8 +527,7 @@ footer.progress-footer {
   font-size: 0.95rem;
   letter-spacing: 0.03em;
   padding: 0.5rem 1rem;
-  margin-top: auto; /* Pushes the footer to the bottom of the flex column */
-  border-radius: 18px; /* Match .glass radius */
+  margin-top: 2rem;
 }
 
 .progress-bar {
@@ -220,179 +558,90 @@ footer.progress-footer {
   box-shadow: 0 4px 16px rgba(33, 150, 243, 0.15);
 }
 
-/* --- RVE LAYOUT FIX: Import Shrine Layout --- */
+/* --- Import Shrine Layout --- */
 .import-zone {
-  /* This is the container for the preview and the library */
-  display: flex;
-  gap: 1.5rem; 
-  padding: 1.5rem;
-  flex-grow: 1; /* CRITICAL: Allows this section to fill vertical space */
-  min-height: 400px; 
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    height: 60vh; /* Make it large enough to see everything */
 }
 
-/* Left side: upload area and video preview container */
+/* Left side: upload area and video preview */
 .upload-left {
-  flex: 3; /* ~70% width */
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  /* Appearance fix: Dark background to define the media player area */
-  background: rgba(0, 0, 0, 0.4); 
-  padding: 1rem;
-  border-radius: 12px;
-}
-
-#current-media-title {
-    margin: 0;
-    padding-bottom: 5px;
-    font-size: 1.2rem;
-    color: var(--text-dark); /* Ensures text is visible against the dark background */
+    flex: 3; /* Takes up more space (e.g., ~70%) */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 /* Right side: media library sidebar */
 .media-library {
-  flex: 1; /* ~30% width */
-  padding: 1.5rem;
-  overflow-y: auto; 
-  display: flex;
-  flex-direction: column;
+    flex: 1; /* Takes up less space (e.g., ~30%) */
+    padding: 15px;
+    overflow-y: auto; /* Allow scrolling if many files are added */
 }
 
 .media-library h3 {
-  margin-top: 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--glass-border); 
-  flex-shrink: 0; 
-  color: var(--text-light);
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 /* Video Preview Player */
 #video-preview {
-  width: 100%;
-  flex-grow: 1; 
-  max-height: 100%; 
-  background-color: #000;
-  border-radius: 8px;
-  object-fit: contain;
-  display: block; 
+    width: 100%;
+    /* Must reserve space, but ensure it doesn't push the drop area */
+    max-height: 100%; 
+    background-color: #000;
+    border-radius: 8px;
+    flex-grow: 1; /* Allows it to take up available height */
+    object-fit: contain;
 }
 
 /* Drag and Drop Area Styling */
 .drop-area {
-  border: 2px dashed var(--glass-border); 
-  border-radius: 8px;
-  padding: 30px 20px;
-  text-align: center;
-  background-color: rgba(255, 255, 255, 0.05);
-  transition: background 0.2s;
-  flex-shrink: 0;
-  color: var(--text-light);
+    border: 2px dashed rgba(255, 255, 255, 0.4);
+    border-radius: 8px;
+    padding: 30px 20px;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: background-color 0.2s;
+}
+
+.drop-area p {
+    margin: 10px 0;
+    font-size: 1.1em;
 }
 
 .drop-area:hover {
-  background: var(--card-hover-bg); 
-  border-color: var(--button-hover-bg); 
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: #00bcd4; /* Accent color on hover */
+}
+
+/* Hide the drop area when media is selected/playing to prioritize the video */
+.drop-area.hidden {
+    display: none;
 }
 
 /* Media List in the sidebar */
 .media-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 10px;
-  flex-grow: 1;
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
 }
 
 .media-list li {
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  background-color: var(--card-bg); 
-  cursor: pointer;
-  transition: background 0.15s;
-  font-size: 0.9em;
-  word-break: break-all;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--text-light);
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    transition: background-color 0.15s;
+    font-size: 0.9em;
+    word-break: break-all;
 }
 
 .media-list li:hover {
-  background-color: var(--card-hover-bg); 
-}
-
-/* Project Info & Save Section */
-.editor-content {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  padding: 1.5rem;
-}
-
-.editor-content h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  flex-shrink: 0;
-  color: var(--text-light);
-}
-
-#title-input {
-  background: rgba(255, 255, 255, 0.15); 
-  border: 1px solid var(--glass-border); 
-  padding: 0.75em 0.65em;
-  border-radius: 8px;
-  color: var(--text-light);
-  flex-grow: 1;
-  min-width: 150px;
-}
-#title-input::placeholder {
-  color: rgba(0, 0, 0, 0.5); 
-}
-
-/* Global Error Alert Styling */
-#rve-error-alert {
-    background: #ff5733; 
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    body {
-        gap: 10px;
-        padding: 10px;
-    }
-    .editor-nav {
-        flex-wrap: wrap;
-        gap: 10px;
-        padding: 10px;
-        height: auto; 
-    }
-    .nav-center {
-        width: 100%;
-        order: 3; 
-    }
-    #project-title-input {
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .import-zone {
-        flex-direction: column;
-        height: auto;
-        min-height: auto;
-    }
-    .media-library {
-        min-height: 200px; 
-    }
-    .editor-content {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .progress-bar {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 10px;
-    }
+    background-color: rgba(0, 0, 0, 0.4);
 }
