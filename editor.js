@@ -190,14 +190,24 @@ function renderMediaLibrary() {
                 const audio = new Audio(media.url);
                 audio.play().catch(e => {
                     displayVisualError("Could not play audio automatically. Click 'play' on the item.");
-                }else if (media.type === "image" && videoPreview && currentMediaTitle) {
-                    videoPreview.src = media.url;
-                    videoPreview.load();
-                    videoPreview.controls = false;
-                    currentMediaTitle.textContent = `Viewing: ${media.name} (Image)`;
-                    currentObjectURL = media.url;
-                }
-            );
+                }} else if (media.type === "audio" && videoPreview && currentMediaTitle) {
+                    const audio = new Audio(media.url);
+                    audio.play().catch(e => {
+                    displayVisualError("Could not play audio automatically. Click 'play' on the item.");
+        });
+
+            videoPreview.src = "";
+            videoPreview.controls = false;
+            currentMediaTitle.textContent = `Playing: ${media.name} (Audio)`;
+            currentObjectURL = media.url;
+        } else if (media.type === "image" && videoPreview && currentMediaTitle) {
+            videoPreview.src = media.url;
+            videoPreview.load();
+            videoPreview.controls = false;
+            currentMediaTitle.textContent = `Viewing: ${media.name} (Image)`;
+            currentObjectURL = media.url;
+        }
+
                 
                 // Clear video preview area
                 videoPreview.src = "";
