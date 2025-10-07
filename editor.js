@@ -16,6 +16,7 @@ let navTitleInput;
 let uploadBtn; 
 let dropArea;
 let mediaCountDisplay; // Added for the clip counter
+// let isLoggedIn; //this variable will let us display a message if the user is editing without logging in.
 
 
 // --- Utility Functions ---
@@ -210,7 +211,7 @@ window.addEventListener("DOMContentLoaded", () => {
     mediaCountDisplay = document.getElementById("media-count"); // Initialize the new element
 
 
-    // --- Project Initialization (Placeholder) ---
+    //Showing the Untiltied Project placeholder
     if (projectTitleDisplay) {
         project.title = "Untitled Project";
         projectTitleDisplay.textContent = `Project: ${project.title}`;
@@ -220,6 +221,7 @@ window.addEventListener("DOMContentLoaded", () => {
     renderMediaLibrary();
 
 
+    
     // --- Upload Button Logic ---
     if (uploadBtn && videoUpload) {
         uploadBtn.addEventListener("click", () => {
@@ -278,6 +280,18 @@ if (saveBtn) {
         console.log(`Project title updated: ${project.title}`);
         });
     }
+
+    //update the title tag after the project is saved
+    const pageTitle = document.getElementById("page-title");
+
+    if (projectTitleInput && pageTitle) {
+        projectTitleInput.addEventListener("input", () => {
+        project.title = projectTitleInput.value;
+        const suffix = " - Rutwik Video Editor";
+        pageTitle.textContent = (project.title.trim() || "Untitled Project") + suffix;
+    });
+}
+
 
     setProgressStep("Import");
 });
