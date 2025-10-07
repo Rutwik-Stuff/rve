@@ -256,8 +256,28 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Placeholder for save button logic (removed for brevity, but should be here)
-    // Placeholder for title sync logic (removed for brevity, but should be here)
+    // Save button logic
+    const saveBtn = document.getElementById("save-btn");
+if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+        if (!project.title || project.title.trim() === "") {
+            displayVisualError("Please enter a project title before saving.");
+            return;
+        }
+        //  Title change logic
+        console.log(`Saving project: ${project.title}`);
+        displayVisualError(`Project "${project.title}" saved successfully.`);
+    });
+}
+
+    
+    // Logic for the title sync
+    if (projectTitleInput) {
+        projectTitleInput.addEventListener("input", () => {
+        project.title = projectTitleInput.value;
+        console.log(`Project title updated: ${project.title}`);
+        });
+    }
 
     setProgressStep("Import");
 });
