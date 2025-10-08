@@ -5,8 +5,8 @@ Tracking the implementation of modular JS per stage inside `editor.html`.
 ---
 
 ## ✅ Core Setup
-- [ ] Create `editor.html` as the unified shell
-- [ ] Add `?stage=Import` or `data-stage="Import"` to control initial stage
+- [x ] Create `editor.html` as the unified shell
+- [ x] Add `?stage=Import` or `data-stage="Import"` to control initial stage
 - [ ] Create shared layout: nav, import zone, editor content, progress bar
 
 ---
