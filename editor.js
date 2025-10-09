@@ -190,11 +190,7 @@ function renderMediaLibrary() {
                 const audio = new Audio(media.url);
                 audio.play().catch(e => {
                     displayVisualError("Could not play audio automatically. Click 'play' on the item.");
-                }} else if (media.type === "audio" && videoPreview && currentMediaTitle) {
-                    const audio = new Audio(media.url);
-                    audio.play().catch(e => {
-                    displayVisualError("Could not play audio automatically. Click 'play' on the item.");
-        });
+                }}
 
             videoPreview.src = "";
             videoPreview.controls = false;
