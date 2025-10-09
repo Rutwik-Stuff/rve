@@ -95,12 +95,7 @@ function handleMediaUpload(files) {
         const fileType = file.type;
         
         // Basic file type check
-        if (
-            !fileType.startsWith("video/") &&
-            !fileType.startsWith("audio/") &&
-            !fileType.startsWith("image/")
-        ) {
-
+        if (!fileType.startsWith("video/") && !fileType.startsWith("audio/")) {
             displayVisualError(`Skipping unsupported file: ${file.name}`);
             return;
         }
@@ -129,11 +124,6 @@ function handleMediaUpload(files) {
             videoPreview.src = "";
             videoPreview.controls = false;
             currentMediaTitle.textContent = `Ready: ${lastFile.name} (Audio)`;
-        } else if (lastFile.type === "image") {
-            videoPreview.src = lastFile.url;
-            videoPreview.load();
-            videoPreview.controls = false;
-            currentMediaTitle.textContent = `Ready: ${lastFile.name} (Image)`;
         }
         
         currentObjectURL = lastFile.url;
@@ -166,9 +156,7 @@ function renderMediaLibrary() {
     mediaLibrary.forEach((media) => {
         const item = document.createElement("li");
         // Use an icon for better visual distinction
-        const icon = media.type === 'video' ? '📹' :
-             media.type === 'audio' ? '🎧' :
-             media.type === 'image' ? '🖼️' : '📁';
+        const icon = media.type === 'video' ? '📹' : '🎧';
         item.innerHTML = `<span class="media-icon">${icon}</span>${media.name}`;
         item.setAttribute('data-type', media.type);
 
@@ -190,20 +178,7 @@ function renderMediaLibrary() {
                 const audio = new Audio(media.url);
                 audio.play().catch(e => {
                     displayVisualError("Could not play audio automatically. Click 'play' on the item.");
-                }}
-
-            videoPreview.src = "";
-            videoPreview.controls = false;
-            currentMediaTitle.textContent = `Playing: ${media.name} (Audio)`;
-            currentObjectURL = media.url;
-        } else if (media.type === "image" && videoPreview && currentMediaTitle) {
-            videoPreview.src = media.url;
-            videoPreview.load();
-            videoPreview.controls = false;
-            currentMediaTitle.textContent = `Viewing: ${media.name} (Image)`;
-            currentObjectURL = media.url;
-        }
-
+                });
                 
                 // Clear video preview area
                 videoPreview.src = "";
