@@ -127,14 +127,21 @@ function handleMediaUpload(files) {
     if (lastFile) {
         // Automatically set the preview to the last uploaded file
         if (lastFile.type === "video") {
+            imagePreview.style.display = "none" // We don't need this when previewing videos
             videoPreview.src = lastFile.url;
             videoPreview.load();
             videoPreview.controls = true;
             currentMediaTitle.textContent = lastFile.name;
         } else if (lastFile.type === "audio") {
+            imagePreview.style.display = "none" // We don't need it here either
             videoPreview.src = "";
             videoPreview.controls = false;
             currentMediaTitle.textContent = `Ready: ${lastFile.name} (Audio)`;
+        } else if (lastFile.type === "image") {
+            videoPreview.style.display = "none";
+            imagePreview.src = lastFile.url;
+            imagePreview.style.display = "block";
+            currentMediaTitle.textContent = 'Ready: ${lastFile.name} (Image)';
         }
         
         currentObjectURL = lastFile.url;
