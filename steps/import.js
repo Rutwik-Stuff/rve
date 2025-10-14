@@ -213,6 +213,7 @@ window.addEventListener("DOMContentLoaded", () => {
     currentMediaTitle = document.getElementById("current-media-title");
     videoPreview = document.getElementById("video-preview");
     videoUpload = document.getElementById("video-upload");
+    imagePreview = document.getElementById("image-preview");
     mediaListContainer = document.getElementById("media-list");
     projectTitleDisplay = document.getElementById("project-title-input");
     projectTitleInput = document.getElementById("project-title-input");
