@@ -121,6 +121,8 @@ function handleMediaUpload(files) {
         const type = fileType.split('/')[0]; // 'video' or 'audio'
         const newMedia = { name: file.name, url, file, type };
         mediaLibrary.push(newMedia);
+        localStorage.setItem("rve-media-library", JSON.stringify(mediaLibrary));
+        localStorage.setItem("rve-current-media", JSON.stringify(lastFile));
         lastFile = newMedia;
     });
 
@@ -214,7 +216,7 @@ function renderMediaLibrary() {
  * The DOMContentLoaded event listener is the entry point for all application logic.
  */
 window.addEventListener("DOMContentLoaded", () => {
-    console.log("RVE editor.js loaded!");
+    console.log("RVE import.js loaded!");
 
     // --- Initialize DOM Elements (CRITICAL STEP) ---
     currentMediaTitle = document.getElementById("current-media-title");
@@ -235,6 +237,37 @@ window.addEventListener("DOMContentLoaded", () => {
         project.title = "Untitled Project";
         projectTitleDisplay.textContent = `Project: ${project.title}`;
     }
+
+    const savedLibrary = localStorage.getItem("rve-media-library");
+const savedMedia = localStorage.getItem("rve-current-media");
+
+if (savedLibrary) {
+    mediaLibrary = JSON.parse(savedLibrary);
+}
+
+if (savedMedia) {
+    const media = JSON.parse(savedMedia);
+    currentObjectURL = media.url;
+
+    if (media.type === "video") {
+        imagePreview.style.display = "none";
+        videoPreview.src = media.url;
+        videoPreview.load();
+        videoPreview.controls = true;
+        currentMediaTitle.textContent = media.name;
+    } else if (media.type === "audio") {
+        imagePreview.style.display = "none";
+        videoPreview.src = "";
+        videoPreview.controls = false;
+        currentMediaTitle.textContent = `Ready: ${media.name} (Audio)`;
+    } else if (media.type === "image") {
+        videoPreview.style.display = "none";
+        imagePreview.src = media.url;
+        imagePreview.style.display = "block";
+        currentMediaTitle.textContent = `Ready: ${media.name} (Image)`;
+    }
+}
+
     
     // Initial render call to show "No clips"
     renderMediaLibrary();
