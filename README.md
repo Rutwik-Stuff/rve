@@ -1,7 +1,7 @@
 # 📽️Rutwik Video Editor (RVE)
 **Release Date:** unconfirmed
 
-**Current Version:** none
+**Current Version:** PRE_RELEASE -50
 
 Rutwik Video Editor is a lightweight video editor that's designed for Windows, MacOS, Linux, and ChromeOS and is completely online! No downloads needed.
 
