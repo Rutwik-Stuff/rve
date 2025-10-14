@@ -12,7 +12,7 @@ Tracking the implementation of modular JS per stage inside `editor.html`.
 ---
 
 ## 🧩 Stage Modules
-- [ ] Create `import.js` for Import logic
+- [ x] Create `import.js` for Import logic
 - [ ] Create `edit.js` for Edit logic
 - [ ] Create `music.js` for Music logic
 - [ ] Create `final-checks.js` for Final Checks logic
@@ -35,9 +35,9 @@ Tracking the implementation of modular JS per stage inside `editor.html`.
 ---
 
 ## 🖱️ Progress Bar Interactivity
-- [ ] Convert progress steps to `<button>` elements
-- [ ] Add click listeners to update active step
-- [ ] (Later) Trigger stage transitions on click
+- [x ] Convert progress steps to `<button>` elements
+- [x ] Add click listeners to update active step
+- [ ]  Trigger stage transitions on click
 
 ---
 
