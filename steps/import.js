@@ -10,6 +10,7 @@ let isProjectIdValid = false; // A boolean flag to check if we loaded a project 
 // --- DOM Element Variables (Declared, but NOT initialized here) ---
 let currentMediaTitle;
 let videoPreview;
+let imagePreview;
 let videoUpload;
 let mediaListContainer;
 let projectTitleDisplay;
