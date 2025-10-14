@@ -5,14 +5,14 @@ Tracking the implementation of modular JS per stage inside `editor.html`.
 ---
 
 ## ✅ Core Setup
-- [x ] Create `editor.html` as the unified shell
-- [ x] Add `?stage=Import` or `data-stage="Import"` to control initial stage
+- [x] Create `editor.html` as the unified shell
+- [x] Add `?stage=Import` or `data-stage="Import"` to control initial stage
 - [ ] Create shared layout: nav, import zone, editor content, progress bar
 
 ---
 
 ## 🧩 Stage Modules
-- [ x] Create `import.js` for Import logic
+- [x] Create `import.js` for Import logic
 - [ ] Create `edit.js` for Edit logic
 - [ ] Create `music.js` for Music logic
 - [ ] Create `final-checks.js` for Final Checks logic
@@ -35,8 +35,8 @@ Tracking the implementation of modular JS per stage inside `editor.html`.
 ---
 
 ## 🖱️ Progress Bar Interactivity
-- [x ] Convert progress steps to `<button>` elements
-- [x ] Add click listeners to update active step
+- [x] Convert progress steps to `<button>` elements
+- [x] Add click listeners to update active step
 - [ ]  Trigger stage transitions on click
 
 ---
