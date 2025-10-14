@@ -10,6 +10,7 @@ Rutwik Video Editor is a lightweight video editor that's designed for Windows, M
 ## 🪶 Already added features
 - Added the dashboard (being worked on)
 - User Account Support (added and works)
+- Imports work (Video, Audio, and Images are HERE!)
 
 ## ✨ Planned Features
 
