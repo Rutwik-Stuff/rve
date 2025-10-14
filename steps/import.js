@@ -95,18 +95,26 @@ function handleMediaUpload(files) {
 
     files.forEach((file) => {
         const fileType = file.type;
-        
-        // Basic file type check
-        if (!fileType.startsWith("video/") && !fileType.startsWith("audio/")) {
-            displayVisualError(`Skipping unsupported file: ${file.name}`);
-            return;
-        }
 
-        const canPlay = videoPreview.canPlayType(fileType);
-        if (canPlay === "" || canPlay === "no") {
-            displayVisualError(`Playback not supported for file: ${file.name}`);
-            return;
-        }
+        // this checks what file it is
+        if (
+            !fileType.startsWith("video/") &&
+            !fileType.startsWith("audio/") &&
+            !fileType.startsWith("image/")
+        ) {
+        displayVisualError(`Skipping unsupported file: ${file.name}`); //shows the error if file can't be played
+        return;
+    }
+
+        // Only run canPlayType for video/audio
+        if (fileType.startsWith("video/") || fileType.startsWith("audio/")) {
+            const canPlay = videoPreview.canPlayType(fileType);
+            if (canPlay === "" || canPlay === "no") {
+                displayVisualError(`Playback not supported for file: ${file.name}`);
+                return;
+    }
+}
+
 
         const url = URL.createObjectURL(file);
         const type = fileType.split('/')[0]; // 'video' or 'audio'
