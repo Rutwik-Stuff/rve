@@ -1,3 +1,5 @@
+//import.js file 
+// This file is used to import media
 // --- Global Variables (Application State) ---
 // These variables store the *state* of our video editor application.
 let mediaLibrary = []; // Array to hold details of all uploaded files (like clips on the timeline).
