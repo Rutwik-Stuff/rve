@@ -121,9 +121,9 @@ function handleMediaUpload(files) {
         const type = fileType.split('/')[0]; // 'video' or 'audio'
         const newMedia = { name: file.name, url, file, type };
         mediaLibrary.push(newMedia);
+        lastFile = newMedia; // ✅ assign first
         localStorage.setItem("rve-media-library", JSON.stringify(mediaLibrary));
         localStorage.setItem("rve-current-media", JSON.stringify(lastFile));
-        lastFile = newMedia;
     });
 
     if (lastFile) {
