@@ -122,8 +122,6 @@ function handleMediaUpload(files) {
         const newMedia = { name: file.name, url, file, type };
         mediaLibrary.push(newMedia);
         lastFile = newMedia; // ✅ assign first
-        localStorage.setItem("rve-media-library", JSON.stringify(mediaLibrary));
-        localStorage.setItem("rve-current-media", JSON.stringify(lastFile));
     });
 
     if (lastFile) {
@@ -238,8 +236,6 @@ window.addEventListener("DOMContentLoaded", () => {
         projectTitleDisplay.textContent = `Project: ${project.title}`;
     }
 
-    const savedLibrary = localStorage.getItem("rve-media-library");
-const savedMedia = localStorage.getItem("rve-current-media");
 
 if (savedLibrary) {
     mediaLibrary = JSON.parse(savedLibrary);
