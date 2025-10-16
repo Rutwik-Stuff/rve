@@ -11,7 +11,7 @@ let isProjectIdValid = false; // A boolean flag to check if we loaded a project 
 let currentMediaTitle;
 let videoPreview;
 let imagePreview;
-let videoUpload;
+let videoUpload; // ok good it is declared
 let mediaListContainer;
 let projectTitleDisplay;
 let projectTitleInput;
@@ -219,7 +219,7 @@ window.addEventListener("DOMContentLoaded", () => {
     // --- Initialize DOM Elements (CRITICAL STEP) ---
     currentMediaTitle = document.getElementById("current-media-title");
     videoPreview = document.getElementById("video-preview");
-    videoUpload = document.getElementById("video-upload");
+    videoUpload = document.getElementById("videoUpload");
     imagePreview = document.getElementById("image-preview");
     mediaListContainer = document.getElementById("media-list");
     projectTitleDisplay = document.getElementById("project-title-input");
