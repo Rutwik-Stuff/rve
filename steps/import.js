@@ -237,14 +237,6 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
 
-if (savedLibrary) {
-    mediaLibrary = JSON.parse(savedLibrary);
-}
-
-if (savedMedia) {
-    const media = JSON.parse(savedMedia);
-    currentObjectURL = media.url;
-
     if (media.type === "video") {
         imagePreview.style.display = "none";
         videoPreview.src = media.url;
