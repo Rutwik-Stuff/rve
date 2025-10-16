@@ -58,17 +58,17 @@ function setProgressStep(stepName) {
 }
 
 /**
- * Handles  loading errors (like unsupported video codecs).
- * @param {HTMLElement} Element - The video element that encountered the error.
+ * Handles media loading errors (like unsupported video codecs).
+ * @param {HTMLMediaElement} mediaElement - The video element that encountered the error.
  */
-window.handleGlobalError = function(Element) {
-    Element.classList.remove('-error');
-    let errorCode = Element.error ? `(Code ${Element.error.code})` : '';
+window.handleGlobalMediaError = function(mediaElement) {
+    mediaElement.classList.remove('media-error');
+    let errorCode = mediaElement.error ? `(Code ${mediaElement.error.code})` : '';
     displayVisualError(`Playback failed for file. Format or codec not supported. ${errorCode}`);
     
-    // Visually mark the video box as broken (using the '-error' CSS style).
-    Element.classList.add('-error');
-    Element.innerHTML = `
+    // Visually mark the video box as broken (using the 'media-error' CSS style).
+    mediaElement.classList.add('media-error');
+    mediaElement.innerHTML = `
         <div style="padding: 20px;">
             <p style="font-size: 1.2em;">Playback Error ⚠️</p>
             <p>File format or codec is not supported by the browser.</p>
@@ -77,16 +77,16 @@ window.handleGlobalError = function(Element) {
 };
 
 
-// ---  Upload Handler (MOVED TO GLOBAL SCOPE) ---
+// --- Media Upload Handler (MOVED TO GLOBAL SCOPE) ---
 /**
- * Processes a list of uploaded files, validates them, and adds them to the Library.
+ * Processes a list of uploaded files, validates them, and adds them to the mediaLibrary.
  * @param {File[]} files - An array of File objects selected by the user.
  */
-function handleUpload(files) {
+function handleMediaUpload(files) {
     if (!files || files.length === 0) return;
 
     // CRITICAL FIX: Check for initialized elements before proceeding.
-    if (!videoPreview || !currentTitle) {
+    if (!videoPreview || !currentMediaTitle) {
         displayVisualError("Editor initialization error. Please try refreshing.");
         return;
     }
@@ -119,9 +119,9 @@ function handleUpload(files) {
 
         const url = URL.createObjectURL(file);
         const type = fileType.split('/')[0]; // 'video' or 'audio'
-        const new = { name: file.name, url, file, type };
-        Library.push(new);
-        lastFile = new; // ✅ assign first
+        const newMedia = { name: file.name, url, file, type };
+        mediaLibrary.push(newMedia);
+        lastFile = newMedia;
     });
 
     if (lastFile) {
@@ -131,28 +131,28 @@ function handleUpload(files) {
             videoPreview.src = lastFile.url;
             videoPreview.load();
             videoPreview.controls = true;
-            currentTitle.textContent = lastFile.name;
+            currentMediaTitle.textContent = lastFile.name;
         } else if (lastFile.type === "audio") {
             imagePreview.style.display = "none" // We don't need it here either
             videoPreview.src = "";
             videoPreview.controls = false;
-            currentTitle.textContent = `Ready: ${lastFile.name} (Audio)`;
+            currentMediaTitle.textContent = `Ready: ${lastFile.name} (Audio)`;
         } else if (lastFile.type === "image") {
             videoPreview.style.display = "none";
             imagePreview.src = lastFile.url;
             imagePreview.style.display = "block";
-            currentTitle.textContent = 'Ready: ${lastFile.name} (Image)';
+            currentMediaTitle.textContent = 'Ready: ${lastFile.name} (Image)';
         }
         
         currentObjectURL = lastFile.url;
     }
 
-    renderLibrary();
+    renderMediaLibrary();
 }
 
-// ---  Library Renderer (MOVED TO GLOBAL SCOPE) ---
+// --- Media Library Renderer (MOVED TO GLOBAL SCOPE) ---
 /**
- * Clears and redraws the list of  clips in the sidebar.
+ * Clears and redraws the list of media clips in the sidebar.
  */
 function renderMediaLibrary() {
     // CRITICAL FIX: Check for initialized elements before proceeding.
@@ -190,6 +190,7 @@ function renderMediaLibrary() {
                 videoPreview.src = media.url;
                 videoPreview.load();
                 videoPreview.controls = true;
+                currentMediaTitle.textContent = media.name;
                 currentObjectURL = media.url;
             } else if (media.type === "audio" && videoPreview && currentMediaTitle) {
                 const audio = new Audio(media.url);
@@ -213,12 +214,12 @@ function renderMediaLibrary() {
  * The DOMContentLoaded event listener is the entry point for all application logic.
  */
 window.addEventListener("DOMContentLoaded", () => {
-    console.log("RVE import.js loaded!");
+    console.log("RVE editor.js loaded!");
 
     // --- Initialize DOM Elements (CRITICAL STEP) ---
     currentMediaTitle = document.getElementById("current-media-title");
     videoPreview = document.getElementById("video-preview");
-    videoUpload = document.getElementById("videoUpload");
+    videoUpload = document.getElementById("video-upload");
     imagePreview = document.getElementById("image-preview");
     mediaListContainer = document.getElementById("media-list");
     projectTitleDisplay = document.getElementById("project-title-input");
@@ -234,27 +235,6 @@ window.addEventListener("DOMContentLoaded", () => {
         project.title = "Untitled Project";
         projectTitleDisplay.textContent = `Project: ${project.title}`;
     }
-
-
-    if (media.type === "video") {
-        imagePreview.style.display = "none";
-        videoPreview.src = media.url;
-        videoPreview.load();
-        videoPreview.controls = true;
-        currentMediaTitle.textContent = media.name;
-    } else if (media.type === "audio") {
-        imagePreview.style.display = "none";
-        videoPreview.src = "";
-        videoPreview.controls = false;
-        currentMediaTitle.textContent = `Ready: ${media.name} (Audio)`;
-    } else if (media.type === "image") {
-        videoPreview.style.display = "none";
-        imagePreview.src = media.url;
-        imagePreview.style.display = "block";
-        currentMediaTitle.textContent = `Ready: ${media.name} (Image)`;
-    }
-}
-
     
     // Initial render call to show "No clips"
     renderMediaLibrary();
