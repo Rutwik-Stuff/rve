@@ -58,17 +58,17 @@ function setProgressStep(stepName) {
 }
 
 /**
- * Handles media loading errors (like unsupported video codecs).
- * @param {HTMLMediaElement} mediaElement - The video element that encountered the error.
+ * Handles  loading errors (like unsupported video codecs).
+ * @param {HTMLElement} Element - The video element that encountered the error.
  */
-window.handleGlobalMediaError = function(mediaElement) {
-    mediaElement.classList.remove('media-error');
-    let errorCode = mediaElement.error ? `(Code ${mediaElement.error.code})` : '';
+window.handleGlobalError = function(Element) {
+    Element.classList.remove('-error');
+    let errorCode = Element.error ? `(Code ${Element.error.code})` : '';
     displayVisualError(`Playback failed for file. Format or codec not supported. ${errorCode}`);
     
-    // Visually mark the video box as broken (using the 'media-error' CSS style).
-    mediaElement.classList.add('media-error');
-    mediaElement.innerHTML = `
+    // Visually mark the video box as broken (using the '-error' CSS style).
+    Element.classList.add('-error');
+    Element.innerHTML = `
         <div style="padding: 20px;">
             <p style="font-size: 1.2em;">Playback Error ⚠️</p>
             <p>File format or codec is not supported by the browser.</p>
@@ -77,16 +77,16 @@ window.handleGlobalMediaError = function(mediaElement) {
 };
 
 
-// --- Media Upload Handler (MOVED TO GLOBAL SCOPE) ---
+// ---  Upload Handler (MOVED TO GLOBAL SCOPE) ---
 /**
- * Processes a list of uploaded files, validates them, and adds them to the mediaLibrary.
+ * Processes a list of uploaded files, validates them, and adds them to the Library.
  * @param {File[]} files - An array of File objects selected by the user.
  */
-function handleMediaUpload(files) {
+function handleUpload(files) {
     if (!files || files.length === 0) return;
 
     // CRITICAL FIX: Check for initialized elements before proceeding.
-    if (!videoPreview || !currentMediaTitle) {
+    if (!videoPreview || !currentTitle) {
         displayVisualError("Editor initialization error. Please try refreshing.");
         return;
     }
@@ -119,9 +119,9 @@ function handleMediaUpload(files) {
 
         const url = URL.createObjectURL(file);
         const type = fileType.split('/')[0]; // 'video' or 'audio'
-        const newMedia = { name: file.name, url, file, type };
-        mediaLibrary.push(newMedia);
-        lastFile = newMedia; // ✅ assign first
+        const new = { name: file.name, url, file, type };
+        Library.push(new);
+        lastFile = new; // ✅ assign first
     });
 
     if (lastFile) {
@@ -131,28 +131,28 @@ function handleMediaUpload(files) {
             videoPreview.src = lastFile.url;
             videoPreview.load();
             videoPreview.controls = true;
-            currentMediaTitle.textContent = lastFile.name;
+            currentTitle.textContent = lastFile.name;
         } else if (lastFile.type === "audio") {
             imagePreview.style.display = "none" // We don't need it here either
             videoPreview.src = "";
             videoPreview.controls = false;
-            currentMediaTitle.textContent = `Ready: ${lastFile.name} (Audio)`;
+            currentTitle.textContent = `Ready: ${lastFile.name} (Audio)`;
         } else if (lastFile.type === "image") {
             videoPreview.style.display = "none";
             imagePreview.src = lastFile.url;
             imagePreview.style.display = "block";
-            currentMediaTitle.textContent = 'Ready: ${lastFile.name} (Image)';
+            currentTitle.textContent = 'Ready: ${lastFile.name} (Image)';
         }
         
         currentObjectURL = lastFile.url;
     }
 
-    renderMediaLibrary();
+    renderLibrary();
 }
 
-// --- Media Library Renderer (MOVED TO GLOBAL SCOPE) ---
+// ---  Library Renderer (MOVED TO GLOBAL SCOPE) ---
 /**
- * Clears and redraws the list of media clips in the sidebar.
+ * Clears and redraws the list of  clips in the sidebar.
  */
 function renderMediaLibrary() {
     // CRITICAL FIX: Check for initialized elements before proceeding.
@@ -190,7 +190,6 @@ function renderMediaLibrary() {
                 videoPreview.src = media.url;
                 videoPreview.load();
                 videoPreview.controls = true;
-                currentMediaTitle.textContent = media.name;
                 currentObjectURL = media.url;
             } else if (media.type === "audio" && videoPreview && currentMediaTitle) {
                 const audio = new Audio(media.url);
