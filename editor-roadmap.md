@@ -8,6 +8,7 @@ Tracking the implementation of modular JS per stage inside `editor.html`.
 - [x] Create `editor.html` as the unified shell
 - [x] Add `?stage=Import` or `data-stage="Import"` to control initial stage
 - [ ] Create shared layout: nav, import zone, editor content, progress bar
+- [x] Fix RVE from almost breaking using the `rve-backup ` branch
 
 ---
 
