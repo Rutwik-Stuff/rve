@@ -64,8 +64,5 @@ function setProgressStep(stepName) {
   });
 }
 
-setProgressStep("Import");
-
-
 // Initialize to Import
 setProgressStep("Import");
