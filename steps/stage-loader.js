@@ -35,22 +35,22 @@ function getCurrentStage() {
 function loadStage(stage) {
   switch (stage) {
     case "Import":
-      import("./steps/import.js");
+      import("/import.js");
       break;
     case "Edit":
-      import("./steps/edit.js");
+      import("/steps/edit.js");
       break;
     case "Music":
-      import("./steps/music.js");
+      import("/steps/music.js");
       break;
     case "Final Checks":
-      import("./steps/final.js");
+      import("/steps/final.js");
       break;
     case "Export":
-      import("./steps/export.js");
+      import("/steps/export.js");
       break;
     case "Upload":
-      import("./steps/upload.js");
+      import("/steps/upload.js");
       break;
     default:
       console.warn(`Unknown stage: ${stage}`);
