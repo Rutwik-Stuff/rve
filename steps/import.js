@@ -351,5 +351,5 @@ export function initStage() {
   // Initial render
   renderMediaLibrary();
   setProgressStep("Import");
-}}
+}
 
