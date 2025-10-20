@@ -23,9 +23,9 @@ Tracking the implementation of modular JS per stage inside `editor.html`.
 ---
 
 ## 🔄 Stage Loader
-- [ ] Create `stage-loader.js` to detect current stage
-- [ ] Dynamically load correct JS file based on `?stage=` or `data-stage`
-- [ ] Fallback to Import if no stage is specified
+- [x] Create `stage-loader.js` to detect current stage
+- [x] Dynamically load correct JS file based on `?stage=` or `data-stage`
+- [ ] Show error message in console if unknown or can't switch
 
 ---
 
@@ -44,6 +44,7 @@ Tracking the implementation of modular JS per stage inside `editor.html`.
 
 ## 🧪 Testing & Validation
 - [ ] Test each stage module independently
+- [x] Test import.js
 - [ ] Confirm shared state persists across stage switches
 - [ ] Validate error handling and unsupported formats (e.g. `.mkv`)
 - [ ] Confirm layout integrity across all stages
