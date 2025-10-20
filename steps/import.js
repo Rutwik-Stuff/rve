@@ -314,3 +314,19 @@ if (saveBtn) {
 
     setProgressStep("Import");
 });
+
+//fix for the stage-loader.js file
+export function initStage() {
+  console.log("🔧 initStage() called from import.js");
+  console.log("Welcome to RVE, let's hope you don't get 49,000 errors today!");
+
+  // Optional: visually confirm stage activation
+  const zone = document.getElementById("stage-zone");
+  if (zone) {
+    zone.textContent = "Import tab active";
+  }
+
+  // Optional: re-run any setup logic if needed
+  renderMediaLibrary();
+}
+
