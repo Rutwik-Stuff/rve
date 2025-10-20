@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="page-title">Edit Mode - Rutwik Video Editor</title>
+  <link rel="stylesheet" href="/rve/style.css"/>
+</head>
+<body>
+
+  <!-- Error alert box -->
+  <div id="rve-error-alert" style="display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background: #ff5733; color: white; padding: 10px 20px; border-radius: 4px; z-index: 9999;"></div>
+
+  <!-- Navigation bar -->
+  <nav class="editor-nav glass">
+    <div class="nav-left">
+      <a href="/rve/dashboard.html" id="logo-link">
+        <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo" />
+      </a>
+      <span class="rve-title">RVE</span>
+    </div>
+    <div class="nav-center">
+      <input type="text" id="project-title-input" placeholder="Project File Name" />
+      <button class="button" id="save-btn">Save Project</button>
+    </div>
+    <div class="nav-right">
+      <button class="button" id="undo-btn">Undo</button>
+      <button class="button" id="redo-btn">Redo</button>
+      <button class="button" id="next-btn">Next</button>
+    </div>
+  </nav>
+
+  <div class="editor-wrapper">
+    <!-- Edit Zone -->
+    <section class="glass edit-zone">
+      <!-- Left Side: Timeline Editor -->
+      <div class="upload-left">
+        <h3 id="timeline-title">Timeline Editor</h3>
+        <div id="timeline-container" class="drop-area">
+          <p>Clips will be rendered here</p>
+        </div>
+        <video id="timeline-preview" controls></video>
+        <div id="edit-error-box" class="error-box" style="display: none;"></div>
+      </div>
+
+      <!-- Right Side: Clip Tools -->
+      <aside class="media-library glass">
+        <h3>Clip Tools</h3>
+        <ul class="media-list">
+          <li><button class="button" id="split-btn">Split Clip</button></li>
+          <li><button class="button" id="trim-btn">Trim</button></li>
+          <li><button class="button" id="delete-btn">Delete</button></li>
+        </ul>
+      </aside>
+    </section>
+
+    <!-- Progress bar -->
+    <footer class="progress-footer glass">
+      <div class="progress-bar">
+        <button class="progress-step" data-step="Import">Import</button>
+        <button class="progress-step active" data-step="Edit">Edit</button>
+        <button class="progress-step" data-step="Music">Music</button>
+        <button class="progress-step" data-step="Final Checks">Final Checks</button>
+        <button class="progress-step" data-step="Export">Export</button>
+        <button class="progress-step" data-step="Upload">Upload</button>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Load edit.js independently -->
+  <script type="module" src="/rve/steps/edit.js"></script>
+  <script src="/rve/required.js"></script>
+</body>
+</html>
