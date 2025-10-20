@@ -1,58 +1,69 @@
 // stage-loader.js
-// Detects current stage and loads corresponding logic module
+// Handles dynamic stage switching for RVE
 
 document.addEventListener("DOMContentLoaded", () => {
   const stageButtons = document.querySelectorAll(".progress-step");
-  const currentStage = getCurrentStage();
+  const currentStage = getActiveStage();
 
-  console.log("stage-loader.js has loaded!");
-  console.log("(c) 2025 Rutwik Stuff Branding Umbrella, Rutwik Video Editor");
-  console.log(`Stage Loader: Current stage is ${currentStage}`);
+  console.log("Stage Loader has loaded!");
+  console.log("©2025 Rutwik Stuff Branding Umbrella. All Rights Reserved");
+  console.log("Rutwik Video Editor (RVE)")
+  console.log(`Current Stage: ${currentStage}`);
   loadStage(currentStage);
 
-  // Optional: Listen for stage changes
   stageButtons.forEach(button => {
     button.addEventListener("click", () => {
       const stage = button.dataset.step;
       console.log(`Switching to stage: ${stage}`);
+      setActiveStage(stage);
       loadStage(stage);
     });
   });
 });
 
 /**
- * Gets the current stage from active button or default to "Import"
+ * Gets the active stage from progress bar
  */
-function getCurrentStage() {
+function getActiveStage() {
   const active = document.querySelector(".progress-step.active");
   return active ? active.dataset.step : "Import";
 }
 
 /**
- * Loads the corresponding JS module for the given stage
- * @param {string} stage - The name of the stage (e.g., "Import", "Edit")
+ * Sets the active stage visually
+ */
+function setActiveStage(stageName) {
+  document.querySelectorAll(".progress-step").forEach(step => {
+    step.classList.toggle("active", step.dataset.step === stageName);
+  });
+}
+
+/**
+ * Dynamically loads the module for the given stage
  */
 function loadStage(stage) {
-  switch (stage) {
-    case "Import":
-      import("/import.js");
-      break;
-    case "Edit":
-      import("/steps/edit.js");
-      break;
-    case "Music":
-      import("/steps/music.js");
-      break;
-    case "Final Checks":
-      import("/steps/final.js");
-      break;
-    case "Export":
-      import("/steps/export.js");
-      break;
-    case "Upload":
-      import("/steps/upload.js");
-      break;
-    default:
-      console.warn(`Unknown stage: ${stage}`);
+  const basePath = "/rve/steps/";
+  const stageMap = {
+    "Import": "import.js",
+    "Edit": "edit.js",
+    "Music": "music.js",
+    "Final Checks": "final-checks.js",
+    "Export": "export.js",
+    "Upload": "upload.js"
+  };
+
+  const modulePath = stageMap[stage];
+  if (!modulePath) {
+    console.warn(`⚠️ Unknown stage: ${stage}`);
+    return;
   }
+
+  import(`${basePath}${modulePath}`)
+    .then(mod => {
+      console.log(`✅ ${stage} module loaded`);
+      if (mod.initStage) mod.initStage(); // optional hook
+    })
+    .catch(err => {
+      console.error(`❌ Failed to load ${stage} module`, err);
+    });
 }
