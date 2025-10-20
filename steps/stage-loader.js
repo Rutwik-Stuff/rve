@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const stageButtons = document.querySelectorAll(".progress-step");
   const currentStage = getActiveStage();
 
-  console.log("Stage Loader has loadede!");
+  console.log("Stage Loader has loaded!");
   console.log("©2025 Rutwik Stuff Branding Umbrella. All Rights Reserved");
   console.log("Rutwik Video Editor (RVE)")
   console.log(`Current Stage: ${currentStage}`);
