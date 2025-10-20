@@ -320,13 +320,36 @@ export function initStage() {
   console.log("🔧 initStage() called from import.js");
   console.log("Welcome to RVE, let's hope you don't get 49,000 errors today!");
 
-  // Optional: visually confirm stage activation
-  const zone = document.getElementById("stage-zone");
-  if (zone) {
-    zone.textContent = "Import tab active";
+  // Re-initialize DOM elements
+  currentMediaTitle = document.getElementById("current-media-title");
+  videoPreview = document.getElementById("video-preview");
+  videoUpload = document.getElementById("videoUpload");
+  imagePreview = document.getElementById("image-preview");
+  mediaListContainer = document.getElementById("media-list");
+  projectTitleDisplay = document.getElementById("project-title-input");
+  projectTitleInput = document.getElementById("project-title-input");
+  navTitleInput = document.getElementById("project-title-input");
+  uploadBtn = document.getElementById("upload-btn");
+  dropArea = document.getElementById("drag-drop-area");
+  mediaCountDisplay = document.getElementById("media-count");
+
+  // Rebind upload button logic
+  if (uploadBtn && videoUpload) {
+    uploadBtn.addEventListener("click", () => {
+      videoUpload.click();
+    });
+
+    videoUpload.addEventListener("change", () => {
+      const files = Array.from(videoUpload.files);
+      handleMediaUpload(files);
+    });
   }
 
-  // Optional: re-run any setup logic if needed
+  // Optional: rebind drag-drop logic if needed
+  // Optional: rebind save button logic if needed
+
+  // Initial render
   renderMediaLibrary();
-}
+  setProgressStep("Import");
+}}
 
