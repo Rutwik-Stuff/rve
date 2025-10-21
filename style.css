@@ -635,3 +635,15 @@ footer.progress-footer {
 .media-list li:hover {
   background: var(--card-hover-bg);
 }
+
+.clip-tool-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.clip-tool-row .button {
+  flex: 1;
+  text-align: center;
+}
