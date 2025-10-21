@@ -637,11 +637,19 @@ footer.progress-footer {
 }
 
 .clip-tool-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
   margin-top: 1rem;
 }
+
+.clip-tool {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
 
 .clip-tool-row .button {
   flex: 1;
