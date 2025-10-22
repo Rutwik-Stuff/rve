@@ -41,8 +41,13 @@
       </div>
 
       <!-- Clip Tools -->
-      <section class="glass edit-zone">
-  <div class="upload-left">...</div>
+     <section class="glass edit-zone">
+  <div class="upload-left">
+    <h3 id="timeline-title">Timeline Preview</h3>
+    <video id="timeline-preview" controls></video>
+    <img id="image-preview" style="display: none; max-width: 100%; height: auto;" />
+    <div id="edit-error-box" class="error-box" style="display: none;"></div>
+  </div>
 
   <aside class="media-library glass">
     <h3>Clip Tools</h3>
@@ -53,6 +58,7 @@
     </div>
   </aside>
 </section>
+
 
     <!-- Progress bar -->
     <footer class="progress-footer glass">
