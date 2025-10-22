@@ -367,6 +367,72 @@ body.dark-mode th {
   }
 }
 
+/* Dropdown container */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Dropdown trigger (e.g. button or link) */
+.dropdown-toggle {
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.dropdown-toggle:hover {
+  background: var(--button-hover-bg);
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(18,58,89,0.08);
+  backdrop-filter: blur(10px) saturate(1.2);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+  padding: 0.5rem 0;
+  display: none;
+  z-index: 999;
+}
+
+/* Dropdown items */
+.dropdown-menu a {
+  display: block;
+  padding: 0.6em 1.2em;
+  color: var(--text-light);
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+}
+.dropdown-menu a:hover {
+  background: var(--button-hover-bg);
+  color: #fff;
+  border-radius: 6px;
+}
+
+/* Show dropdown on hover (optional) */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* Dark mode support */
+body:dark-mode .dropdown-menu a {
+  color: var(--text-light);
+}
+body:dark-mode .dropdown-menu a:hover {
+  background: var(--button-bg);
+}
+
+
 
 /* NewUI Login Extension Package starts here */
 /* Loginbox styling */
