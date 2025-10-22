@@ -721,3 +721,9 @@ footer.progress-footer {
   flex: 1;
   text-align: center;
 }
+
+.edit-zone {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+}
