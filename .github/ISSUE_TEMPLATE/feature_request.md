@@ -1,32 +1,20 @@
-## 🌟 Feature Summary  
-_What’s the idea? Describe the feature in one or two sentences._
+---
+name: Feature request
+about: Suggest an idea for this project
+title: ''
+labels: ''
+assignees: ''
 
 ---
 
-## 🔍 Problem Statement  
-_What problem does this feature solve? Why is it needed?_
+**Is your feature request related to a problem? Please describe.**
+A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]
 
----
+**Describe the solution you'd like**
+A clear and concise description of what you want to happen.
 
-## 🧙 Proposed Solution  
-_Describe how the feature should work. Include UI ideas, workflow changes, or anything else important._
+**Describe alternatives you've considered**
+A clear and concise description of any alternative solutions or features you've considered.
 
----
-
-## 🖼️ Visuals or Mockups (Optional)  
-_If you have sketches, diagrams, or screenshots, include them here._
-
----
-
-## 🧾 Technical Notes (Optional)  
-_Any implementation thoughts, libraries to consider, or compatibility concerns?_
-
----
-
-## 🧪 Alternatives Considered  
-_If you thought of other ways to solve this, list them here._
-
----
-
-## 🧙 Contributor Notes  
-_Optional: Why this feature matters to you, or how it fits into RVE._
+**Additional context**
+Add any other context or screenshots about the feature request here.
