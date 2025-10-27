@@ -43,19 +43,13 @@
     </aside>
 
     <!-- Central Editing Zone -->
-    <section class="media-preview">
+    <section class="media-preview glass"> <!-- wow it has both! -->
       <div class="preview-area">
-        <section class="glass">
     <video id="video-preview" controls></video>
     <img id="image-preview" style="display: none; max-width: 100%; height: auto;"/>        
           <span class="aspect-ratio">16:9</span>
-        </section>
       </div>
 
-      <div class="timeline-area">
-        <p>timeline goes here</p>
-        <span class="time-indicator">time goes here</span>
-      </div>
 
       <div class="playback-controls">
         <button id="rewind-btn">&lt;&lt;</button>
@@ -64,7 +58,12 @@
         <button id="forward5-btn">5s &gt;</button>
         <button id="fastforward-btn">&gt;&gt;</button>
       </div>
-    </section>
+    </section> <!-- ends media-preview -->
+
+      <div class="timeline-area">
+        <p>timeline goes here</p>
+        <span class="time-indicator">time goes here</span>
+      </div>
 
     <!-- Right Sidebar: Editing Tools -->
     <aside class="editing-tools">
