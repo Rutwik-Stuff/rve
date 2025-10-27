@@ -721,3 +721,23 @@ footer.progress-footer {
   flex: 1;
   text-align: center;
 }
+
+.edit-tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.media-tools,
+.editing-tools {
+  width: 200px;
+  flex-shrink: 0;
+}
+
+.media-preview {
+  flex: 1;
+  min-width: 0;
+}
+
