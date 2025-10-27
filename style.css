@@ -732,12 +732,33 @@ footer.progress-footer {
 
 .media-tools,
 .editing-tools {
+  position: fixed;
+  top: 0;
+  bottom: 0;
   width: 200px;
-  flex-shrink: 0;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+  z-index: 10;
 }
 
-.media-preview {
-  flex: 1;
-  min-width: 0;
+.media-tools {
+  left: 0;
 }
+
+.editing-tools {
+  right: 0;
+}
+
+.media-tools.glass,
+.editing-tools.glass {
+  background: var(--glass-bg);
+  border-right: 1.5px solid var(--glass-border);
+  border-left: 1.5px solid var(--glass-border);
+  backdrop-filter: blur(13px) saturate(1.2);
+  box-shadow: 0 0 32px rgba(18, 58, 89, 0.12);
+}
+
 
