@@ -719,3 +719,62 @@ footer.progress-footer {
 .media-list li:hover {
   background: var(--card-hover-bg);
 }
+
+.clip-tool-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.clip-tool {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+
+.clip-tool-row .button {
+  flex: 1;
+  text-align: center;
+}
+
+.edit-tab {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.media-tools,
+.editing-tools {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 200px;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 1rem;
+  z-index: 10;
+}
+
+.media-tools {
+  left: 0;
+}
+
+.editing-tools {
+  right: 0;
+}
+
+.media-tools.glass,
+.editing-tools.glass {
+  background: var(--glass-bg);
+  border-right: 1.5px solid var(--glass-border);
+  border-left: 1.5px solid var(--glass-border);
+  backdrop-filter: blur(13px) saturate(1.2);
+  box-shadow: 0 0 32px rgba(18, 58, 89, 0.12);
+}
