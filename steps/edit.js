@@ -1,3 +1,11 @@
+//declaring test variables
+let currentMediaTitle;
+let videoPreview;
+let mediaLibrary[];
+let project[];
+let projectTitleInput;
+let projectTitleDisplay;
+
 //THIS IS A TEMPORARY JS FILE TO SEE IF THE UI WILL WORK
 export function initStage() {
   console.log("RVE Edit Tab Loaded!");
