@@ -1,38 +1,28 @@
-//declaring test variables
-let currentMediaTitle;
-let videoPreview;
-let mediaLibrary[];
-let project[];
-let projectTitleInput;
-let projectTitleDisplay;
-
-//THIS IS A TEMPORARY JS FILE TO SEE IF THE UI WILL WORK
 export function initStage() {
-  console.log("RVE Edit Tab Loaded!");
-  console.log("This is on the edit-functions branch, stuff could break here");
-  console.log("have issues? go to https://github.com/rutwik-stuff/rve/issues for bug reporting");
-  console.error("x009888r67 Please refer to https://rutwik-stuff.github.io/rve/errors");
+  console.log("🧬 RVE Edit Tab Initialized (edit-functions branch)");
 
+  // Timeline container setup (placeholder removed)
   const timeline = document.getElementById("timeline-container");
   if (timeline) {
-    timeline.innerHTML += `<p>The timeline will be here... sometime in the next year (hopefully)</p>`;
+    timeline.innerHTML = ""; // Ready for actual timeline rendering
   }
 
+  // Button listeners (logic to be implemented later)
   document.getElementById("split-btn")?.addEventListener("click", () => {
-    console.log("You clicked the snip button, it doesn't work yet.");
+    console.warn("Split function not implemented yet.");
   });
 
   document.getElementById("trim-btn")?.addEventListener("click", () => {
-    console.log("You clicked the trim button, it doesnt work yet.");
+    console.warn("Trim function not implemented yet.");
   });
 
   document.getElementById("delete-btn")?.addEventListener("click", () => {
-    console.log("oof you tried to delete something, it's not here yet.");
+    console.warn("Delete function not implemented yet.");
   });
 
   document.getElementById("next-btn")?.addEventListener("click", () => {
     console.log("🍭 Next button clicked from Edit tab");
-    // Placeholder for stage-loader transition or redirect
+    // TODO: Implement stage-loader transition
   });
 }
 
