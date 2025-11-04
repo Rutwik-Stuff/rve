@@ -778,3 +778,21 @@ footer.progress-footer {
   backdrop-filter: blur(13px) saturate(1.2);
   box-shadow: 0 0 32px rgba(18, 58, 89, 0.12);
 }
+
+/* Aspect Ratios */
+.preview-zone.aspect-16-9 {
+  aspect-ratio: 16 / 9;
+}
+
+.preview-zone.aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.preview-zone.aspect-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+.preview-zone.aspect-9-16 {
+  aspect-ratio: 9 / 16;
+}
+
