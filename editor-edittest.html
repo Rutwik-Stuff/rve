@@ -49,13 +49,17 @@
     <img id="image-preview" style="display: none; max-width: 100%; height: auto;"/>        
       </div>
 
-      <div class="dropdown-menu">
-  <a href="#" onclick="setAspect('16-9')">16:9</a>
-  <a href="#" onclick="setAspect('4-3')">4:3</a>
-  <a href="#" onclick="setAspect('1-1')">1:1</a>
-  <a href="#" onclick="setAspect('21-9')">21:9</a>
-  <a href="#" onclick="setAspect('9-16')">9:16</a>
+      <div class="dropdown">
+  <button class="dropdown-toggle">Aspect Ratio</button>
+  <div class="dropdown-menu">
+    <a href="#" onclick="setAspect('16-9')">16:9</a>
+    <a href="#" onclick="setAspect('4-3')">4:3</a>
+    <a href="#" onclick="setAspect('1-1')">1:1</a>
+    <a href="#" onclick="setAspect('21-9')">21:9</a>
+    <a href="#" onclick="setAspect('9-16')">9:16</a>
+  </div>
 </div>
+
 
 
 
@@ -108,6 +112,16 @@
     preview.classList.add(`aspect-${ratio}`);
     console.log(`📐 Aspect ratio changed to ${ratio}`);
   }
+</script>
+
+<!-- script to make the dropdown click instead of hover -->
+<script>
+  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const menu = toggle.nextElementSibling;
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    });
+  });
 </script>
 
 
