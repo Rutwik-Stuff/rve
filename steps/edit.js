@@ -23,6 +23,23 @@ export function initStage() {
   document.getElementById("next-btn")?.addEventListener("click", () => {
     console.log("🍭 Next button clicked from Edit tab");
     // TODO: Implement stage-loader transition
+
+    //aspect ratios
+    const aspectDropdown = document.getElementById("aspect-dropdown");
+const previewZone = document.querySelector(".preview-zone");
+
+aspectDropdown.addEventListener("change", () => {
+  const selected = aspectDropdown.value;
+
+  // Remove all aspect classes
+  previewZone.classList.remove("aspect-16-9", "aspect-4-3", "aspect-1-1", "aspect-9-16");
+
+  // Add the selected one
+  previewZone.classList.add(`aspect-${selected}`);
+
+  console.log(`📐 Aspect ratio changed to ${selected}`);
+});
+
   });
 }
 
