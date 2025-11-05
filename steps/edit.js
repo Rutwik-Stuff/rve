@@ -9,6 +9,7 @@ export function initStage() {
 
   //aspect ratio logic
   function setAspect(ratio) {
+    window.setAspect = setAspect; //so that in-line HTML will still work.
     const video = document.getElementById('video-preview');
     const image = document.getElementById('image-preview');
 
