@@ -9,11 +9,20 @@ export function initStage() {
 
   //aspect ratio logic
   function setAspect(ratio) {
-    const preview = document.querySelector('.preview-zone');
-    preview.classList.remove('aspect-16-9', 'aspect-4-3', 'aspect-1-1', 'aspect-21-9', 'aspect-9-16');
-    preview.classList.add(`aspect-${ratio}`);
-    console.log(`📐 Aspect ratio changed to ${ratio}`);
-  }
+    const video = document.getElementById('video-preview');
+    const image = document.getElementById('image-preview');
+
+    const classes = ['aspect-16-9', 'aspect-4-3', 'aspect-1-1', 'aspect-21-9', 'aspect-9-16'];
+
+    video.classList.remove(...classes);
+    image.classList.remove(...classes);
+
+    video.classList.add(`aspect-${ratio}`);
+    image.classList.add(`aspect-${ratio}`);
+
+    console.log(`Aspect ratio changed to ${ratio} succsefully!`);
+}
+
 
   //dropdown logic for the aspect ratios
   document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
