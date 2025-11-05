@@ -779,19 +779,36 @@ footer.progress-footer {
   box-shadow: 0 0 32px rgba(18, 58, 89, 0.12);
 }
 
-/* Aspect Ratios */
-.preview-zone.aspect-16-9 {
+#video-preview,
+#image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.aspect-16-9 #video-preview,
+.aspect-16-9 #image-preview {
   aspect-ratio: 16 / 9;
 }
 
-.preview-zone.aspect-4-3 {
+.aspect-4-3 #video-preview,
+.aspect-4-3 #image-preview {
   aspect-ratio: 4 / 3;
 }
 
-.preview-zone.aspect-1-1 {
+.aspect-1-1 #video-preview,
+.aspect-1-1 #image-preview {
   aspect-ratio: 1 / 1;
 }
 
-.preview-zone.aspect-9-16 {
+.aspect-21-9 #video-preview,
+.aspect-21-9 #image-preview {
+  aspect-ratio: 21 / 9;
+}
+
+.aspect-9-16 #video-preview,
+.aspect-9-16 #image-preview {
   aspect-ratio: 9 / 16;
 }
+
