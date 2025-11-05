@@ -104,25 +104,5 @@
   </footer>
 </body>
 
-  <!-- yeah now we have to set aspect ratios -->
-  <script>
-  function setAspect(ratio) {
-    const preview = document.querySelector('.preview-zone');
-    preview.classList.remove('aspect-16-9', 'aspect-4-3', 'aspect-1-1', 'aspect-21-9', 'aspect-9-16');
-    preview.classList.add(`aspect-${ratio}`);
-    console.log(`📐 Aspect ratio changed to ${ratio}`);
-  }
-</script>
-
-<!-- script to make the dropdown click instead of hover -->
-<script>
-  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const menu = toggle.nextElementSibling;
-      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
-    });
-  });
-</script>
-
 
 </html>
