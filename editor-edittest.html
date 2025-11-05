@@ -43,25 +43,22 @@
     </aside>
 
     <!-- Central Editing Zone -->
-    <section class="media-preview preview-zone glass"> <!-- wow it has both! -->
-      <div class="preview-area">
+    <section class="media-preview preview-zone glass">
+  <div class="preview-area">
     <video id="video-preview" controls></video>
-    <img id="image-preview" style="display: none; max-width: 100%; height: auto;"/>        
-      </div>
-
-      <div class="dropdown">
-  <button class="dropdown-toggle">Aspect Ratio</button>
-  <div class="dropdown-menu">
-    <a href="#" onclick="setAspect('16-9')">16:9</a>
-    <a href="#" onclick="setAspect('4-3')">4:3</a>
-    <a href="#" onclick="setAspect('1-1')">1:1</a>
-    <a href="#" onclick="setAspect('21-9')">21:9</a>
-    <a href="#" onclick="setAspect('9-16')">9:16</a>
+    <img id="image-preview" style="display: none;" />
   </div>
-</div>
 
-
-
+  <div class="dropdown">
+    <button class="dropdown-toggle">Aspect Ratio</button>
+    <div class="dropdown-menu">
+      <a href="#" onclick="setAspect('16-9')">16:9</a>
+      <a href="#" onclick="setAspect('4-3')">4:3</a>
+      <a href="#" onclick="setAspect('1-1')">1:1</a>
+      <a href="#" onclick="setAspect('21-9')">21:9</a>
+      <a href="#" onclick="setAspect('9-16')">9:16</a>
+    </div>
+  </div>
 
       <div class="playback-controls">
         <button id="rewind-btn">&lt;&lt;</button>
