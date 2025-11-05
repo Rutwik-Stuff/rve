@@ -9,7 +9,6 @@ export function initStage() {
 
   //aspect ratio logic
   function setAspect(ratio) {
-    window.setAspect = setAspect; //so that in-line HTML will still work.
     const video = document.getElementById('video-preview');
     const image = document.getElementById('image-preview');
 
@@ -33,6 +32,8 @@ export function initStage() {
     });
   });
 
+   window.setAspect = setAspect; //so that in-line HTML will still work.
+  
   // Button listeners (logic to be implemented later)
   document.getElementById("split-btn")?.addEventListener("click", () => {
     console.warn("Split function not implemented yet.");
