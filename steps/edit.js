@@ -7,6 +7,22 @@ export function initStage() {
     timeline.innerHTML = ""; // Ready for actual timeline rendering
   }
 
+  //aspect ratio logic
+  function setAspect(ratio) {
+    const preview = document.querySelector('.preview-zone');
+    preview.classList.remove('aspect-16-9', 'aspect-4-3', 'aspect-1-1', 'aspect-21-9', 'aspect-9-16');
+    preview.classList.add(`aspect-${ratio}`);
+    console.log(`📐 Aspect ratio changed to ${ratio}`);
+  }
+
+  //dropdown logic for the aspect ratios
+  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const menu = toggle.nextElementSibling;
+      menu.style.display = (menu.style.display === 'block') ? 'none' : 'block';
+    });
+  });
+
   // Button listeners (logic to be implemented later)
   document.getElementById("split-btn")?.addEventListener("click", () => {
     console.warn("Split function not implemented yet.");
