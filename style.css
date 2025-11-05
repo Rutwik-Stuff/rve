@@ -796,3 +796,22 @@ footer.progress-footer {
   aspect-ratio: 9 / 16;
 }
 
+.preview-zone {
+  width: 100%;
+  max-width: 640px;
+  margin: 1rem auto;
+  background: var(--glass-bg);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-zone video,
+.preview-zone img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
