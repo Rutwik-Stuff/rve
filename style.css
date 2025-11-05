@@ -600,6 +600,7 @@ place it in the .infobox above the heading for the infobox
 
 /* Progress bar at the bottom of screen */
 footer.progress-footer {
+  margin-top: 3rem; /* it's a tall dropdown */
   min-height: 80px; /* Allow enough space */
   display: flex;
   align-items: flex-start; /* Align steps to top */
