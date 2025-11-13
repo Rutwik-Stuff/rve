@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/rve/style.css"/>
+  <title id="page-title">Untitled Project - Rutwik Video Editor</title>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="editor-nav glass">
+        <div class="nav-left">
+            <a href="/rve/dashboard.html" id="logo-link">
+                <img src="/rve/assets/rve-logo.png" alt="RVE Logo" class="rve-logo"/>
+            </a>
+            <span class="rve-title">RVE</span>
+        </div>
+        <div class="nav-center">
+        <input type="text" id="project-title-input" placeholder="Project File Name" />
+        <button class="button" id="save-btn">Save Project</button>
+        </div>
+        <div class="nav-right">
+            <button class="button">Export</button>
+            <button class="button">Share</button>
+            <button class="next-button">Next</button>
+        </div>
+    </nav>
+
+  <!-- Main Editor Layout -->
+  <main class="edit-tab">
+
+    <!-- Left Sidebar: Media Tools -->
+    <aside class="media-tools">
+      <section class="glass" id="left-media-tools">
+        <ul>
+      <li><button class="videos-tool-btn">Videos</button></li>
+      <li><button class="images-tool-btn">Images</button></li>
+      <li><button class="othermed-tool-btn">Other Media</button></li>
+      <li><button class="transition-tool-btn">Transition</button></li>
+        </ul>
+      </section>
+    </aside>
+
+    <!-- Central Editing Zone -->
+    <section class="media-preview preview-zone glass">
+  <div class="preview-area">
+    <video id="video-preview" controls></video>
+    <img id="image-preview" style="display: none;" />
+  </div>
+
+  <div class="dropdown">
+    <button class="dropdown-toggle">Aspect Ratio</button>
+    <div class="dropdown-menu">
+      <a href="#" onclick="setAspect('16-9')">16:9</a>
+      <a href="#" onclick="setAspect('4-3')">4:3</a>
+      <a href="#" onclick="setAspect('1-1')">1:1</a>
+      <a href="#" onclick="setAspect('21-9')">21:9</a>
+      <a href="#" onclick="setAspect('9-16')">9:16</a>
+    </div>
+  </div>
+
+      <div class="playback-controls">
+        <button id="rewind-btn">&lt;&lt;</button>
+        <button id="back5-btn">&lt; 5s</button>
+        <button id="play-btn">Play</button>
+        <button id="forward5-btn">5s &gt;</button>
+        <button id="fastforward-btn">&gt;&gt;</button>
+      </div>
+    </section> <!-- ends media-preview -->
+
+      <div class="timeline-area">
+        <p>timeline goes here</p>
+        <span class="time-indicator">time goes here</span>
+      </div>
+
+    <!-- Right Sidebar: Editing Tools -->
+    <aside class="editing-tools">
+      <section class="glass" id="right-editing-tools">
+        <ul>
+      <li><button class="text-tool-btn">Text</button></li>
+      <li><button class="fade-tool-btn">Fade</button></li>
+      <li><button class="tool-btn">Effects</button></li>
+      <li><button class="playback-tool-btn">Playback Speed</button></li>
+        </ul>
+      </section>
+    </aside>
+
+  </main>
+
+  <!-- Bottom Progress Bar -->
+  <footer class="progress-footer glass">
+    <div class="progress-bar">
+      <button class="progress-step" data-step="Import">Import</button>
+      <button class="progress-step active" data-step="Edit">Edit</button>
+      <button class="progress-step" data-step="Music">Music</button>
+      <button class="progress-step" data-step="Final Checks">Final Checks</button>
+      <button class="progress-step" data-step="Export">Export</button>
+      <button class="progress-step" data-step="Upload">Upload</button>
+      </div>
+  </footer>
+  <script type="module" src="/rve/steps/edit.js"></script>
+</body>
+</html>
