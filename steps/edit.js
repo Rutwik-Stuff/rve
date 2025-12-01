@@ -47,6 +47,36 @@ export function initStage() {
     console.warn("Delete function not implemented yet.");
   });
 
+  // inside initStage()
+document.querySelector(".videos-tool-btn")?.addEventListener("click", () => {
+  const popup = document.getElementById("add-video-view");
+  const content = popup.querySelector(".popup-content");
+  content.innerHTML = "";
+
+  if (importedVideos.length === 0) {
+    content.innerHTML = "<p>No videos imported yet.</p>";
+  } else {
+    importedVideos.forEach(video => {
+      const item = document.createElement("div");
+      item.className = "video-item";
+      item.innerHTML = `
+        <p>${video.name}</p>
+        <video src="${video.url}" controls width="200"></video>
+      `;
+      content.appendChild(item);
+    });
+  }
+
+  popup.classList.remove("hidden");
+  console.log("🎬 Videos popup opened");
+});
+
+document.getElementById("close-popup")?.addEventListener("click", () => {
+  document.getElementById("add-video-view").classList.add("hidden");
+  console.log("❌ Videos popup closed");
+});
+
+
   document.getElementById("next-btn")?.addEventListener("click", () => {
     console.log("🍭 Next button clicked from Edit tab");
     // TODO: Implement stage-loader transition
