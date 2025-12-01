@@ -813,3 +813,36 @@ footer.progress-footer {
   aspect-ratio: 9 / 16;
 }
 
+.popup.glass {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  max-height: 400px;
+  overflow-y: auto;
+  background: var(--glass-bg);
+  border: 1.5px solid var(--glass-border);
+  backdrop-filter: blur(13px) saturate(1.2);
+  box-shadow: 0 0 32px rgba(18, 58, 89, 0.12);
+  border-radius: 12px;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.popup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1.5px solid var(--glass-border);
+  margin-bottom: 1rem;
+}
+
+.popup-content .video-item {
+  margin-bottom: 1rem;
+}
+
+.hidden {
+  display: none;
+}
+
