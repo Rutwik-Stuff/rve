@@ -48,12 +48,6 @@
     <video id="video-preview" controls></video>
     <img id="image-preview" style="display: none;" />
   </div>
-
-   <!-- Importing Videos Zone (Pop-up) -->
-      <div id="add-video-view" class="hidden overlay">
-  <!-- Imported videos -->
-</div>
-
       
   <div class="dropdown">
     <button class="dropdown-toggle">Aspect Ratio</button>
@@ -80,6 +74,17 @@
         <span class="time-indicator">time goes here</span>
       </div>
 
+    <div id="add-video-view" class="popup glass hidden">
+  <div class="popup-header">
+    <h2>Imported Videos</h2>
+    <button id="close-popup">✖</button>
+  </div>
+  <div class="popup-content">
+    <!-- Imported videos will be listed here -->
+  </div>
+</div>
+
+
     <!-- Right Sidebar: Editing Tools -->
     <aside class="editing-tools">
       <section class="glass" id="right-editing-tools">
@@ -105,6 +110,7 @@
       <button class="progress-step" data-step="Upload">Upload</button>
       </div>
   </footer>
+
   <script type="module" src="/rve/steps/edit.js"></script>
 </body>
 </html>
