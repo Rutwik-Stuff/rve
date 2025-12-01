@@ -1,3 +1,6 @@
+//global variables
+const importedVideos = []; //nah bro, the videos popup broke without this array, don't remove it.
+
 export function initStage() {
   console.log("🧬 RVE Edit Tab Initialized (edit-functions branch)");
 
