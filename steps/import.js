@@ -303,13 +303,11 @@ if (saveBtn) {
     //update the title tag after the project is saved
     const pageTitle = document.getElementById("page-title");
 
-    if (projectTitleInput && pageTitle) {
-        projectTitleInput.addEventListener("input", () => {
-        project.title = projectTitleInput.value;
-        const suffix = " - Rutwik Video Editor";
-        pageTitle.textContent = (project.title.trim() || "Untitled Project") + suffix;
-    });
+    if (projectTitleInput) {
+    project.title = "Untitled Project";
+    projectTitleInput.value = project.title; // use .value for inputs
 }
+
 
 
     setProgressStep("Import");
