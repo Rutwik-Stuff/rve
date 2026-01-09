@@ -1,3 +1,5 @@
+# THIS PROJECT IS NO LONGER IN DEVELOPMENT
+
 # 📽️Rutwik Video Editor (RVE)
 **Release Date:** unconfirmed
 
